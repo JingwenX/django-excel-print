@@ -1,3 +1,3 @@
 # django-excel-print
 
-Django server to handel excel printout capabilities in Oracle Apex
+Django server to handle excel printout capabilities in Oracle Apex
