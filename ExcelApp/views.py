@@ -1,9 +1,10 @@
+# -*- coding: utf-8 -*-
 from django.shortcuts import render
 from django.template import loader
 from django.urls import reverse
 from django.http import HttpResponse
 from django.http import JsonResponse
-import requests
+import requests, io
 from . import rgen
 
 #Dictionary mapping report id to restful API
@@ -25,9 +26,16 @@ def getReport(request):
 	#if the id is in the dictionary
 	if rid in d:
 		response = requests.get(d[rid])
-		rgen.report.formExcel(response.content, rid)
+		#print(rgen.ReportGenerator.formExcel(response.content, rid))
+		#data = io.StringIO(excelData)
+		#dv = data.getvalue()
+		#data.close()
+		file = HttpResponse(rgen.ReportGenerator.formExcel(response.content, rid), content_type='application/vnd.openxmlformats-officedocument.spreadsheetml.sheet')
+		file['Content-Disposition'] = 'attachment; filename=test.xlsx'
+
+
 
 		#displays the json
-		return HttpResponse(response)
+		return file #HttpResponse(response)
 	else:
 		return HttpResponse('No API in Dictionary')
