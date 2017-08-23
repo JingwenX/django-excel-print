@@ -1,7 +1,7 @@
 <html>
 	<body>
-		<form action="{% url 'ExcelApp:getReport' %}" method="POST">
-		{% csrf_token %}
+		<form action="{% url 'ExcelApp:getReport' %}" method="GET">
+		<!--{% csrf_token %}-->
 			<p><label for="rid">Report ID:</label>   
 			<input type="text" name="rid" id="rid"></input></p>
 			<button type="submit" value="item">get report</button>
