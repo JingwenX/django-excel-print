@@ -1,6 +1,7 @@
 # -*- coding: utf-8 -*-
 import xlsxwriter
 from io import BytesIO
+import datetime
 
 #each function holds a different report, dictionary maps each function to the report id
 class reports(object):
@@ -777,4 +778,1043 @@ class reports(object):
 		xlsx_data = output.getvalue()
 		return xlsx_data
 
-	d  =  {'2' : r2, '3' : r3, '4' : r4, '6' : r6, '7' : r7, '17': r17, '18': r17, '19': r17}
+	#Contractor plant trees (Tree Planting Status)
+	def r51(res, rid):
+		output = BytesIO()
+		workbook = xlsxwriter.Workbook(output, {'in_memory': True})
+		worksheet = workbook.add_worksheet()
+
+		#type = 'Year 1 Warranty' if rid == '17' else 'Year 2 Warranty' if rid == '18' else '12 Month Warranty'
+		title = 'Contractor Plant Tree'
+		year = '2017'
+
+		main_header1_format = workbook.add_format({
+			'bold':True,
+			'font_name':'Calibri',
+			'font_size':12,
+			'border':2, #2 is the value for thick border
+			'align':'center',
+			'valign':'top',
+		})
+
+		main_header2_format = workbook.add_format({
+			'font_name':'Calibri',
+			'font_size':18,
+			'font_color':'white',
+			'border':2,
+			'align':'left',
+			'bg_color':'black',
+		})
+
+		title_format = workbook.add_format({
+			'font_name':'Calibri',
+			'font_size':18,
+			'font_color':'white',
+			'border':2,
+			'align':'left',
+			'bg_color':'gray',
+		})
+
+		item_header_format = workbook.add_format({
+			'bold':True,
+			'font_name':'Calibri',
+			'font_size':12,
+			'border':2,
+			'align': 'left',
+			'bg_color':'#C0C0C0',
+		})
+		item_header_format.set_text_wrap()
+
+		item_format = workbook.add_format({
+			'font_name':'Calibri',
+			'font_size':12,
+			'align': 'left',
+		})
+
+		data = res
+
+		#wrap text
+		format_wrap = workbook.add_format()
+		format_wrap.set_text_wrap()
+		#set column width
+		worksheet.set_column('A:A', 16)
+		worksheet.set_column('B:B', 15.78)
+		worksheet.set_column('C:C', 31.44)
+		worksheet.set_column('D:D', 12.22)
+		worksheet.set_column('E:E', 11.89)
+		worksheet.set_column('F:F', 9.78)
+		worksheet.set_column('G:G', 11.33)
+		worksheet.set_column('H:H', 11.89)
+		worksheet.set_column('I:I', 11)
+		worksheet.set_column('J:J', 9.65)
+
+		#set row
+		worksheet.set_row(0,36)
+		worksheet.set_row(1,36)
+		worksheet.set_row(5,23.4)
+		worksheet.set_row(6, 31.2)
+		#change header length
+		worksheet.merge_range('A1:J2','Natural Heritage and Forestry Division, Environmental Services Department',main_header1_format)
+		worksheet.insert_image('A1',r'\\ykr-apexp1\staticenv\York_Logo.png',{'x_offset':10,'y_offset':10,'x_scale':0.25,'y_scale':0.25})
+		#worksheet.insert_image('D1','\\ykr-fs1.ykregion.ca\Corp\WCM\EnvironmentalServices\Toolkits\DesignComms\ENVSubbrand\HighRes',{'x_offset':10,'y_offset':10,'x_scale':0.25,'y_scale':0.25})
+		
+
+		worksheet.merge_range('A4:J4','CON#'+ year +'-Street Tree Planting and Establishment Activities',main_header2_format)
+		worksheet.merge_range('A5:J5',title,title_format)
+		worksheet.merge_range('A6:J6',' ')
+		item_fields = ['Contract Item No.', 'Tree Planting Detail No.', 'Location', 'Assignment No.', 'Assignment Status', 'Planting Status', 'Planting Start Date', 'Planting End Date', 'Assigned Inspector', 'Status of Inspection']
+		worksheet.write_row('A7', item_fields, item_header_format)
+		#write date printed
+		##date format
+		date_format = workbook.add_format()
+		date_format.set_align('right')
+		now = datetime.datetime.now()
+		##date data
+		date_printed = 'Date Printed: ' + str(now.day) + '-' + str(now.strftime("%b")) + '-' + str(now.year)
+		worksheet.write('J3', date_printed, date_format)
+
+		#MAIN DATA
+		for idx, val in enumerate(data["items"]):
+			for idx2, val2 in enumerate(data["items"][idx]):
+				worksheet.write(chr(idx2+65)+str(idx+8),data["items"][idx][val2], format_wrap)
+
+		cr = 8
+		#FORMULAE AND FOOTERS
+		#worksheet.write('A' + str(cr), 'Totals: ', item_format)
+		#worksheet.write_formula('B' + str(cr), '=SUM(B8:B' + str(cr-1) + ')', item_format)
+		#worksheet.write_formula('C' + str(cr), '=SUM(C8:C' + str(cr-1) + ')', item_format)
+		#worksheet.write_formula('D' + str(cr), '=SUM(D8:D' + str(cr-1) + ')', item_format)
+		#worksheet.write_formula('E' + str(cr), '=SUM(E8:E' + str(cr-1) + ')', item_format)
+
+		workbook.close()
+
+		xlsx_data = output.getvalue()
+		return xlsx_data
+
+
+# Nursery Inspection
+	def r52(res, rid):
+		output = BytesIO()
+		workbook = xlsxwriter.Workbook(output, {'in_memory': True})
+		worksheet = workbook.add_worksheet()
+
+		#type = 'Year 1 Warranty' if rid == '17' else 'Year 2 Warranty' if rid == '18' else '12 Month Warranty'
+		title = 'Nuersery Inspection Requirement'
+		year = '2017'
+
+		main_header1_format = workbook.add_format({
+			'bold':True,
+			'font_name':'Calibri',
+			'font_size':12,
+			'border':2, #2 is the value for thick border
+			'align':'center',
+			'valign':'top',
+		})
+
+		main_header2_format = workbook.add_format({
+			'font_name':'Calibri',
+			'font_size':18,
+			'font_color':'white',
+			'border':2,
+			'align':'left',
+			'bg_color':'black',
+		})
+
+		title_format = workbook.add_format({
+			'font_name':'Calibri',
+			'font_size':18,
+			'font_color':'white',
+			'border':2,
+			'align':'left',
+			'bg_color':'gray',
+		})
+
+		item_header_format = workbook.add_format({
+			'bold':True,
+			'font_name':'Calibri',
+			'font_size':12,
+			'border':2,
+			'align': 'left',
+			'bg_color':'#C0C0C0',
+		})
+		item_header_format.set_text_wrap()
+		item_header_format.set_align('center')
+		item_header_format.set_align('vcenter')
+
+
+		item_format = workbook.add_format({
+			'font_name':'Calibri',
+			'font_size':12,
+			'align': 'left',
+		})
+
+		data = res
+
+		#wrap text
+		format_wrap = workbook.add_format()
+		format_wrap.set_text_wrap()
+		#left align
+		format_text = workbook.add_format()
+		format_text.set_text_wrap()
+		format_text.set_align('left')
+		format_text.set_align('vcenter')
+		#center align
+		format_num = workbook.add_format()
+		format_num.set_text_wrap()
+		format_num.set_align('center')
+		format_num.set_align('vcenter')
+		#set column width
+		worksheet.set_column('A:A', 11.22)
+		worksheet.set_column('B:B', 8.67)
+		worksheet.set_column('C:C', 33)
+		worksheet.set_column('D:D', 30.67)
+		worksheet.set_column('E:E', 12.22)
+		worksheet.set_column('F:F', 19.22)
+		worksheet.set_column('G:G', 10.89)
+		worksheet.set_column('H:H', 8.11)
+
+		#worksheet.set_column('G:G', 11.33)
+		#worksheet.set_column('H:H', 11.89)
+		#worksheet.set_column('I:I', 11)
+		#worksheet.set_column('J:J', 9.65)
+
+		#set row
+		worksheet.set_row(0,36)
+		worksheet.set_row(1,36)
+		worksheet.set_row(5,23.4)
+		worksheet.set_row(6, 31.2)
+		#change header length
+		worksheet.merge_range('A1:H2','Natural Heritage and Forestry Division, Environmental Services Department',main_header1_format)
+		worksheet.insert_image('A1',r'\\ykr-apexp1\staticenv\York_Logo.png',{'x_offset':10,'y_offset':10,'x_scale':0.25,'y_scale':0.25})
+		#worksheet.insert_image('D1','\\ykr-fs1.ykregion.ca\Corp\WCM\EnvironmentalServices\Toolkits\DesignComms\ENVSubbrand\HighRes',{'x_offset':10,'y_offset':10,'x_scale':0.25,'y_scale':0.25})
+		
+
+		worksheet.merge_range('A4:H4','CON#'+ year +'-Street Tree Planting and Establishment Activities',main_header2_format)
+		worksheet.merge_range('A5:H5',title,title_format)
+		worksheet.merge_range('A6:H6',' ')
+		item_fields = ['Tree Tag Range', 'Tag Color', 'Species', 'Species Substituted For',	'Nursery', 'Stock Type', 'Farm/Lot', 'Status']
+		worksheet.write_row('A7', item_fields, item_header_format)
+		#write date printed
+		##date format
+		date_format = workbook.add_format()
+		date_format.set_align('right')
+		now = datetime.datetime.now()
+		##date data
+		date_printed = 'Date Printed: ' + str(now.day) + '-' + str(now.strftime("%b")) + '-' + str(now.year)
+		worksheet.write('H3', date_printed, date_format)
+
+		#MAIN DATA
+		for idx, val in enumerate(data["items"]):
+			for idx2, val2 in enumerate(data["items"][idx]):
+					worksheet.write(chr(idx2+65)+str(idx+8),data["items"][idx][val2], format_num)
+
+
+
+		cr = 8
+		#FORMULAE AND FOOTERS
+		#worksheet.write('A' + str(cr), 'Totals: ', item_format)
+		#worksheet.write_formula('B' + str(cr), '=SUM(B8:B' + str(cr-1) + ')', item_format)
+		#worksheet.write_formula('C' + str(cr), '=SUM(C8:C' + str(cr-1) + ')', item_format)
+		#worksheet.write_formula('D' + str(cr), '=SUM(D8:D' + str(cr-1) + ')', item_format)
+		#worksheet.write_formula('E' + str(cr), '=SUM(E8:E' + str(cr-1) + ')', item_format)
+
+		workbook.close()
+
+		xlsx_data = output.getvalue()
+		return xlsx_data
+
+#Nursery Tagging Requirement
+	def r53(res, rid):
+		output = BytesIO()
+		workbook = xlsxwriter.Workbook(output, {'in_memory': True})
+		worksheet = workbook.add_worksheet()
+
+	
+		title = 'Nuersery Tagging Requirement'
+		year = '2017'
+
+		main_header1_format = workbook.add_format({
+			'bold':True,
+			'font_name':'Calibri',
+			'font_size':12,
+			'border':2, #2 is the value for thick border
+			'align':'center',
+			'valign':'top',
+		})
+
+		main_header2_format = workbook.add_format({
+			'font_name':'Calibri',
+			'font_size':18,
+			'font_color':'white',
+			'border':2,
+			'align':'left',
+			'bg_color':'black',
+		})
+
+		title_format = workbook.add_format({
+			'font_name':'Calibri',
+			'font_size':18,
+			'font_color':'white',
+			'border':2,
+			'align':'left',
+			'bg_color':'gray',
+		})
+
+		item_header_format = workbook.add_format({
+			'bold':True,
+			'font_name':'Calibri',
+			'font_size':12,
+			'border':2,
+			'align': 'left',
+			'bg_color':'#C0C0C0',
+		})
+		item_header_format.set_text_wrap()
+		item_header_format.set_align('center')
+		item_header_format.set_align('vcenter')
+
+
+		item_format = workbook.add_format({
+			'font_name':'Calibri',
+			'font_size':12,
+			'align': 'left',
+		})
+
+		data = res
+
+		#wrap text
+		format_wrap = workbook.add_format()
+		format_wrap.set_text_wrap()
+		#left align
+		format_text = workbook.add_format()
+		format_text.set_text_wrap()
+		format_text.set_align('left')
+		format_text.set_align('vcenter')
+		#center align
+		format_num = workbook.add_format()
+		format_num.set_text_wrap()
+		format_num.set_align('center')
+		format_num.set_align('vcenter')
+		#set column width
+		worksheet.set_column('A:A', 19.67)
+		worksheet.set_column('B:B', 24)
+		worksheet.set_column('C:C', 23.89)
+		worksheet.set_column('D:D', 15.11)
+		worksheet.set_column('E:E', 12.33)
+		worksheet.set_column('F:F', 15.56)
+		#worksheet.set_column('G:G', 11.33)
+		#worksheet.set_column('H:H', 11.89)
+		#worksheet.set_column('I:I', 11)
+		#worksheet.set_column('J:J', 9.65)
+
+		#set row
+		worksheet.set_row(0,36)
+		worksheet.set_row(1,36)
+		worksheet.set_row(5,23.4)
+		worksheet.set_row(6, 31.2)
+		#change header length
+		worksheet.merge_range('A1:F2','Natural Heritage and Forestry Division, Environmental Services Department',main_header1_format)
+		worksheet.insert_image('A1',r'\\ykr-apexp1\staticenv\York_Logo.png',{'x_offset':10,'y_offset':10,'x_scale':0.25,'y_scale':0.25})
+		#worksheet.insert_image('D1','\\ykr-fs1.ykregion.ca\Corp\WCM\EnvironmentalServices\Toolkits\DesignComms\ENVSubbrand\HighRes',{'x_offset':10,'y_offset':10,'x_scale':0.25,'y_scale':0.25})
+		
+
+		worksheet.merge_range('A4:F4','CON#'+ year +'-Street Tree Planting and Establishment Activities',main_header2_format)
+		worksheet.merge_range('A5:F5',title,title_format)
+		worksheet.merge_range('A6:F6',' ')
+		item_fields = ['Stock Type', 'Plant Type', 'Species', 'Qty Required', 'Qty Tagged', 'Qty Left To Tag']
+		worksheet.write_row('A7', item_fields, item_header_format)
+		#write date printed
+		##date format
+		date_format = workbook.add_format()
+		date_format.set_align('right')
+		now = datetime.datetime.now()
+		##date data
+		date_printed = 'Date Printed: ' + str(now.day) + '-' + str(now.strftime("%b")) + '-' + str(now.year)
+		worksheet.write('F3', date_printed, date_format)
+
+		#MAIN DATA
+		for idx, val in enumerate(data["items"]):
+			for idx2, val2 in enumerate(data["items"][idx]):
+				if chr(idx2 + 65) <= 'C':
+					worksheet.write(chr(idx2+65)+str(idx+8),data["items"][idx][val2], format_text)
+				elif chr(idx2 + 65 ) > 'C':
+
+					worksheet.write(chr(idx2+65)+str(idx+8),data["items"][idx][val2], format_num)
+
+
+		cr = 8
+		#FORMULAE AND FOOTERS
+		#worksheet.write('A' + str(cr), 'Totals: ', item_format)
+		#worksheet.write_formula('B' + str(cr), '=SUM(B8:B' + str(cr-1) + ')', item_format)
+		#worksheet.write_formula('C' + str(cr), '=SUM(C8:C' + str(cr-1) + ')', item_format)
+		#worksheet.write_formula('D' + str(cr), '=SUM(D8:D' + str(cr-1) + ')', item_format)
+		#worksheet.write_formula('E' + str(cr), '=SUM(E8:E' + str(cr-1) + ')', item_format)
+
+		workbook.close()
+
+		xlsx_data = output.getvalue()
+		return xlsx_data
+
+#Summary of Contract Items - All Items
+	def r54(res, rid):
+		output = BytesIO()
+		workbook = xlsxwriter.Workbook(output, {'in_memory': True})
+		worksheet = workbook.add_worksheet()
+
+	
+		title = 'Summary of Contract Items - All Items'
+		year = '2017'
+
+		main_header1_format = workbook.add_format({
+			'bold':True,
+			'font_name':'Calibri',
+			'font_size':12,
+			'border':2, #2 is the value for thick border
+			'align':'center',
+			'valign':'top',
+		})
+
+		main_header2_format = workbook.add_format({
+			'font_name':'Calibri',
+			'font_size':18,
+			'font_color':'white',
+			'border':2,
+			'align':'left',
+			'bg_color':'black',
+		})
+
+		title_format = workbook.add_format({
+			'font_name':'Calibri',
+			'font_size':18,
+			'font_color':'white',
+			'border':2,
+			'align':'left',
+			'bg_color':'gray',
+		})
+
+		item_header_format = workbook.add_format({
+			'bold':True,
+			'font_name':'Calibri',
+			'font_size':12,
+			'border':2,
+			'align': 'left',
+			'bg_color':'#C0C0C0',
+		})
+		item_header_format.set_text_wrap()
+		item_header_format.set_align('center')
+		item_header_format.set_align('vcenter')
+
+
+		item_format = workbook.add_format({
+			'font_name':'Calibri',
+			'font_size':12,
+			'align': 'left',
+		})
+
+		data = res
+
+		#wrap text
+		format_wrap = workbook.add_format()
+		format_wrap.set_text_wrap()
+		#left align
+		format_text = workbook.add_format()
+		format_text.set_text_wrap()
+		format_text.set_align('left')
+		format_text.set_align('vcenter')
+		#center align
+		format_num = workbook.add_format()
+		format_num.set_text_wrap()
+		format_num.set_align('center')
+		format_num.set_align('vcenter')
+		#set column width
+		worksheet.set_column('A:A', 12.67)
+		worksheet.set_column('B:B', 39.89)
+		worksheet.set_column('C:C', 12)
+		worksheet.set_column('D:D', 11)
+		worksheet.set_column('E:E', 30.56)
+		worksheet.set_column('F:F', 9)
+		worksheet.set_column('G:G', 11.33)
+		worksheet.set_column('H:H', 12.67)
+		worksheet.set_column('I:I', 13)
+		#worksheet.set_column('J:J', 9.65)
+
+		#set row
+		worksheet.set_row(0,36)
+		worksheet.set_row(1,36)
+		worksheet.set_row(5,23.4)
+		worksheet.set_row(6, 31.2)
+		#change header length
+		worksheet.merge_range('A1:I2','Natural Heritage and Forestry Division, Environmental Services Department',main_header1_format)
+		worksheet.insert_image('A1',r'\\ykr-apexp1\staticenv\York_Logo.png',{'x_offset':10,'y_offset':10,'x_scale':0.25,'y_scale':0.25})
+		#worksheet.insert_image('D1','\\ykr-fs1.ykregion.ca\Corp\WCM\EnvironmentalServices\Toolkits\DesignComms\ENVSubbrand\HighRes',{'x_offset':10,'y_offset':10,'x_scale':0.25,'y_scale':0.25})
+		
+
+		worksheet.merge_range('A4:I4','CON#'+ year +'-Street Tree Planting and Establishment Activities',main_header2_format)
+		worksheet.merge_range('A5:I5',title,title_format)
+		worksheet.merge_range('A6:I6',' ')
+		item_fields = ['Contract Item No.',	'Location', 'RINs', 'Description', 'Item', 'Quantity', 'Program', 'Municipality', 'Area forester']
+		worksheet.write_row('A7', item_fields, item_header_format)
+		#write date printed
+		##date format
+		date_format = workbook.add_format()
+		date_format.set_align('right')
+		now = datetime.datetime.now()
+		##date data
+		date_printed = 'Date Printed: ' + str(now.day) + '-' + str(now.strftime("%b")) + '-' + str(now.year)
+		worksheet.write('I3', date_printed, date_format)
+
+		cr = 0 #initiate cr
+		#MAIN DATA
+		for idx, val in enumerate(data["items"]):
+			for idx2, val2 in enumerate(data["items"][idx]):
+				if chr(idx2 + 65) == 'F':
+					worksheet.write(chr(idx2+65)+str(idx+8),data["items"][idx][val2], format_num)
+				elif chr(idx2 + 65 ) != 'F':
+					worksheet.write(chr(idx2+65)+str(idx+8),data["items"][idx][val2], format_num)
+				cr = idx2 #record the last row num
+
+		cr += 9
+		"""
+		#calculate top performers
+		contract_items = []
+		tp = {} # tp = top performers
+
+		for iid, item in enumerate(data["items"]):
+			if not data["items"][iid]["contract_item_num"] in contract_items:
+				contract_items.append(data["items"][afid]["contract_item_num"])
+		
+		for iid, item in enumerate(data["items"]):
+			if not data["items"][cid]["contract_item_num"] in tp.keys():
+				tp[data["items"][cid]["contract_item_num"]] = {"qty": data["items"][cid]["quantity"], "is_top_performer":data["items"][cid]["top_performer"]}
+			elif data["items"][cid]["contract_item_num"] in tp.keys():
+				tp[data["items"][cid]["contract_item_num"]]["quantity"] += data["items"][iid]["quantity"]
+
+		# write top performers into table
+		for idx, cnum in enumerate(tp):
+			worksheet.write(chr(idx+65) + str(idx + cr), cnum, format_text)
+			worksheet.write(chr(idx + 1 +65) + str(idx + cr)), tp[cnum]["qty"], format_num)
+			worksheet.write(chr(idx + 2 +65) + str(idx + cr)), tp[cnum]["qty"], format_num)
+		"""
+
+		#FORMULAE AND FOOTERS
+		#worksheet.write('A' + str(cr), 'Totals: ', item_format)
+		#worksheet.write_formula('B' + str(cr), '=SUM(B8:B' + str(cr-1) + ')', item_format)
+		#worksheet.write_formula('C' + str(cr), '=SUM(C8:C' + str(cr-1) + ')', item_format)
+		#worksheet.write_formula('D' + str(cr), '=SUM(D8:D' + str(cr-1) + ')', item_format)
+		#worksheet.write_formula('E' + str(cr), '=SUM(E8:E' + str(cr-1) + ')', item_format)
+
+		workbook.close()
+
+		xlsx_data = output.getvalue()
+		return xlsx_data
+
+
+#Summary of Contract Items by Area Forester
+	def r55(res, rid):
+		output = BytesIO()
+		workbook = xlsxwriter.Workbook(output, {'in_memory': True})
+		worksheet = workbook.add_worksheet()
+		title = 'Summary of Contract Items, Grouped by Area Forester'
+		title2 = 'Top Performers, Grouped by Area Forester'
+		year = '2017'
+
+		main_header1_format = workbook.add_format({
+			'bold':True,
+			'font_name':'Calibri',
+			'font_size':12,
+			'border':2, #2 is the value for thick border
+			'align':'center',
+			'valign':'top',
+		})
+
+		sub_header_format = workbook.add_format({
+			'bold':True,
+			'font_name':'Calibri',
+			'font_size':12,
+			'border':2, #2 is the value for thick border
+			'align':'left',
+			'valign':'top',
+		})
+
+		main_header2_format = workbook.add_format({
+			'font_name':'Calibri',
+			'font_size':18,
+			'font_color':'white',
+			'border':2,
+			'align':'left',
+			'bg_color':'black',
+		})
+
+		title_format = workbook.add_format({
+			'font_name':'Calibri',
+			'font_size':18,
+			'font_color':'white',
+			'border':2,
+			'align':'left',
+			'bg_color':'gray',
+		})
+
+		item_header_format = workbook.add_format({
+			'bold':True,
+			'font_name':'Calibri',
+			'font_size':12,
+			'border':2,
+			'align': 'left',
+			'bg_color':'#C0C0C0',
+		})
+		item_header_format.set_text_wrap()
+		item_header_format.set_align('vcenter')
+
+
+		item_format = workbook.add_format({
+			'font_name':'Calibri',
+			'font_size':12,
+			'align': 'left',
+		})
+
+		data = res
+
+		#wrap text
+		format_wrap = workbook.add_format()
+		format_wrap.set_text_wrap()
+		#left align
+		format_text = workbook.add_format({
+			'font_name':'Calibri',
+			'font_size':12,
+		})
+		format_text.set_text_wrap()
+		format_text.set_align('left')
+		format_text.set_align('vcenter')
+		#center align
+		format_num = workbook.add_format({
+			'font_name':'Calibri',
+			'font_size':12,
+		})
+		format_num.set_text_wrap()
+		format_num.set_align('center')
+		format_num.set_align('vcenter')
+		#set column width
+		worksheet.set_column('A:A', 11.56)
+		worksheet.set_column('B:B', 45.22)
+		worksheet.set_column('C:C', 21.22)
+		worksheet.set_column('D:D', 11.78)
+		worksheet.set_column('E:E', 33.78)
+		worksheet.set_column('F:F', 11.44)
+		#worksheet.set_column('G:G', 11.33)
+		#worksheet.set_column('H:H', 11.89)
+		#worksheet.set_column('I:I', 11)
+		#worksheet.set_column('J:J', 9.65)
+
+		#set row
+		worksheet.set_row(0,36)
+		worksheet.set_row(1,36)
+		worksheet.set_row(5,23.4)
+		worksheet.set_row(6, 31.2)
+
+		worksheet.merge_range('A1:F2','Natural Heritage and Forestry Division, Environmental Services Department', main_header1_format)
+		worksheet.insert_image('A1',r'\\ykr-apexp1\staticenv\York_Logo.png',{'x_offset':10,'y_offset':10,'x_scale':0.25,'y_scale':0.25})
+		#worksheet.insert_image('D1','\\ykr-fs1.ykregion.ca\Corp\WCM\EnvironmentalServices\Toolkits\DesignComms\ENVSubbrand\HighRes',{'x_offset':10,'y_offset':10,'x_scale':0.25,'y_scale':0.25})
+		worksheet.merge_range('A4:F4','CON#'+ year +'-Street Tree Planting and Establishment Activities',main_header2_format)
+		worksheet.merge_range('A5:F5',title,title_format)
+
+		#write date printed
+		##date format
+		date_format = workbook.add_format()
+		date_format.set_align('right')
+		now = datetime.datetime.now()
+		##date data
+		date_printed = 'Date Printed: ' + str(now.day) + '-' + str(now.strftime("%b")) + '-' + str(now.year)
+		worksheet.write('F3', date_printed, date_format)
+
+		foresters = []
+		ft = {}
+
+		for afid, forester in enumerate(data["items"]):
+			if not data["items"][afid]["area_forester"] in foresters:
+				foresters.append(data["items"][afid]["area_forester"])
+
+		# main data
+		cr = 7 #current row, starting at offset where data begins
+		item_fields = ['Contract Item No.', 'Location', 'RINs', 'Description', 'Item', 'Quantity']
+
+		for afid, forester in enumerate(foresters):
+			worksheet.merge_range('A' + str(cr) + ':F' + str(cr), str('Area Forester: ' + forester), sub_header_format)
+			worksheet.write_row('A' + str(cr+1), item_fields, item_header_format)
+			cr += 2
+			for idx, val in enumerate(data["items"]):
+				if data["items"][idx]["area_forester"] == forester:
+					if forester in ft:
+						ft.update({forester: ft[forester] + list(data["items"][idx].values())[5]})
+					else:
+						ft.update({forester: list(data["items"][idx].values())[5]})
+					worksheet.write_row('A' + str(cr), list(data["items"][idx].values())[0:6], format_text)
+					cr += 1
+			cr += 1
+
+		worksheet.merge_range('A' + str(6) + ':F' + str(6), title2, title_format)
+		cr += 1
+		item_fields2 = ['Area Forester', 'Top Performer', 'Top Performer %', 'Non Top Performer', 'Non Top Performer %', 'Total']
+		worksheet.write_row('A' + str(cr), item_fields2, item_header_format)
+		cr += 1
+
+		#hard coding for now, need to redo once API is complete
+		for afid, forester in enumerate(foresters):
+			worksheet.write_row('A' + str(cr), [forester, 0, '0%', ft[forester], '100%', ft[forester]], format_num)
+			cr += 1
+
+		worksheet.write('A' + str(cr), 'Totals: ', format_num)
+		worksheet.write('F' + str(cr), sum(list(ft.values())), format_num)
+
+
+		workbook.close()
+		
+		xlsx_data = output.getvalue()
+		return xlsx_data
+
+#Summary of Contract Items by Program
+	def r56(res, rid):
+		output = BytesIO()
+		workbook = xlsxwriter.Workbook(output, {'in_memory': True})
+		worksheet = workbook.add_worksheet()
+		title = 'Summary of Contract Items, Grouped by Program'
+		title2 = 'Top Performers, Grouped by Program'
+		year = '2017'
+
+		main_header1_format = workbook.add_format({
+			'bold':True,
+			'font_name':'Calibri',
+			'font_size':12,
+			'border':2, #2 is the value for thick border
+			'align':'center',
+			'valign':'top',
+		})
+
+		main_header2_format = workbook.add_format({
+			'font_name':'Calibri',
+			'font_size':18,
+			'font_color':'white',
+			'border':2,
+			'align':'left',
+			'bg_color':'black',
+		})
+
+		title_format = workbook.add_format({
+			'font_name':'Calibri',
+			'font_size':18,
+			'font_color':'white',
+			'border':2,
+			'align':'left',
+			'bg_color':'gray',
+		})
+
+		item_header_format = workbook.add_format({
+			'bold':True,
+			'font_name':'Calibri',
+			'font_size':12,
+			'border':2,
+			'align': 'left',
+			'bg_color':'#C0C0C0',
+		})
+		item_header_format.set_text_wrap()
+		item_header_format.set_align('vcenter')
+
+
+		item_format = workbook.add_format({
+			'font_name':'Calibri',
+			'font_size':12,
+			'align': 'left',
+		})
+
+		data = res
+
+		#wrap text
+		format_wrap = workbook.add_format()
+		format_wrap.set_text_wrap()
+		#left align
+		format_text = workbook.add_format({
+			'font_name':'Calibri',
+			'font_size':12,
+		})
+		format_text.set_text_wrap()
+		format_text.set_align('left')
+		format_text.set_align('vcenter')
+		#center align
+		format_num = workbook.add_format({
+			'font_name':'Calibri',
+			'font_size':12,
+		})
+		format_num.set_text_wrap()
+		format_num.set_align('center')
+		format_num.set_align('vcenter')
+		#set column width
+		worksheet.set_column('A:A', 12.56)
+		worksheet.set_column('B:B', 47.78)
+		worksheet.set_column('C:C', 14.11)
+		worksheet.set_column('D:D', 15.78)
+		worksheet.set_column('E:E', 33.89)
+		worksheet.set_column('F:F', 8.99)
+		#worksheet.set_column('G:G', 11.33)
+		#worksheet.set_column('H:H', 11.89)
+		#worksheet.set_column('I:I', 11)
+		#worksheet.set_column('J:J', 9.65)
+
+		#set row
+		worksheet.set_row(0,36)
+		worksheet.set_row(1,36)
+		worksheet.set_row(5,23.4)
+		worksheet.set_row(6, 31.2)
+
+		worksheet.merge_range('A1:F2','Natural Heritage and Forestry Division, Environmental Services Department', main_header1_format)
+		worksheet.insert_image('A1',r'\\ykr-apexp1\staticenv\York_Logo.png',{'x_offset':10,'y_offset':10,'x_scale':0.25,'y_scale':0.25})
+		#worksheet.insert_image('D1','\\ykr-fs1.ykregion.ca\Corp\WCM\EnvironmentalServices\Toolkits\DesignComms\ENVSubbrand\HighRes',{'x_offset':10,'y_offset':10,'x_scale':0.25,'y_scale':0.25})
+		worksheet.merge_range('A4:F4','CON#'+ year +'-Street Tree Planting and Establishment Activities',main_header2_format)
+		worksheet.merge_range('A5:F5',title,title_format)
+
+		#write date printed
+		##date format
+		date_format = workbook.add_format()
+		date_format.set_align('right')
+		now = datetime.datetime.now()
+		##date data
+		date_printed = 'Date Printed: ' + str(now.day) + '-' + str(now.strftime("%b")) + '-' + str(now.year)
+		worksheet.write('F3', date_printed, date_format)
+
+		foresters = []
+		ft = {}
+
+
+
+		for afid, forester in enumerate(data["items"]):
+			if not data["items"][afid]["program"] in foresters:
+				foresters.append(data["items"][afid]["program"])
+
+		# main data
+		cr = 7 #current row, starting at offset where data begins
+		item_fields = ['Contract Item No.', 'Location', 'RINs', 'Description', 'Item', 'Quantity']
+		#loop over all programs
+		for afid, forester in enumerate(foresters):
+			worksheet.merge_range('A' + str(cr) + ':F' + str(cr), str('Program: ' + forester), format_text)
+			worksheet.write_row('A' + str(cr+1), item_fields, item_header_format)
+			cr += 2
+			for idx, val in enumerate(data["items"]):
+				if data["items"][idx]["program"] == forester:
+					#if forester in ft:
+				    #ft.update({forester: ft[forester] + list(data["items"][idx].values())[6]})
+					#else:
+				#		ft.update({forester: list(data["items"][idx].values())[6]})
+					#worksheet.write_row('A' + str(cr), list(data["items"][idx].values())[0:5], format_text)
+					a1 = data["items"][idx]["contract_item_num"]
+					worksheet.write('A' + str(cr), a1 if a1 is not None else "", format_text)
+					a2 = data["items"][idx]["location"]
+					worksheet.write('B' + str(cr), a2 if a2 is not None else "", format_text)
+					a3 = data["items"][idx]["rins"]
+					worksheet.write('C' + str(cr), a3 if a3 is not None else "", format_text)
+					a4 = data["items"][idx]["description"]
+					worksheet.write('D' + str(cr), a4 if a4 is not None else "", format_text)
+					a5 = data["items"][idx]["item"]
+					worksheet.write('E' + str(cr), a5 if a5 is not None else "", format_text)
+					a6 = data["items"][idx]["quantity"]
+					worksheet.write('F' + str(cr), a6 if a6 is not None else "", format_text)
+
+
+
+
+					cr += 1
+			cr += 1
+
+		worksheet.merge_range('A' + str(6) + ':F' + str(6), title2, title_format)
+		cr += 1
+		item_fields2 = ['Area Forester', 'Top Performer', 'Top Performer %', 'Non Top Performer', 'Non Top Performer %', 'Total']
+		worksheet.write_row('A' + str(cr), item_fields2, item_header_format)
+		cr += 1
+
+		#hard coding for now, need to redo once API is complete
+		#for afid, forester in enumerate(foresters):
+			#worksheet.write_row('A' + str(cr), [forester, 0, '0%', ft[forester], '100%', ft[forester]], format_num)
+			#cr += 1
+
+		#worksheet.write('A' + str(cr), 'Totals: ', format_num)
+		#worksheet.write(str('F') + str(cr), sum(list(ft.values())), format_num)
+
+
+		workbook.close()
+		
+		xlsx_data = output.getvalue()
+		return xlsx_data
+
+#Summary of Contract Items by Mun
+	def r57(res, rid):
+		output = BytesIO()
+		workbook = xlsxwriter.Workbook(output, {'in_memory': True})
+		worksheet = workbook.add_worksheet()
+		title = 'Summary of Contract Items, Grouped by Program'
+		title2 = 'Top Performers, Grouped by Program'
+		year = '2017'
+
+		main_header1_format = workbook.add_format({
+			'bold':True,
+			'font_name':'Calibri',
+			'font_size':12,
+			'border':2, #2 is the value for thick border
+			'align':'center',
+			'valign':'top',
+		})
+
+		main_header2_format = workbook.add_format({
+			'font_name':'Calibri',
+			'font_size':18,
+			'font_color':'white',
+			'border':2,
+			'align':'left',
+			'bg_color':'black',
+		})
+
+		title_format = workbook.add_format({
+			'font_name':'Calibri',
+			'font_size':18,
+			'font_color':'white',
+			'border':2,
+			'align':'left',
+			'bg_color':'gray',
+		})
+
+		item_header_format = workbook.add_format({
+			'bold':True,
+			'font_name':'Calibri',
+			'font_size':12,
+			'border':2,
+			'align': 'left',
+			'bg_color':'#C0C0C0',
+		})
+		item_header_format.set_text_wrap()
+		item_header_format.set_align('vcenter')
+
+
+		item_format = workbook.add_format({
+			'font_name':'Calibri',
+			'font_size':12,
+			'align': 'left',
+		})
+
+		data = res
+
+		#wrap text
+		format_wrap = workbook.add_format()
+		format_wrap.set_text_wrap()
+		#left align
+		format_text = workbook.add_format({
+			'font_name':'Calibri',
+			'font_size':12,
+		})
+		format_text.set_text_wrap()
+		format_text.set_align('left')
+		format_text.set_align('vcenter')
+		#center align
+		format_num = workbook.add_format({
+			'font_name':'Calibri',
+			'font_size':12,
+		})
+		format_num.set_text_wrap()
+		format_num.set_align('center')
+		format_num.set_align('vcenter')
+		#set column width
+		worksheet.set_column('A:A', 12.56)
+		worksheet.set_column('B:B', 47.78)
+		worksheet.set_column('C:C', 14.11)
+		worksheet.set_column('D:D', 15.78)
+		worksheet.set_column('E:E', 33.89)
+		worksheet.set_column('F:F', 8.99)
+		#worksheet.set_column('G:G', 11.33)
+		#worksheet.set_column('H:H', 11.89)
+		#worksheet.set_column('I:I', 11)
+		#worksheet.set_column('J:J', 9.65)
+
+		#set row
+		worksheet.set_row(0,36)
+		worksheet.set_row(1,36)
+		worksheet.set_row(5,23.4)
+		worksheet.set_row(6, 31.2)
+
+		worksheet.merge_range('A1:F2','Natural Heritage and Forestry Division, Environmental Services Department', main_header1_format)
+		worksheet.insert_image('A1',r'\\ykr-apexp1\staticenv\York_Logo.png',{'x_offset':10,'y_offset':10,'x_scale':0.25,'y_scale':0.25})
+		#worksheet.insert_image('D1','\\ykr-fs1.ykregion.ca\Corp\WCM\EnvironmentalServices\Toolkits\DesignComms\ENVSubbrand\HighRes',{'x_offset':10,'y_offset':10,'x_scale':0.25,'y_scale':0.25})
+		worksheet.merge_range('A4:F4','CON#'+ year +'-Street Tree Planting and Establishment Activities',main_header2_format)
+		worksheet.merge_range('A5:F5',title,title_format)
+
+		#write date printed
+		##date format
+		date_format = workbook.add_format()
+		date_format.set_align('right')
+		now = datetime.datetime.now()
+		##date data
+		date_printed = 'Date Printed: ' + str(now.day) + '-' + str(now.strftime("%b")) + '-' + str(now.year)
+		worksheet.write('F3', date_printed, date_format)
+
+		foresters = []
+		ft = {}
+
+		for afid, forester in enumerate(data["items"]):
+			if not data["items"][afid]["municipality"] in foresters:
+				foresters.append(data["items"][afid]["municipality"])
+
+		# main data
+		cr = 7 #current row, starting at offset where data begins
+		item_fields = ['Contract Item No.', 'Location', 'RINs', 'Description', 'Item', 'Quantity']
+		#loop over all programs
+		for afid, forester in enumerate(foresters):
+			worksheet.merge_range('A' + str(cr) + ':F' + str(cr), str('Municipality: ' + forester), format_text)
+			worksheet.write_row('A' + str(cr+1), item_fields, item_header_format)
+			cr += 2
+			for idx, val in enumerate(data["items"]):
+				if data["items"][idx]["municipality"] == forester:
+					#if forester in ft:
+				    #ft.update({forester: ft[forester] + list(data["items"][idx].values())[6]})
+					#else:
+				#		ft.update({forester: list(data["items"][idx].values())[6]})
+					#worksheet.write_row('A' + str(cr), list(data["items"][idx].values())[0:5], format_text)
+					a1 = data["items"][idx]["contract_item_num"]
+					worksheet.write('A' + str(cr), a1 if a1 is not None else "", format_text)
+					a2 = data["items"][idx]["location"]
+					worksheet.write('B' + str(cr), a2 if a2 is not None else "", format_text)
+					a3 = data["items"][idx]["rins"]
+					worksheet.write('C' + str(cr), a3 if a3 is not None else "", format_text)
+					a4 = data["items"][idx]["description"]
+					worksheet.write('D' + str(cr), a4 if a4 is not None else "", format_text)
+					a5 = data["items"][idx]["item"]
+					worksheet.write('E' + str(cr), a5 if a5 is not None else "", format_text)
+					a6 = data["items"][idx]["quantity"]
+					worksheet.write('F' + str(cr), a6 if a6 is not None else "", format_text)
+
+
+
+
+					cr += 1
+			cr += 1
+
+		worksheet.merge_range('A' + str(6) + ':F' + str(6), title2, title_format)
+		cr += 1
+		item_fields2 = ['Area Forester', 'Top Performer', 'Top Performer %', 'Non Top Performer', 'Non Top Performer %', 'Total']
+		worksheet.write_row('A' + str(cr), item_fields2, item_header_format)
+		cr += 1
+
+		#hard coding for now, need to redo once API is complete
+		#for afid, forester in enumerate(foresters):
+			#worksheet.write_row('A' + str(cr), [forester, 0, '0%', ft[forester], '100%', ft[forester]], format_num)
+			#cr += 1
+
+		#worksheet.write('A' + str(cr), 'Totals: ', format_num)
+		#worksheet.write(str('F') + str(cr), sum(list(ft.values())), format_num)
+
+
+		workbook.close()
+		
+		xlsx_data = output.getvalue()
+		return xlsx_data
+
+	d  =  {'2' : r2, '3' : r3, '4' : r4, '6' : r6, '7' : r7, '17': r17, '18': r17, '19': r17,
+		'51' : r51, 
+	'52' : r52,
+	'53' : r53,
+	'54' : r54,
+	'55' : r55,
+	'56' : r56,
+	'57' : r57}
