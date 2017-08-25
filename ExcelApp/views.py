@@ -6,6 +6,7 @@ from django.http import HttpResponse
 from django.http import JsonResponse
 import requests, io, json, time
 from . import rgen
+from . import stp_config
 
 #Dictionary mapping report id to restful API
 d = {'2' : 'http://ykr-dev-apex.devyork.ca/apexenv/bsmart_data/bsmart_data/stp_ws/stp_contract_item_summary/2014',
@@ -55,6 +56,7 @@ def getReport(request):
 
 		file = HttpResponse(rgen.ReportGenerator.formExcel(content, rid), content_type='application/vnd.openxmlformats-officedocument.spreadsheetml.sheet')
 		file['Content-Disposition'] = 'attachment; filename=test.xlsx'
+
 
 		end = time.time()
 		print('Time Elapsed: ' + str(end - start))

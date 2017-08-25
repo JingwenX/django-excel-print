@@ -2,7 +2,7 @@
 import xlsxwriter
 from io import BytesIO
 import datetime
-
+from . import stp_config
 #each function holds a different report, dictionary maps each function to the report id
 class reports(object):
 
@@ -856,6 +856,7 @@ class reports(object):
 		#change header length
 		worksheet.merge_range('A1:J2','Natural Heritage and Forestry Division, Environmental Services Department',main_header1_format)
 		worksheet.insert_image('A1',r'\\ykr-apexp1\staticenv\York_Logo.png',{'x_offset':10,'y_offset':10,'x_scale':0.25,'y_scale':0.25})
+
 		#worksheet.insert_image('D1','\\ykr-fs1.ykregion.ca\Corp\WCM\EnvironmentalServices\Toolkits\DesignComms\ENVSubbrand\HighRes',{'x_offset':10,'y_offset':10,'x_scale':0.25,'y_scale':0.25})
 		
 
@@ -876,7 +877,7 @@ class reports(object):
 		#MAIN DATA
 		for idx, val in enumerate(data["items"]):
 			for idx2, val2 in enumerate(data["items"][idx]):
-				worksheet.write(chr(idx2+65)+str(idx+8),data["items"][idx][val2], format_wrap)
+				worksheet.write(chr(idx2+65)+str(idx+8),data["items"][idx][val2], stp_config.CONST.FORMAT_TEXT)
 
 		cr = 8
 		#FORMULAE AND FOOTERS
@@ -885,6 +886,9 @@ class reports(object):
 		#worksheet.write_formula('C' + str(cr), '=SUM(C8:C' + str(cr-1) + ')', item_format)
 		#worksheet.write_formula('D' + str(cr), '=SUM(D8:D' + str(cr-1) + ')', item_format)
 		#worksheet.write_formula('E' + str(cr), '=SUM(E8:E' + str(cr-1) + ')', item_format)
+		
+		#add footer
+		worksheet.set_footer(stp_config.CONST.FOOTER_PAGE_NUM) 
 
 		workbook.close()
 
@@ -898,72 +902,28 @@ class reports(object):
 		workbook = xlsxwriter.Workbook(output, {'in_memory': True})
 		worksheet = workbook.add_worksheet()
 
-		#type = 'Year 1 Warranty' if rid == '17' else 'Year 2 Warranty' if rid == '18' else '12 Month Warranty'
 		title = 'Nuersery Inspection Requirement'
 		year = '2017'
 
-		main_header1_format = workbook.add_format({
-			'bold':True,
-			'font_name':'Calibri',
-			'font_size':12,
-			'border':2, #2 is the value for thick border
-			'align':'center',
-			'valign':'top',
-		})
+		main_header1_format = workbook.add_format(stp_config.CONST.MAIN_HEADER1_FORMAT)
 
-		main_header2_format = workbook.add_format({
-			'font_name':'Calibri',
-			'font_size':18,
-			'font_color':'white',
-			'border':2,
-			'align':'left',
-			'bg_color':'black',
-		})
+		main_header2_format = workbook.add_format(stp_config.CONST.MAIN_HEADER2_FORMAT)
 
-		title_format = workbook.add_format({
-			'font_name':'Calibri',
-			'font_size':18,
-			'font_color':'white',
-			'border':2,
-			'align':'left',
-			'bg_color':'gray',
-		})
+		title_format = workbook.add_format(stp_config.CONST.TITLE_FORMAT)
 
-		item_header_format = workbook.add_format({
-			'bold':True,
-			'font_name':'Calibri',
-			'font_size':12,
-			'border':2,
-			'align': 'left',
-			'bg_color':'#C0C0C0',
-		})
-		item_header_format.set_text_wrap()
-		item_header_format.set_align('center')
-		item_header_format.set_align('vcenter')
+		item_header_format = workbook.add_format(stp_config.CONST.ITEM_HEADER_FORMAT)
+		
+		format_text = workbook.add_format(stp_config.CONST.FORMAT_TEXT) #text left align
+		
+		format_num = workbook.add_format(stp_config.CONST.FORMAT_NUM) #number center align
 
-
-		item_format = workbook.add_format({
-			'font_name':'Calibri',
-			'font_size':12,
-			'align': 'left',
-		})
 
 		data = res
 
-		#wrap text
-		format_wrap = workbook.add_format()
-		format_wrap.set_text_wrap()
-		#left align
-		format_text = workbook.add_format()
-		format_text.set_text_wrap()
-		format_text.set_align('left')
-		format_text.set_align('vcenter')
-		#center align
-		format_num = workbook.add_format()
-		format_num.set_text_wrap()
-		format_num.set_align('center')
-		format_num.set_align('vcenter')
+
+
 		#set column width
+
 		worksheet.set_column('A:A', 11.22)
 		worksheet.set_column('B:B', 8.67)
 		worksheet.set_column('C:C', 33)
@@ -973,31 +933,26 @@ class reports(object):
 		worksheet.set_column('G:G', 10.89)
 		worksheet.set_column('H:H', 8.11)
 
-		#worksheet.set_column('G:G', 11.33)
-		#worksheet.set_column('H:H', 11.89)
-		#worksheet.set_column('I:I', 11)
-		#worksheet.set_column('J:J', 9.65)
-
 		#set row
 		worksheet.set_row(0,36)
 		worksheet.set_row(1,36)
 		worksheet.set_row(5,23.4)
 		worksheet.set_row(6, 31.2)
 		#change header length
-		worksheet.merge_range('A1:H2','Natural Heritage and Forestry Division, Environmental Services Department',main_header1_format)
+		worksheet.merge_range('A1:H2','Natural Heritage and Forestry Division, Environmental Services Department', main_header1_format)
 		worksheet.insert_image('A1',r'\\ykr-apexp1\staticenv\York_Logo.png',{'x_offset':10,'y_offset':10,'x_scale':0.25,'y_scale':0.25})
 		#worksheet.insert_image('D1','\\ykr-fs1.ykregion.ca\Corp\WCM\EnvironmentalServices\Toolkits\DesignComms\ENVSubbrand\HighRes',{'x_offset':10,'y_offset':10,'x_scale':0.25,'y_scale':0.25})
-		
+		worksheet.insert_image('H1', r'\\ykr-apexp1\staticenv\apps\199\env_internal_bw.png',{'x_scale':0.55,'y_scale':0.55})
 
-		worksheet.merge_range('A4:H4','CON#'+ year +'-Street Tree Planting and Establishment Activities',main_header2_format)
-		worksheet.merge_range('A5:H5',title,title_format)
+		worksheet.merge_range('A4:H4','CON#'+ year +'-Street Tree Planting and Establishment Activities', main_header2_format)
+		worksheet.merge_range('A5:H5', title, title_format)
 		worksheet.merge_range('A6:H6',' ')
 		item_fields = ['Tree Tag Range', 'Tag Color', 'Species', 'Species Substituted For',	'Nursery', 'Stock Type', 'Farm/Lot', 'Status']
 		worksheet.write_row('A7', item_fields, item_header_format)
+
 		#write date printed
-		##date format
-		date_format = workbook.add_format()
-		date_format.set_align('right')
+		date_format = workbook.add_format({'align':'right'})
+
 		now = datetime.datetime.now()
 		##date data
 		date_printed = 'Date Printed: ' + str(now.day) + '-' + str(now.strftime("%b")) + '-' + str(now.year)
@@ -1006,9 +961,7 @@ class reports(object):
 		#MAIN DATA
 		for idx, val in enumerate(data["items"]):
 			for idx2, val2 in enumerate(data["items"][idx]):
-					worksheet.write(chr(idx2+65)+str(idx+8),data["items"][idx][val2], format_num)
-
-
+					worksheet.write(chr(idx2+65)+str(idx+8),data["items"][idx][val2], format_text)
 
 		cr = 8
 		#FORMULAE AND FOOTERS
@@ -1017,6 +970,9 @@ class reports(object):
 		#worksheet.write_formula('C' + str(cr), '=SUM(C8:C' + str(cr-1) + ')', item_format)
 		#worksheet.write_formula('D' + str(cr), '=SUM(D8:D' + str(cr-1) + ')', item_format)
 		#worksheet.write_formula('E' + str(cr), '=SUM(E8:E' + str(cr-1) + ')', item_format)
+
+		#add footer
+		worksheet.set_footer(stp_config.CONST.FOOTER_PAGE_NUM) 
 
 		workbook.close()
 
