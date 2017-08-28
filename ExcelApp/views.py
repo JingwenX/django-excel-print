@@ -10,20 +10,20 @@ from . import stp_config
 
 #Dictionary mapping report id to restful API
 d = {'2' : 'http://ykr-dev-apex.devyork.ca/apexenv/bsmart_data/bsmart_data/stp_ws/stp_contract_item_summary/2014',
-	 '3' : 'http://ykr-dev-apex.devyork.ca/apexenv/bsmart_data/bsmart_data/stp_ws/stp_contract_detail/2014', #species summary
+	 '3' : 'http://ykr-dev-apex.devyork.ca/apexenv/bsmart_data/bsmart_data/stp_ws/stp_contract_detail/', #species summary
 	 '4' : 'http://ykr-dev-apex.devyork.ca/apexenv/bsmart_data/bsmart_data/stp_ws/stp_top_performer/2014', #top performers
 	 '6' : 'http://ykr-dev-apex.devyork.ca/apexenv/bsmart_data/bsmart_data/stp_ws/stp_costing_bid/2014',
 	 '7' : 'http://ykr-dev-apex.devyork.ca/apexenv/bsmart_data/bsmart_data/stp_ws/stp_costing_bid/2014',
 	 '17' : 'http://ykr-dev-apex.devyork.ca/apexenv/bsmart_data/bsmart_data/stp_ws/stp_warranty_1yr/',
 	 '18' : 'http://ykr-dev-apex.devyork.ca/apexenv/bsmart_data/bsmart_data/stp_ws/stp_warranty_2yr/',
 	 '19' : 'http://ykr-dev-apex.devyork.ca/apexenv/bsmart_data/bsmart_data/stp_ws/stp_warranty_12mo/',
-	 '51' : 'http://ykr-dev-apex.devyork.ca/apexenv/bsmart_data/bsmart_data/stp_ws/stp_contractor_plant_tree/2017',
-	 '52' : 'http://ykr-dev-apex.devyork.ca/apexenv/bsmart_data/bsmart_data/stp_ws/stp_nusery_inspection/2017',
-	 '53' : 'http://ykr-dev-apex.devyork.ca/apexenv/bsmart_data/bsmart_data/stp_ws/stp_nursery_requirement/2017',
-	 '54' : 'http://ykr-dev-apex.devyork.ca/apexenv/bsmart_data/bsmart_data/stp_ws/stp_contract_item_summary/2017',
-	 '55' : 'http://ykr-dev-apex.devyork.ca/apexenv/bsmart_data/bsmart_data/stp_ws/stp_contract_item_summary/2017',
-	 '56' : 'http://ykr-dev-apex.devyork.ca/apexenv/bsmart_data/bsmart_data/stp_ws/stp_contract_summary/2017',
-	 '57' : 'http://ykr-dev-apex.devyork.ca/apexenv/bsmart_data/bsmart_data/stp_ws/stp_contract_summary/2017'}
+	 '51' : 'http://ykr-dev-apex.devyork.ca/apexenv/bsmart_data/bsmart_data/stp_ws/stp_contractor_plant_tree/',
+	 '52' : 'http://ykr-dev-apex.devyork.ca/apexenv/bsmart_data/bsmart_data/stp_ws/stp_nusery_inspection/',
+	 '53' : 'http://ykr-dev-apex.devyork.ca/apexenv/bsmart_data/bsmart_data/stp_ws/stp_nursery_requirement/',
+	 '54' : 'http://ykr-dev-apex.devyork.ca/apexenv/bsmart_data/bsmart_data/stp_ws/stp_contract_item_summary/',
+	 '55' : 'http://ykr-dev-apex.devyork.ca/apexenv/bsmart_data/bsmart_data/stp_ws/stp_contract_item_summary/',
+	 '56' : 'http://ykr-dev-apex.devyork.ca/apexenv/bsmart_data/bsmart_data/stp_ws/stp_contract_summary/',
+	 '57' : 'http://ykr-dev-apex.devyork.ca/apexenv/bsmart_data/bsmart_data/stp_ws/stp_contract_summary/'}
 
 #index page for gui
 def index(request):
@@ -38,18 +38,19 @@ def getReport(request):
 	start = time.time()
 	#report id
 	rid = request.GET['rid']
-
+	year = request.GET['p_year']
 	#if the id is in the dictionary
 	if rid in d:
-		
-		response = requests.get(d[rid])
+		#add year
+		url = d[rid] + str(year)
+		response = requests.get(url)
 
 		it = json.loads(response.content)
 		content = json.loads(response.content)
 
 		pageNum = 1
 		while "next" in it:
-			response = requests.get(d[rid]+ '?page=' + str(pageNum))
+			response = requests.get(d[rid] + str(year) + '?page=' + str(pageNum))
 			it = json.loads(response.content)
 			content["items"].extend(it["items"])
 			pageNum += 1
@@ -59,7 +60,7 @@ def getReport(request):
 
 
 		end = time.time()
-		print('Time Elapsed: ' + str(end - start))
+		#print('Time Elapsed: ' + str(end - start))
 
 		return file 
 	else:
