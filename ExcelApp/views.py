@@ -70,7 +70,7 @@ def getReport(request):
 		asgn_num = request.GET['asgn_num']
 
 	if 'item_num' in request.GET:
-		asgn_num = request.GET['item_num']
+		item_num = request.GET['item_num']
 	
 
 
