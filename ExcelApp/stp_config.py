@@ -169,7 +169,7 @@ class const(object):
 		worksheet.insert_image('A1',r'\\ykr-apexp1\staticenv\York_Logo.png',{'x_offset':10,'y_offset':10,'x_scale':0.25,'y_scale':0.25})
 
 		worksheet.merge_range('A1:'+ rightmost_idx + '2','Natural Heritage and Forestry Division, Environmental Services Department', main_header1_format)
-		worksheet.merge_range('A4:' + rightmost_idx + '4', str(con_num) + str(year) +'-Street Tree Planting and Establishment Activities', main_header2_format)
+		worksheet.merge_range('A4:' + rightmost_idx + '4', str(con_num) + '-' + str(year) +'-Street Tree Planting and Establishment Activities', main_header2_format)
 		worksheet.merge_range('A5:' + rightmost_idx + '5', title, title_format)
 		worksheet.merge_range('A6:' + rightmost_idx + '6',' ')
 
