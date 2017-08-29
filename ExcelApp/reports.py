@@ -345,7 +345,6 @@ class reports(object):
 
 		type = 'Year 1 Warranty' if rid == '17' else 'Year 2 Warranty' if rid == '18' else '12 Month Warranty'
 		title = 'Warranty Report Species Analysis ' + type
-		year = '2017'
 
 		#MAIN DATA FORMATING
 		format_text = workbook.add_format(stp_config.CONST.FORMAT_TEXT)
@@ -509,8 +508,7 @@ class reports(object):
 		worksheet = workbook.add_worksheet()
 
 		data = res
-		title = 'Nuersery Inspection Requirement'
-		year = '2017'
+		title = 'Nuersery Inspection Report'
 		
 
 		#set column width
@@ -562,7 +560,6 @@ class reports(object):
 
 		data = res
 		title = 'Nuersery Tagging Requirement'
-		year = '2017'
 
 		#MAIN DATA FORMATING
 		format_text = workbook.add_format(stp_config.CONST.FORMAT_TEXT)
@@ -618,7 +615,6 @@ class reports(object):
 
 		data = res
 		title = 'Summary of Contract Items - All Items'
-		year = '2017'
 
 		#MAIN DATA FORMATING
 		format_text = workbook.add_format(stp_config.CONST.FORMAT_TEXT)
@@ -754,7 +750,6 @@ class reports(object):
 		data = res
 		title = 'Summary of Contract Items, Grouped by Area Forester'
 		title2 = 'Top Performers, Grouped by Area Forester'
-		year = '2017'
 
 		#MAIN DATA FORMATING
 		format_text = workbook.add_format(stp_config.CONST.FORMAT_TEXT)
@@ -899,7 +894,6 @@ class reports(object):
 		data = res
 		title = 'Summary of Contract Items, Grouped by Program'
 		title2 = 'Top Performers, Grouped by Program'
-		year = '2017'
 
 		#MAIN DATA FORMATING
 		format_text = workbook.add_format(stp_config.CONST.FORMAT_TEXT)
@@ -1053,7 +1047,6 @@ class reports(object):
 		data = res
 		title = 'Summary of Contract Items, Grouped by Program'
 		title2 = 'Top Performers, Grouped by Program'
-		year = '2017'
 
 		#MAIN DATA FORMATING
 		format_text = workbook.add_format(stp_config.CONST.FORMAT_TEXT)
