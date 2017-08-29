@@ -9,7 +9,8 @@ from . import rgen
 from . import stp_config
 
 #Dictionary mapping report id to restful API
-d = {'3' : 'http://ykr-dev-apex.devyork.ca/apexenv/bsmart_data/bsmart_data/stp_ws/stp_contract_detail/', #species summary
+d = {'2' : 'http://ykr-dev-apex.devyork.ca/apexenv/bsmart_data/bsmart_data/stp_ws/stp_contract_item_summary/',
+	 '3' : 'http://ykr-dev-apex.devyork.ca/apexenv/bsmart_data/bsmart_data/stp_ws/stp_contract_detail/', #species summary
 	 '4' : 'http://ykr-dev-apex.devyork.ca/apexenv/bsmart_data/bsmart_data/stp_ws/stp_top_performer/', #top performers
 	 '6' : 'http://ykr-dev-apex.devyork.ca/apexenv/bsmart_data/bsmart_data/stp_ws/stp_costing_bid/',
 	 '7' : 'http://ykr-dev-apex.devyork.ca/apexenv/bsmart_data/bsmart_data/stp_ws/stp_costing_bid/',
@@ -36,8 +37,28 @@ def details(request):
 def getReport(request):
 	start = time.time()
 	#report id
-	rid = request.GET['rid']
-	year = request.GET['p_year']
+
+
+	if 'rid' in request.GET:
+		rid = request.GET['rid']
+	else:
+		return HttpResponse('rid is required in request')
+
+	if 'p_year' in request.GET:
+		year = request.GET['p_year']
+	else:
+		return HttpResponse('Contract Year (year=) is required in request')
+
+	if 'con_num' in request.GET:
+		con_num = request.GET['con_num']
+	else:
+		return HttpResponse('Contract Number (con_num=) is required in request')
+
+	if 'asgn_num' in request.GET:
+		asgn_num = request.GET['asgn_num']
+	else:
+		asgn_num = 0
+
 	#if the id is in the dictionary
 	if rid in d:
 		#add year
@@ -54,7 +75,9 @@ def getReport(request):
 			content["items"].extend(it["items"])
 			pageNum += 1
 
-		file = HttpResponse(rgen.ReportGenerator.formExcel(content, rid), content_type='application/vnd.openxmlformats-officedocument.spreadsheetml.sheet')
+
+		# TODO: Convert config into json
+		file = HttpResponse(rgen.ReportGenerator.formExcel(content, rid, year, con_num, asgn_num), content_type='application/vnd.openxmlformats-officedocument.spreadsheetml.sheet')
 		file['Content-Disposition'] = 'attachment; filename=test.xlsx'
 
 

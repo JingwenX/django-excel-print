@@ -7,13 +7,13 @@ from . import stp_config
 class reports(object):
 
 	#Species Summary
-	def r3(res, rid):
+	def r3(res, rid, year, con_num, asgn_num):
 		output = BytesIO()
 		workbook = xlsxwriter.Workbook(output, {'in_memory': True})
 		worksheet = workbook.add_worksheet()
 		data = res
 		title = 'Species Summary'
-		year = '2014'
+		
 		
 		#MAIN DATA FORMATING
 		format_text = workbook.add_format(stp_config.CONST.FORMAT_TEXT)
@@ -28,7 +28,7 @@ class reports(object):
 		#HEADER
 		#write general header and format
 		rightmost_idx = 'B'
-		stp_config.const.write_gen_title(title, workbook, worksheet, rightmost_idx, 2017)
+		stp_config.const.write_gen_title(title, workbook, worksheet, rightmost_idx, year, con_num)
 
 		#additional header image
 		worksheet.insert_image('B1', stp_config.CONST.ENV_LOGO,{'x_offset':180,'y_offset':18, 'x_scale':0.5,'y_scale':0.5, 'positioning':2})
@@ -63,12 +63,12 @@ class reports(object):
 		return xlsx_data
 
 	#Top Performers
-	def r4(res, rid):
+	def r4(res, rid, year, con_num, asgn_num):
 		output = BytesIO()
 		workbook = xlsxwriter.Workbook(output, {'in_memory': True})
 		worksheet = workbook.add_worksheet()
 		title = 'Top Performers'
-		year = '2014'
+		
 
 		#MAIN DATA FORMATING
 		format_text = workbook.add_format(stp_config.CONST.FORMAT_TEXT)
@@ -87,7 +87,7 @@ class reports(object):
 		#HEADER
 		#write general header and format
 		rightmost_idx = 'Q'
-		stp_config.const.write_gen_title(title, workbook, worksheet, rightmost_idx, 2017)
+		stp_config.const.write_gen_title(title, workbook, worksheet, rightmost_idx, year, con_num)
 
 		#additional header image
 		worksheet.insert_image('J1', stp_config.CONST.ENV_LOGO,{'x_offset':180,'y_offset':18, 'x_scale':0.5,'y_scale':0.5, 'positioning':2})
@@ -129,13 +129,13 @@ class reports(object):
 		return xlsx_data
 
 	#Costing Summary
-	def r6(res, rid):
+	def r6(res, rid, year, con_num, asgn_num):
 		output = BytesIO()
 		workbook = xlsxwriter.Workbook(output, {'in_memory': True})
 		worksheet = workbook.add_worksheet()
 		data = res
 		title = 'Costing Summary'
-		year = '2014'
+		
 
 		data = res
 
@@ -158,10 +158,10 @@ class reports(object):
 		#HEADER
 		#write general header and format
 		rightmost_idx = 'G'
-		stp_config.const.write_gen_title(title, workbook, worksheet, rightmost_idx, 2017)
+		stp_config.const.write_gen_title(title, workbook, worksheet, rightmost_idx, year, con_num)
 
 		#additional header image
-		worksheet.insert_image('B1', stp_config.CONST.ENV_LOGO,{'x_offset':180,'y_offset':18, 'x_scale':0.5,'y_scale':0.5, 'positioning':2})
+		worksheet.insert_image('F1', stp_config.CONST.ENV_LOGO,{'x_offset':180,'y_offset':18, 'x_scale':0.5,'y_scale':0.5, 'positioning':2})
 
 		#MAIN DATA
 		item_fields = ['Item', 'Quantity', 'Last Year Price', 'This Year Estimate', 'This Year Actual', 'Estimated Total', 'Total']
@@ -243,13 +243,13 @@ class reports(object):
 		return xlsx_data
 
 	#Bid Form Summary
-	def r7(res, rid):
+	def r7(res, rid, year, con_num, asgn_num):
 		output = BytesIO()
 		workbook = xlsxwriter.Workbook(output, {'in_memory': True})
 		worksheet = workbook.add_worksheet()
 		data = res
 		title = 'Bid Form Summary'
-		year = '2014'
+		
 
 		data = res
 
@@ -276,10 +276,10 @@ class reports(object):
 		#HEADER
 		#write general header and format
 		rightmost_idx = 'F'
-		stp_config.const.write_gen_title(title, workbook, worksheet, rightmost_idx, 2017)
+		stp_config.const.write_gen_title(title, workbook, worksheet, rightmost_idx, year, con_num)
 
 		#additional header image
-		worksheet.insert_image('B1', stp_config.CONST.ENV_LOGO,{'x_offset':180,'y_offset':18, 'x_scale':0.5,'y_scale':0.5, 'positioning':2})
+		worksheet.insert_image('E1', stp_config.CONST.ENV_LOGO,{'x_offset':180,'y_offset':18, 'x_scale':0.5,'y_scale':0.5, 'positioning':2})
 
 		#MAIN DATA
 
@@ -338,7 +338,7 @@ class reports(object):
 		return xlsx_data
 
 	#Warranty Report Species Analysis
-	def r17(res, rid):
+	def r17(res, rid, year, con_num, asgn_num):
 		output = BytesIO()
 		workbook = xlsxwriter.Workbook(output, {'in_memory': True})
 		worksheet = workbook.add_worksheet()
@@ -362,7 +362,7 @@ class reports(object):
 		#HEADER
 		#write general header and format
 		rightmost_idx = 'E'
-		stp_config.const.write_gen_title(title, workbook, worksheet, rightmost_idx, 2017)
+		stp_config.const.write_gen_title(title, workbook, worksheet, rightmost_idx, year, con_num)
 
 		#additional header image
 		worksheet.insert_image('B1', stp_config.CONST.ENV_LOGO,{'x_offset':180,'y_offset':18, 'x_scale':0.5,'y_scale':0.5, 'positioning':2})
@@ -450,14 +450,14 @@ class reports(object):
 		#HEADER
 		#write general header and format
 		rightmost_idx = 'I'
-		stp_config.const.write_gen_title(title, workbook, worksheet, rightmost_idx, year) #change 2017 to year
+		stp_config.const.write_gen_title(title, workbook, worksheet, rightmost_idx, year, con_num) #change 2017 to year
 
 		# FILE SPECIFIC FORMATING
 		format_text = workbook.add_format(stp_config.CONST.FORMAT_TEXT)
 		item_header_format = workbook.add_format(stp_config.CONST.ITEM_HEADER_FORMAT)
 
 		#additional header image
-		worksheet.insert_image('G1', r'\\ykr-apexp1\staticenv\apps\199\env_internal_bw.png',{'x_offset':45,'y_offset':13, 'x_scale':0.5,'y_scale':0.5, 'positioning':2})
+		worksheet.insert_image('F1', r'\\ykr-apexp1\staticenv\apps\199\env_internal_bw.png',{'x_offset':70,'y_offset':18, 'x_scale':0.5,'y_scale':0.5, 'positioning':2})
 
 
 		item_fields = ['Tree Planting Detail No.', 'Location', 'Assignment No.', 'Assignment Status', 'Planting Status', 'Planting Start Date', 'Planting End Date', 'Assigned Inspector', 'Status of Inspection']
@@ -503,7 +503,7 @@ class reports(object):
 		return xlsx_data
 
 	# Nursery Inspection
-	def r52(res, rid):
+	def r52(res, rid, year, con_num, asgn_num):
 		output = BytesIO()
 		workbook = xlsxwriter.Workbook(output, {'in_memory': True})
 		worksheet = workbook.add_worksheet()
@@ -532,7 +532,7 @@ class reports(object):
 		#HEADER
 		#write general header and format
 		rightmost_idx = 'H'
-		stp_config.const.write_gen_title(title, workbook, worksheet, rightmost_idx, 2017)
+		stp_config.const.write_gen_title(title, workbook, worksheet, rightmost_idx, year, con_num)
 
 		# FILE SPECIFIC FORMATING
 		format_text = workbook.add_format(stp_config.CONST.FORMAT_TEXT)
@@ -555,7 +555,7 @@ class reports(object):
 		return xlsx_data
 
 	#Nursery Tagging Requirement
-	def r53(res, rid):
+	def r53(res, rid, year, con_num, asgn_num):
 		output = BytesIO()
 		workbook = xlsxwriter.Workbook(output, {'in_memory': True})
 		worksheet = workbook.add_worksheet()
@@ -586,11 +586,11 @@ class reports(object):
 		#HEADER
 		#write general header and format
 		rightmost_idx = 'F'
-		stp_config.const.write_gen_title(title, workbook, worksheet, rightmost_idx, 2017)
+		stp_config.const.write_gen_title(title, workbook, worksheet, rightmost_idx, year, con_num)
 
 
 		#additional header image
-		worksheet.insert_image('D1', stp_config.CONST.ENV_LOGO, {'x_offset':45,'y_offset':13, 'x_scale':0.5,'y_scale':0.5, 'positioning':2})
+		worksheet.insert_image('D1', stp_config.CONST.ENV_LOGO, {'x_offset':75,'y_offset':18, 'x_scale':0.5,'y_scale':0.5, 'positioning':2})
 		
 		#COLUMN NAMES
 		item_fields = ['Stock Type', 'Plant Type', 'Species', 'Qty Required', 'Qty Tagged', 'Qty Left To Tag']
@@ -611,7 +611,7 @@ class reports(object):
 		return xlsx_data
 
 #Summary of Contract Items - All Items
-	def r54(res, rid):
+	def r54(res, rid, year, con_num, asgn_num):
 		output = BytesIO()
 		workbook = xlsxwriter.Workbook(output, {'in_memory': True})
 		worksheet = workbook.add_worksheet()
@@ -646,10 +646,10 @@ class reports(object):
 		#HEADER
 		#write general header and format
 		rightmost_idx = 'I'
-		stp_config.const.write_gen_title(title, workbook, worksheet, rightmost_idx, 2017)
+		stp_config.const.write_gen_title(title, workbook, worksheet, rightmost_idx, year, con_num)
 
 		#additional header image
-		worksheet.insert_image('G1', stp_config.CONST.ENV_LOGO,{'x_offset':45,'y_offset':13, 'x_scale':0.5,'y_scale':0.5, 'positioning':2})
+		worksheet.insert_image('G1', stp_config.CONST.ENV_LOGO,{'x_offset':35,'y_offset':18, 'x_scale':0.5,'y_scale':0.5, 'positioning':2})
 		
 		#COLUMN NAMES
 		item_fields = ['Contract Item No.',	'Location', 'RINs', 'Description', 'Item', 'Quantity', 'Program', 'Municipality', 'Area forester']
@@ -746,7 +746,7 @@ class reports(object):
 
 
 #Summary of Contract Items by Area Forester
-	def r55(res, rid):
+	def r55(res, rid, year, con_num, asgn_num):
 		output = BytesIO()
 		workbook = xlsxwriter.Workbook(output, {'in_memory': True})
 		worksheet = workbook.add_worksheet()
@@ -779,7 +779,7 @@ class reports(object):
 		#HEADER
 		#write general header and format
 		rightmost_idx = 'F'
-		stp_config.const.write_gen_title(title, workbook, worksheet, rightmost_idx, 2017)
+		stp_config.const.write_gen_title(title, workbook, worksheet, rightmost_idx, year, con_num)
 
 		#additional header image
 		worksheet.insert_image('D1', stp_config.CONST.ENV_LOGO,{'x_offset':45,'y_offset':13, 'x_scale':0.5,'y_scale':0.5, 'positioning':2})
@@ -892,7 +892,7 @@ class reports(object):
 		return xlsx_data
 
 #Summary of Contract Items by Program
-	def r56(res, rid):
+	def r56(res, rid, year, con_num, asgn_num):
 		output = BytesIO()
 		workbook = xlsxwriter.Workbook(output, {'in_memory': True})
 		worksheet = workbook.add_worksheet()
@@ -924,10 +924,10 @@ class reports(object):
 		#HEADER
 		#write general header and format
 		rightmost_idx = 'F'
-		stp_config.const.write_gen_title(title, workbook, worksheet, rightmost_idx, 2017)
+		stp_config.const.write_gen_title(title, workbook, worksheet, rightmost_idx, year, con_num)
 
 		#additional header image
-		worksheet.insert_image('D1', stp_config.CONST.ENV_LOGO,{'x_offset':45,'y_offset':13, 'x_scale':0.5,'y_scale':0.5, 'positioning':2})
+		worksheet.insert_image('E1', stp_config.CONST.ENV_LOGO,{'x_offset':70,'y_offset':16, 'x_scale':0.5,'y_scale':0.5, 'positioning':2})
 	
 
 		foresters = []
@@ -1046,7 +1046,7 @@ class reports(object):
 		return xlsx_data
 
 #Summary of Contract Items by Mun
-	def r57(res, rid):
+	def r57(res, rid, year, con_num, asgn_num):
 		output = BytesIO()
 		workbook = xlsxwriter.Workbook(output, {'in_memory': True})
 		worksheet = workbook.add_worksheet()
@@ -1081,10 +1081,10 @@ class reports(object):
 		#HEADER
 		#write general header and format
 		rightmost_idx = 'F'
-		stp_config.const.write_gen_title(title, workbook, worksheet, rightmost_idx, 2017)
+		stp_config.const.write_gen_title(title, workbook, worksheet, rightmost_idx, year, con_num)
 
 		#additional header image
-		worksheet.insert_image('D1', stp_config.CONST.ENV_LOGO,{'x_offset':45,'y_offset':13, 'x_scale':0.5,'y_scale':0.5, 'positioning':2})
+		worksheet.insert_image('E1', stp_config.CONST.ENV_LOGO,{'x_offset':70,'y_offset':16, 'x_scale':0.5,'y_scale':0.5, 'positioning':2})
 
 		foresters = []
 		ft = {}
