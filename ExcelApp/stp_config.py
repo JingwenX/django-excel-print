@@ -183,6 +183,12 @@ class const(object):
 		date_printed = 'Date Printed: ' + str(now.day) + '-' + str(now.strftime("%b")) + '-' + str(now.year)
 		worksheet.write(rightmost_idx +'3', date_printed, date_format)
 
+		#set printer default
+		worksheet.set_landscape()
+		#worksheet.set_margins({'left':0.25, 'right':0.25, 'top':0.75, 'bottom':0.75})
+		worksheet.print_area('A1:H1048576')
+		#worksheet.set_v_pagebreaks(6)
+
 		#set footer
 		worksheet.set_footer(FOOTER_PAGE_NUM) 
 

@@ -1091,7 +1091,7 @@ class reports(object):
 		item_fields = ['Contract Item No.', 'Location', 'RINs', 'Description', 'Item', 'Quantity']
 		#loop over all programs
 		for afid, forester in enumerate(foresters):
-			worksheet.merge_range('A' + str(cr) + ':F' + str(cr), str('Municipality: ' + forester), format_text)
+			worksheet.merge_range('A' + str(cr) + ':F' + str(cr), str('Municipality: ' + forester), format_text) #was format_text
 			worksheet.write_row('A' + str(cr+1), item_fields, item_header_format)
 			cr += 2
 			for idx, val in enumerate(data["items"]):
@@ -1101,18 +1101,24 @@ class reports(object):
 					#else:
 				#		ft.update({forester: list(data["items"][idx].values())[6]})
 					#worksheet.write_row('A' + str(cr), list(data["items"][idx].values())[0:5], format_text)
-					a1 = data["items"][idx]["contract_item_num"]
+					a1 = data["items"][idx]["contract_item_num"]  if "contract_item_num" in data["items"][idx].keys() else ""
 					worksheet.write('A' + str(cr), a1 if a1 is not None else "", format_text)
-					a2 = data["items"][idx]["location"]
+
+					a2 = data["items"][idx]["location"] if "location" in data["items"][idx].keys() else ""
 					worksheet.write('B' + str(cr), a2 if a2 is not None else "", format_text)
-					a3 = data["items"][idx]["rins"]
+					
+					a3 = data["items"][idx]["rins"] if "rins" in data["items"][idx].keys() else ""
 					worksheet.write('C' + str(cr), a3 if a3 is not None else "", format_text)
-					a4 = data["items"][idx]["description"]
+					
+					a4 = data["items"][idx]["description"] if "description" in data["items"][idx].keys() else ""
 					worksheet.write('D' + str(cr), a4 if a4 is not None else "", format_text)
-					a5 = data["items"][idx]["item"]
+					
+					a5 = data["items"][idx]["item"] if "item" in data["items"][idx].keys() else ""
 					worksheet.write('E' + str(cr), a5 if a5 is not None else "", format_text)
-					a6 = data["items"][idx]["quantity"]
+					
+					a6 = data["items"][idx]["quantity"] if "quantity" in data["items"][idx].keys() else ""
 					worksheet.write('F' + str(cr), a6 if a6 is not None else "", format_text)
+					
 					cr += 1
 			cr += 1
 

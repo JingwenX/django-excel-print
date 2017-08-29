@@ -25,6 +25,24 @@ d = {'2' : 'http://ykr-dev-apex.devyork.ca/apexenv/bsmart_data/bsmart_data/stp_w
 	 '56' : 'http://ykr-dev-apex.devyork.ca/apexenv/bsmart_data/bsmart_data/stp_ws/stp_contract_summary/',
 	 '57' : 'http://ykr-dev-apex.devyork.ca/apexenv/bsmart_data/bsmart_data/stp_ws/stp_contract_summary/'}
 
+
+file_name =	{'2' : 'Contract Item Summary - by Area Forester',
+	 '3' : 'Species Summary', 
+	 '4' : 'Top Performers', 
+	 '6' : 'Costing Summary',
+	 '7' : 'Bid Form Summary',
+	 '17' : 'Warranty Report Species Analysis - 1 year warranty',
+	 '18' : 'Warranty Report Species Analysis - 2 year warranty',
+	 '19' : 'Warranty Report Species Analysis - 12 months warranty',
+	 '51' : 'Contractor Plant Trees',
+	 '52' : 'Nursery Inspection Report',
+	 '53' : 'Nursery Tagging Requirement Report',
+	 '54' : 'Contract Item Summary - All Items',
+	 '55' : 'Contract Item Summary - by Area Forester',
+	 '56' : 'Contract Item Summary - by Program',
+	 '57' : 'Contract Item Summary - by Municipality'}
+
+
 #index page for gui
 def index(request):
 	return render(request, 'ExcelApp/index.html')
@@ -78,7 +96,7 @@ def getReport(request):
 
 		# TODO: Convert config into json
 		file = HttpResponse(rgen.ReportGenerator.formExcel(content, rid, year, con_num, asgn_num), content_type='application/vnd.openxmlformats-officedocument.spreadsheetml.sheet')
-		file['Content-Disposition'] = 'attachment; filename=test.xlsx'
+		file['Content-Disposition'] = 'attachment; filename=' + file_name[rid] + '.xlsx'
 
 
 		end = time.time()
