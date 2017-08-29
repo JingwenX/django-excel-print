@@ -23,7 +23,8 @@ d = {'2' : 'http://ykr-dev-apex.devyork.ca/apexenv/bsmart_data/bsmart_data/stp_w
 	 '54' : 'http://ykr-dev-apex.devyork.ca/apexenv/bsmart_data/bsmart_data/stp_ws/stp_contract_item_summary/',
 	 '55' : 'http://ykr-dev-apex.devyork.ca/apexenv/bsmart_data/bsmart_data/stp_ws/stp_contract_item_summary/',
 	 '56' : 'http://ykr-dev-apex.devyork.ca/apexenv/bsmart_data/bsmart_data/stp_ws/stp_contract_summary/',
-	 '57' : 'http://ykr-dev-apex.devyork.ca/apexenv/bsmart_data/bsmart_data/stp_ws/stp_contract_summary/'}
+	 '57' : 'http://ykr-dev-apex.devyork.ca/apexenv/bsmart_data/bsmart_data/stp_ws/stp_contract_summary/',
+	 '101': 'http://ykr-dev-apex.devyork.ca/apexenv/bsmart_data/bsmart_data/stp_ws/stp_contract_item_detail/'}
 
 
 file_name =	{'2' : 'Contract Item Summary - by Area Forester',
@@ -40,7 +41,8 @@ file_name =	{'2' : 'Contract Item Summary - by Area Forester',
 	 '54' : 'Contract Item Summary - All Items',
 	 '55' : 'Contract Item Summary - by Area Forester',
 	 '56' : 'Contract Item Summary - by Program',
-	 '57' : 'Contract Item Summary - by Municipality'}
+	 '57' : 'Contract Item Summary - by Municipality',
+	 '101': 'Contract Item Detail'}
 
 
 #index page for gui
