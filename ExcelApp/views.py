@@ -56,31 +56,33 @@ def getReport(request):
 	start = time.time()
 	#report id
 
-
+	rid, year, con_num, asgn_num, item_num = -1,-1,-1,-1,-1,
 	if 'rid' in request.GET:
 		rid = request.GET['rid']
-	else:
-		return HttpResponse('rid is required in request')
 
 	if 'p_year' in request.GET:
 		year = request.GET['p_year']
-	else:
-		return HttpResponse('Contract Year (year=) is required in request')
 
 	if 'con_num' in request.GET:
 		con_num = request.GET['con_num']
-	else:
-		return HttpResponse('Contract Number (con_num=) is required in request')
 
 	if 'asgn_num' in request.GET:
 		asgn_num = request.GET['asgn_num']
-	else:
-		asgn_num = 0
+
+	if 'item_num' in request.GET:
+		asgn_num = request.GET['item_num']
+	
+
 
 	#if the id is in the dictionary
 	if rid in d:
+		url = d[rid]
 		#add year
-		url = d[rid] + str(year)
+		if year != -1:
+			url += str(year)
+		if item_num != -1:
+			url += str(item_num)
+
 		response = requests.get(url)
 
 		it = json.loads(response.content)
@@ -88,7 +90,7 @@ def getReport(request):
 
 		pageNum = 1
 		while "next" in it:
-			response = requests.get(d[rid] + str(year) + '?page=' + str(pageNum))
+			response = requests.get(url + '?page=' + str(pageNum))
 			it = json.loads(response.content)
 			content["items"].extend(it["items"])
 			pageNum += 1
