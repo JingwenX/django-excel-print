@@ -6,120 +6,6 @@ from . import stp_config
 #each function holds a different report, dictionary maps each function to the report id
 class reports(object):
 
-	#Summary of Contract Items by Area Forester
-	def r2(res, rid):
-		output = BytesIO()
-		workbook = xlsxwriter.Workbook(output, {'in_memory': True})
-		worksheet = workbook.add_worksheet()
-		title = 'Summary of Contract Items, Grouped by Area Forester'
-		title2 = 'Top Performers, Grouped by Area Forester'
-		year = '2017'
-
-		main_header1_format = workbook.add_format({
-			'bold':True,
-			'font_name':'Calibri',
-			'font_size':12,
-			'border':2, #2 is the value for thick border
-			'align':'center',
-			'valign':'top',
-		})
-
-		main_header2_format = workbook.add_format({
-			'font_name':'Calibri',
-			'font_size':18,
-			'font_color':'white',
-			'border':2,
-			'align':'left',
-			'bg_color':'black',
-		})
-
-		title_format = workbook.add_format({
-			'font_name':'Calibri',
-			'font_size':18,
-			'font_color':'white',
-			'border':2,
-			'align':'left',
-			'bg_color':'gray',
-		})
-
-		header1 = workbook.add_format({
-			'bold':True,
-			'font_name':'Calibri',
-			'font_size':12,
-			'border':2,
-			'align': 'left',
-		})
-
-		item_header_format = workbook.add_format({
-			'bold':True,
-			'font_name':'Calibri',
-			'font_size':12,
-			'border':2,
-			'align': 'left',
-			'bg_color':'gray',
-		})
-
-		item_format = workbook.add_format({
-			'font_name':'Calibri',
-			'font_size':12,
-			'align': 'left',
-		})
-
-		data = res
-
-		worksheet.set_column('A:F', 25)
-		worksheet.set_row(0,36)
-		worksheet.set_row(1,36)
-		worksheet.merge_range('A1:F2','Natural Heritage and Forestry Division, Environmental Services Department',main_header1_format)
-		worksheet.insert_image('A1',r'\\ykr-apexp1\staticenv\York_Logo.png',{'x_offset':10,'y_offset':10,'x_scale':0.25,'y_scale':0.25})
-		#worksheet.insert_image('D1','\\ykr-fs1.ykregion.ca\Corp\WCM\EnvironmentalServices\Toolkits\DesignComms\ENVSubbrand\HighRes',{'x_offset':10,'y_offset':10,'x_scale':0.25,'y_scale':0.25})
-		worksheet.merge_range('A4:F4','CON#'+ year +'-Street Tree Planting and Establishment Activities',main_header2_format)
-		worksheet.merge_range('A5:F5',title,title_format)
-
-		foresters = []
-		ft = {}
-
-		for afid, forester in enumerate(data["items"]):
-			if not data["items"][afid]["area_forester"] in foresters:
-				foresters.append(data["items"][afid]["area_forester"])
-
-		cr = 6 #current row, starting at offset where data begins
-		item_fields = ['Contract Item Num', 'Location', 'RINS', 'Description', 'Item', 'Quantity']
-
-		for afid, forester in enumerate(foresters):
-			worksheet.merge_range('A' + str(cr) + ':F' + str(cr), str('Area Forester: ' + forester), header1)
-			worksheet.write_row('A' + str(cr+1), item_fields, item_header_format)
-			cr += 2
-			for idx, val in enumerate(data["items"]):
-				if data["items"][idx]["area_forester"] == forester:
-					if forester in ft:
-						ft.update({forester: ft[forester] + list(data["items"][idx].values())[5]})
-					else:
-						ft.update({forester: list(data["items"][idx].values())[5]})
-					worksheet.write_row('A' + str(cr), list(data["items"][idx].values())[0:6], item_format)
-					cr += 1
-			cr += 1
-
-		worksheet.merge_range('A' + str(cr) + ':F' + str(cr), title2, title_format)
-		cr += 1
-		item_fields2 = ['Area Forester', 'Top Performer', 'Top Performer %', 'Non Top Performer', 'Non Top Performer %', 'Total']
-		worksheet.write_row('A' + str(cr), item_fields2, item_header_format)
-		cr += 1
-
-		#hard coding for now, need to redo once API is complete
-		for afid, forester in enumerate(foresters):
-			worksheet.write_row('A' + str(cr), [forester, 0, '0%', ft[forester], '100%', ft[forester]], item_format)
-			cr += 1
-
-		worksheet.write('A' + str(cr), 'Totals: ', item_format)
-		worksheet.write('F' + str(cr), sum(list(ft.values())), item_format)
-
-
-		workbook.close()
-		
-		xlsx_data = output.getvalue()
-		return xlsx_data
-
 	#Species Summary
 	def r3(res, rid):
 		output = BytesIO()
@@ -128,64 +14,6 @@ class reports(object):
 		data = res
 		title = 'Species Summary'
 		year = '2014'
-		""" gen_format
-		main_header1_format = workbook.add_format({
-			'bold':True,
-			'font_name':'Calibri',
-			'font_size':12,
-			'border':2, #2 is the value for thick border
-			'align':'center',
-			'valign':'top',
-		})
-
-		main_header2_format = workbook.add_format({
-			'font_name':'Calibri',
-			'font_size':18,
-			'font_color':'white',
-			'border':2,
-			'align':'left',
-			'bg_color':'black',
-		})
-
-		title_format = workbook.add_format({
-			'font_name':'Calibri',
-			'font_size':18,
-			'font_color':'white',
-			'border':2,
-			'align':'left',
-			'bg_color':'gray',
-		})
-
-		header1 = workbook.add_format({
-			'bold':True,
-			'font_name':'Calibri',
-			'font_size':12,
-			'border':2,
-			'align': 'left',
-		})
-
-		item_header_format = workbook.add_format({
-			'bold':True,
-			'font_name':'Calibri',
-			'font_size':12,
-			'border':2,
-			'align': 'left',
-			'bg_color':'gray',
-		})
-
-		item_format = workbook.add_format({
-			'font_name':'Calibri',
-			'font_size':12,
-			'align': 'left',
-		})
-
-		worksheet.merge_range('A1:B2','Natural Heritage and Forestry Division, Environmental Services Department',main_header1_format)
-		worksheet.insert_image('A1',r'\\ykr-apexp1\staticenv\York_Logo.png',{'x_offset':10,'y_offset':10,'x_scale':0.25,'y_scale':0.25})
-		#worksheet.insert_image('D1','\\ykr-fs1.ykregion.ca\Corp\WCM\EnvironmentalServices\Toolkits\DesignComms\ENVSubbrand\HighRes',{'x_offset':10,'y_offset':10,'x_scale':0.25,'y_scale':0.25})
-		worksheet.merge_range('A4:B4','CON#'+ year +'-Street Tree Planting and Establishment Activities',main_header2_format)
-		worksheet.merge_range('A5:B5',title,title_format)
-		worksheet.merge_range('A6:B6',' ')
-		"""
 		
 		#MAIN DATA FORMATING
 		format_text = workbook.add_format(stp_config.CONST.FORMAT_TEXT)
@@ -242,57 +70,11 @@ class reports(object):
 		title = 'Top Performers'
 		year = '2014'
 
-		main_header1_format = workbook.add_format({
-			'bold':True,
-			'font_name':'Calibri',
-			'font_size':12,
-			'border':2, #2 is the value for thick border
-			'align':'center',
-			'valign':'top',
-		})
-
-		main_header2_format = workbook.add_format({
-			'font_name':'Calibri',
-			'font_size':18,
-			'font_color':'white',
-			'border':2,
-			'align':'left',
-			'bg_color':'black',
-		})
-
-		title_format = workbook.add_format({
-			'font_name':'Calibri',
-			'font_size':18,
-			'font_color':'white',
-			'border':2,
-			'align':'left',
-			'bg_color':'gray',
-		})
-
-		header1 = workbook.add_format({
-			'bold':True,
-			'font_name':'Calibri',
-			'font_size':12,
-			'border':2,
-			'align': 'left',
-		})
-
-		item_header_format = workbook.add_format({
-			'bold':True,
-			'font_name':'Calibri',
-			'font_size':12,
-			'border':2,
-			'align': 'center',
-			'valign': 'vcenter',
-			'bg_color':'gray',
-		})
-		item_header_format.set_text_wrap()
-
-		item_format = workbook.add_format({
-			'font_name':'Calibri',
-			'font_size':12,
-			'align': 'left',
-		})
+		#MAIN DATA FORMATING
+		format_text = workbook.add_format(stp_config.CONST.FORMAT_TEXT)
+		format_num = workbook.add_format(stp_config.CONST.FORMAT_NUM)
+		item_header_format = workbook.add_format(stp_config.CONST.ITEM_HEADER_FORMAT)	
+		item_format = workbook.add_format(stp_config.CONST.ITEM_FORMAT)	
 
 		data = res
 
@@ -301,12 +83,14 @@ class reports(object):
 		worksheet.set_row(0,36)
 		worksheet.set_row(1,36)
 		worksheet.set_row(7,36)
-		worksheet.merge_range('A1:Q2','Natural Heritage and Forestry Division, Environmental Services Department',main_header1_format)
-		worksheet.insert_image('A1',r'\\ykr-apexp1\staticenv\York_Logo.png',{'x_offset':10,'y_offset':10,'x_scale':0.25,'y_scale':0.25})
-		#worksheet.insert_image('D1','\\ykr-fs1.ykregion.ca\Corp\WCM\EnvironmentalServices\Toolkits\DesignComms\ENVSubbrand\HighRes',{'x_offset':10,'y_offset':10,'x_scale':0.25,'y_scale':0.25})
-		worksheet.merge_range('A4:Q4','CON#'+ year +'-Street Tree Planting and Establishment Activities',main_header2_format)
-		worksheet.merge_range('A5:Q5',title,title_format)
-		worksheet.merge_range('A6:Q6',' ')
+		
+		#HEADER
+		#write general header and format
+		rightmost_idx = 'Q'
+		stp_config.const.write_gen_title(title, workbook, worksheet, rightmost_idx, 2017)
+
+		#additional header image
+		worksheet.insert_image('J1', stp_config.CONST.ENV_LOGO,{'x_offset':180,'y_offset':18, 'x_scale':0.5,'y_scale':0.5, 'positioning':2})
 
 		item_fields1 = ['Infill / Retrofit', 'Capital Infrastructure', 'EAB Replacement', 'Total']
 		item_fields2 = ['Top Performer', 'Non Top Performer']
@@ -325,19 +109,16 @@ class reports(object):
 					rcr += 1
 		cr += 3
 
+		print(data["items"])
 		for idx, val in enumerate(data["items"]):
 			d = [list(data["items"][idx].values())[0]]
 			t = list(data["items"][idx].values())[1:] 
 
-			#for i in 
+			ex = []
+			for i in range(0, 2*len(t), 1):
+				ex.insert(i, t[int(i/2)] if i % 2 == 0 else str('{0:.2f}'.format(100*t[int(i/2)]/(t[int(i/2)] + t[int(i/2) - 1]))) + '%' if t[int(i/2)] + t[int(i/2)-1] > 0 else '0%') 
 
-			#its a friday and my brain isn't working, i'll iterate these lists on monday
-			ex = [t[0], str(100*t[0]/(t[0] + t[1])) + '%' if t[0] + t[1] > 0 else '0.0%', t[1], str(100*t[1]/(t[0] + t[1])) + '%' if t[0] + t[1] > 0 else '0.0%',
-				  t[2], str(100*t[2]/(t[2] + t[3])) + '%' if t[2] + t[3] > 0 else '0.0%', t[3], str(100*t[3]/(t[2] + t[3])) + '%' if t[2] + t[3] > 0 else '0.0%',
-				  t[4], str(100*t[4]/(t[4] + t[5])) + '%' if t[4] + t[5] > 0 else '0.0%', t[5], str(100*t[5]/(t[4] + t[5])) + '%' if t[4] + t[5] > 0 else '0.0%',
-				  t[6], str(100*t[6]/(t[6] + t[7])) + '%' if t[6] + t[7] > 0 else '0.0%', t[7], str(100*t[7]/(t[6] + t[7])) + '%' if t[6] + t[7] > 0 else '0.0%']
-
-			worksheet.write_row('A' + str(cr), d + ex, item_format)
+			worksheet.write_row('A' + str(cr), d + ex, format_text)
 			cr += 1
 			
 			
@@ -355,94 +136,8 @@ class reports(object):
 		data = res
 		title = 'Costing Summary'
 		year = '2014'
-		"""
-		main_header1_format = workbook.add_format({
-			'bold':True,
-			'font_name':'Calibri',
-			'font_size':12,
-			'border':2, #2 is the value for thick border
-			'align':'center',
-			'valign':'top',
-		})
 
-		main_header2_format = workbook.add_format({
-			'font_name':'Calibri',
-			'font_size':18,
-			'font_color':'white',
-			'border':2,
-			'align':'left',
-			'bg_color':'black',
-		})
-
-		title_format = workbook.add_format({
-			'font_name':'Calibri',
-			'font_size':18,
-			'font_color':'white',
-			'border':2,
-			'align':'left',
-			'bg_color':'gray',
-		})
-
-		subtitle_format = workbook.add_format({
-			'font_name':'Calibri',
-			'font_size': 14,
-			'font_color':'black',
-			'border':2,
-			'align':'left',
-			'bg_color':'#D3D3D3',
-		})
-
-		item_header_format = workbook.add_format({
-			'bold':True,
-			'font_name':'Calibri',
-			'font_size':12,
-			'border':2,
-			'align': 'left',
-			'bg_color':'gray',
-		})
-
-		item_format = workbook.add_format({
-			'font_name':'Calibri',
-			'font_size':12,
-			'align': 'left',
-			'border':1,
-		})
-
-		item_format.set_text_wrap()
-
-		item_format_money = workbook.add_format({
-			'font_name':'Calibri',
-			'font_size':12,
-			'align': 'left',
-			'num_format': '$#,##0',
-		})
-
-		item_format_money.set_text_wrap()
-
-		subtotal_format = workbook.add_format({
-			'font_name':'Calibri',
-			'font_size': 14,
-			'font_color':'black',
-			'align':'left',
-			'bg_color':'#D3D3D3',
-		})
-
-		subtotal_format_money = workbook.add_format({
-			'font_name':'Calibri',
-			'font_size': 14,
-			'font_color':'black',
-			'align':'left',
-			'bg_color':'#D3D3D3',
-			'num_format': '$#,##0',
-		})
-
-		worksheet.merge_range('A1:G2','Natural Heritage and Forestry Division, Environmental Services Department',main_header1_format)
-		worksheet.insert_image('A1',r'\\ykr-apexp1\staticenv\York_Logo.png',{'x_offset':10,'y_offset':10,'x_scale':0.25,'y_scale':0.25})
-		#worksheet.insert_image('D1','\\ykr-fs1.ykregion.ca\Corp\WCM\EnvironmentalServices\Toolkits\DesignComms\ENVSubbrand\HighRes',{'x_offset':10,'y_offset':10,'x_scale':0.25,'y_scale':0.25})
-		worksheet.merge_range('A4:G4','CON#'+ year +'-Street Tree Planting and Establishment Activities',main_header2_format)
-		worksheet.merge_range('A5:G5',title,title_format)
-		worksheet.merge_range('A6:G6',' ')
-		"""
+		data = res
 
 		#MAIN DATA FORMATING
 		format_text = workbook.add_format(stp_config.CONST.FORMAT_TEXT)
@@ -486,8 +181,6 @@ class reports(object):
 
 		cr = 7
 
-		#print(programs)
-
 		for pid, program in enumerate(programs):
 			if programs[program]:
 				worksheet.merge_range('A' + str(cr) + ':G' + str(cr), program, title_format)
@@ -503,10 +196,8 @@ class reports(object):
 			'G' : 'Tree Maintenance',
 			'H' : 'Automated Vehicle Locating System'}
 
-			#print(programs)
 			items = {'A' : {}, 'B' : {}, 'C' : {}, 'D' : {}, 'E' : {}, 'F' : {}, 'G' : {}, 'H' : {}}
 
-			#this is good
 			for idx, val in enumerate(programs[program]):
 				if "item" in programs[program][idx]:
 					if not programs[program][idx]["item"] in items[programs[program][idx]["sec"]]:
@@ -525,9 +216,10 @@ class reports(object):
 					for idx2, val2 in enumerate(items[val]):
 						d = [val2]
 						d.extend(items[val][val2])
+
 						#changes all zeros to $0 for currency items
 						for i, v in enumerate(d):
-							d[i] = '$0' if i >= 1 and (d[i] == 0 or d[i] =='0' or d[i] =='$.00') else d[i]
+							d[i] = '$0' if i >= 1 and (d[i] == 0 or d[i] =='0' or d[i] =='$.00') else str(d[i]).lstrip(' ')
 
 						worksheet.write_row('A' + str(cr), d, format_text)
 						worksheet.write_formula('F' + str(cr), '=B' + str(cr) + '*D' + str(cr), item_format_money)
@@ -545,13 +237,12 @@ class reports(object):
 					worksheet.merge_range('A' + str(cr+1) + ':G' + str(cr+1),' ')
 					cr += 2
 
-
-		#print(programs)
 		workbook.close()
 
 		xlsx_data = output.getvalue()
 		return xlsx_data
 
+	#Bid Form Summary
 	def r7(res, rid):
 		output = BytesIO()
 		workbook = xlsxwriter.Workbook(output, {'in_memory': True})
@@ -559,96 +250,9 @@ class reports(object):
 		data = res
 		title = 'Bid Form Summary'
 		year = '2014'
-		"""
-		main_header1_format = workbook.add_format({
-			'bold':True,
-			'font_name':'Calibri',
-			'font_size':12,
-			'border':2, #2 is the value for thick border
-			'align':'center',
-			'valign':'top',
-		})
-
-		main_header2_format = workbook.add_format({
-			'font_name':'Calibri',
-			'font_size':18,
-			'font_color':'white',
-			'border':2,
-			'align':'left',
-			'bg_color':'black',
-		})
-
-		title_format = workbook.add_format({
-			'font_name':'Calibri',
-			'font_size':18,
-			'font_color':'white',
-			'border':2,
-			'align':'left',
-			'bg_color':'gray',
-		})
-
-		subtitle_format = workbook.add_format({
-			'font_name':'Calibri',
-			'font_size': 14,
-			'font_color':'black',
-			'border':2,
-			'align':'left',
-			'bg_color':'#D3D3D3',
-		})
-
-		item_header_format = workbook.add_format({
-			'bold':True,
-			'font_name':'Calibri',
-			'font_size':12,
-			'border':2,
-			'align': 'left',
-			'bg_color':'gray',
-		})
-
-		item_format = workbook.add_format({
-			'font_name':'Calibri',
-			'font_size':12,
-			'align': 'left',
-		})
-
-		item_format.set_text_wrap()
-
-		item_format_money = workbook.add_format({
-			'font_name':'Calibri',
-			'font_size':12,
-			'align': 'left',
-			'num_format': '$#,##0',
-		})
-
-		item_format_money.set_text_wrap()
-
-		subtotal_format = workbook.add_format({
-			'font_name':'Calibri',
-			'font_size': 14,
-			'font_color':'black',
-			'align':'left',
-			'bg_color':'#D3D3D3',
-		})
-
-		subtotal_format_money = workbook.add_format({
-			'font_name':'Calibri',
-			'font_size': 14,
-			'font_color':'black',
-			'align':'left',
-			'bg_color':'#D3D3D3',
-			'num_format': '$#,##0',
-		})
 
 		data = res
 
-		worksheet.merge_range('A1:F2','Natural Heritage and Forestry Division, Environmental Services Department',main_header1_format)
-		worksheet.insert_image('A1',r'\\ykr-apexp1\staticenv\York_Logo.png',{'x_offset':10,'y_offset':10,'x_scale':0.25,'y_scale':0.25})
-		#worksheet.insert_image('D1','\\ykr-fs1.ykregion.ca\Corp\WCM\EnvironmentalServices\Toolkits\DesignComms\ENVSubbrand\HighRes',{'x_offset':10,'y_offset':10,'x_scale':0.25,'y_scale':0.25})
-		worksheet.merge_range('A4:F4','CON#'+ year +'-Street Tree Planting and Establishment Activities',main_header2_format)
-		worksheet.merge_range('A5:F5',title,title_format)
-		worksheet.merge_range('A6:F6',' ')
-		
-		"""
 		worksheet.set_column('A:F', 30)
 		worksheet.set_row(0,36)
 		worksheet.set_row(1,36)
@@ -656,6 +260,7 @@ class reports(object):
 		item_fields = ['Item Number', 'Item', 'Unit', 'Quantity', 'Unit Price', 'Total']
 
 		cr = 7
+
 		#MAIN DATA FORMATING
 		format_text = workbook.add_format(stp_config.CONST.FORMAT_TEXT)
 		format_num = workbook.add_format(stp_config.CONST.FORMAT_NUM)
@@ -678,10 +283,6 @@ class reports(object):
 
 		#MAIN DATA
 
-		#print(programs)
-
-		#for idx, val in enumerate(data["items"]):
-
 		miDict = {'A' : 'A - Tree Planting - Ball and Burlap Trees',
 		'B' : 'B - Tree Planting - Potted Perennials and Grass',
 		'C' : 'C - Tree Planting - Potted Shrubs',
@@ -691,10 +292,10 @@ class reports(object):
 		'G' : 'G - Tree Maintenance',
 		'H' : 'H - Automated Vehicle Locating System'}
 
-			#print(data["items"])
+		
 		items = {'A' : {}, 'B' : {}, 'C' : {}, 'D' : {}, 'E' : {}, 'F' : {}, 'G' : {}, 'H' : {}}
 
-			#this is good
+		
 		for idx, val in enumerate(data["items"]):
 			if not data["items"][idx]["item"] in items[data["items"][idx]["sec"]]:
 				items[data["items"][idx]["sec"]].update({data["items"][idx]["item"] : [(data["items"][idx]["ino"] if "ino" in data["items"][idx] else '--'),
@@ -714,9 +315,9 @@ class reports(object):
 					d = [items[val][val2][0], val2, items[val][val2][1], items[val][val2][2], str(items[val][val2][3]).lstrip(' ')]
 
 					for i, v in enumerate(d):
-							d[i] = '$0' if i >= 1 and (d[i] == 0 or d[i] =='0' or d[i] =='$.00') else d[i]
+							d[i] = '$0' if i >= 1 and (d[i] == 0 or d[i] =='0' or d[i] =='$.00') else str(d[i]).lstrip()
 
-					worksheet.write_row('A' + str(cr), d, item_format)
+					worksheet.write_row('A' + str(cr), d, format_text)
 					worksheet.write_formula('F' + str(cr), '=D' + str(cr) + '*E' + str(cr), item_format_money)
 					cr += 1
 
@@ -736,7 +337,7 @@ class reports(object):
 		xlsx_data = output.getvalue()
 		return xlsx_data
 
-		#Warranty Report Species Analysis
+	#Warranty Report Species Analysis
 	def r17(res, rid):
 		output = BytesIO()
 		workbook = xlsxwriter.Workbook(output, {'in_memory': True})
@@ -746,62 +347,33 @@ class reports(object):
 		title = 'Warranty Report Species Analysis ' + type
 		year = '2017'
 
-		main_header1_format = workbook.add_format({
-			'bold':True,
-			'font_name':'Calibri',
-			'font_size':12,
-			'border':2, #2 is the value for thick border
-			'align':'center',
-			'valign':'top',
-		})
+		#MAIN DATA FORMATING
+		format_text = workbook.add_format(stp_config.CONST.FORMAT_TEXT)
+		format_num = workbook.add_format(stp_config.CONST.FORMAT_NUM)
+		item_header_format = workbook.add_format(stp_config.CONST.ITEM_HEADER_FORMAT)
+		##Hunter's additional formatting
+		item_format = workbook.add_format(stp_config.CONST.ITEM_FORMAT)
+		title_format = workbook.add_format(stp_config.CONST.TITLE_FORMAT)
+		item_format_money = workbook.add_format(stp_config.CONST.ITEM_FORMAT_MONEY)
+		subtitle_format = workbook.add_format(stp_config.CONST.SUBTITLE_FORMAT)
+		subtotal_format = workbook.add_format(stp_config.CONST.SUBTOTAL_FORMAT)
+		subtotal_format_money = workbook.add_format(stp_config.CONST.SUBTOTAL_FORMAT_MONEY)
 
-		main_header2_format = workbook.add_format({
-			'font_name':'Calibri',
-			'font_size':18,
-			'font_color':'white',
-			'border':2,
-			'align':'left',
-			'bg_color':'black',
-		})
+		#HEADER
+		#write general header and format
+		rightmost_idx = 'E'
+		stp_config.const.write_gen_title(title, workbook, worksheet, rightmost_idx, 2017)
 
-		title_format = workbook.add_format({
-			'font_name':'Calibri',
-			'font_size':18,
-			'font_color':'white',
-			'border':2,
-			'align':'left',
-			'bg_color':'gray',
-		})
-
-		item_header_format = workbook.add_format({
-			'bold':True,
-			'font_name':'Calibri',
-			'font_size':12,
-			'border':2,
-			'align': 'left',
-			'bg_color':'gray',
-		})
-
-		item_format = workbook.add_format({
-			'font_name':'Calibri',
-			'font_size':12,
-			'align': 'left',
-		})
+		#additional header image
+		worksheet.insert_image('B1', stp_config.CONST.ENV_LOGO,{'x_offset':180,'y_offset':18, 'x_scale':0.5,'y_scale':0.5, 'positioning':2})
 
 		data = res
 
 		worksheet.set_column('A:E', 25)
 		worksheet.set_row(0,36)
 		worksheet.set_row(1,36)
-		worksheet.merge_range('A1:E2','Natural Heritage and Forestry Division, Environmental Services Department',main_header1_format)
-		worksheet.insert_image('A1',r'\\ykr-apexp1\staticenv\York_Logo.png',{'x_offset':10,'y_offset':10,'x_scale':0.25,'y_scale':0.25})
-		#worksheet.insert_image('D1','\\ykr-fs1.ykregion.ca\Corp\WCM\EnvironmentalServices\Toolkits\DesignComms\ENVSubbrand\HighRes',{'x_offset':10,'y_offset':10,'x_scale':0.25,'y_scale':0.25})
-		worksheet.merge_range('A4:E4','CON#'+ year +'-Street Tree Planting and Establishment Activities',main_header2_format)
-		worksheet.merge_range('A5:E5',title,title_format)
-		worksheet.merge_range('A6:E6',' ')
 		item_fields = ['Species', 'Total Trees Inspected', 'Number of Trees Accepted', 'Number of Trees Rejected', 'Number of Trees Missing']
 		worksheet.write_row('A7', item_fields, item_header_format)
-
 
 		#MAIN DATA
 		cr = 8
@@ -828,31 +400,31 @@ class reports(object):
 						totals[spec] = [temp[0], temp[1], temp[2], temp[3]]
 
 
-			worksheet.write('A' + str(cr), species[sid], item_format)
-			worksheet.write_row('B' + str(cr), totals[spec], item_format)
+			worksheet.write('A' + str(cr), species[sid], format_text)
+			worksheet.write_row('B' + str(cr), totals[spec], format_text)
 			cr += 1
 
 		#FORMULAE AND FOOTERS
-		worksheet.write('A' + str(cr), 'Totals: ', item_format)
-		worksheet.write_formula('B' + str(cr), '=SUM(B8:B' + str(cr-1) + ')', item_format)
-		worksheet.write_formula('C' + str(cr), '=SUM(C8:C' + str(cr-1) + ')', item_format)
-		worksheet.write_formula('D' + str(cr), '=SUM(D8:D' + str(cr-1) + ')', item_format)
-		worksheet.write_formula('E' + str(cr), '=SUM(E8:E' + str(cr-1) + ')', item_format)
+		worksheet.write('A' + str(cr), 'Totals: ', format_text)
+		worksheet.write_formula('B' + str(cr), '=SUM(B8:B' + str(cr-1) + ')', format_text)
+		worksheet.write_formula('C' + str(cr), '=SUM(C8:C' + str(cr-1) + ')', format_text)
+		worksheet.write_formula('D' + str(cr), '=SUM(D8:D' + str(cr-1) + ')', format_text)
+		worksheet.write_formula('E' + str(cr), '=SUM(E8:E' + str(cr-1) + ')', format_text)
 
 		workbook.close()
 
 		xlsx_data = output.getvalue()
 		return xlsx_data
 
-	#Contractor plant trees (Tree Planting Status)
-	def r51(res, rid):
+		#Contractor plant trees (Tree Planting Status)
+	def r51(res, rid, year, con_num, asgn_num):
 		output = BytesIO()
 		workbook = xlsxwriter.Workbook(output, {'in_memory': True})
 		worksheet = workbook.add_worksheet()
 
 		data = res
 		title = 'Contractor Plant Tree'
-		year = '2017'
+		#year = year #delete
 
 		# MAIN DATA FORMATING
 		format_text = workbook.add_format(stp_config.CONST.FORMAT_TEXT)
@@ -860,16 +432,14 @@ class reports(object):
 		item_header_format = workbook.add_format(stp_config.CONST.ITEM_HEADER_FORMAT)
 
 		#set column width
-		worksheet.set_column('A:A', 16)
-		worksheet.set_column('B:B', 15.78)
-		worksheet.set_column('C:C', 31.44)
-		worksheet.set_column('D:D', 12.22)
-		worksheet.set_column('E:E', 11.89)
-		worksheet.set_column('F:F', 9.78)
-		worksheet.set_column('G:G', 11.33)
-		worksheet.set_column('H:H', 11.89)
-		worksheet.set_column('I:I', 11)
-		worksheet.set_column('J:J', 9.65)
+		worksheet.set_column('A:A', 15.78)
+		worksheet.set_column('B:B', 31.44)
+		worksheet.set_column('C:C', 12.22)
+		worksheet.set_column('D:D', 11.89)
+		worksheet.set_column('E:E', 9.78)
+		worksheet.set_column('F:F', 11.33)
+		worksheet.set_column('G:G', 11.89)
+		worksheet.set_column('H:H', 11)
 
 		#set row
 		worksheet.set_row(0,36)
@@ -879,8 +449,8 @@ class reports(object):
 
 		#HEADER
 		#write general header and format
-		rightmost_idx = 'J'
-		stp_config.const.write_gen_title(title, workbook, worksheet, rightmost_idx, 2017)
+		rightmost_idx = 'I'
+		stp_config.const.write_gen_title(title, workbook, worksheet, rightmost_idx, year) #change 2017 to year
 
 		# FILE SPECIFIC FORMATING
 		format_text = workbook.add_format(stp_config.CONST.FORMAT_TEXT)
@@ -890,23 +460,49 @@ class reports(object):
 		worksheet.insert_image('G1', r'\\ykr-apexp1\staticenv\apps\199\env_internal_bw.png',{'x_offset':45,'y_offset':13, 'x_scale':0.5,'y_scale':0.5, 'positioning':2})
 
 
-		item_fields = ['Contract Item No.', 'Tree Planting Detail No.', 'Location', 'Assignment No.', 'Assignment Status', 'Planting Status', 'Planting Start Date', 'Planting End Date', 'Assigned Inspector', 'Status of Inspection']
+		item_fields = ['Tree Planting Detail No.', 'Location', 'Assignment No.', 'Assignment Status', 'Planting Status', 'Planting Start Date', 'Planting End Date', 'Assigned Inspector', 'Status of Inspection']
 		worksheet.write_row('A7', item_fields, item_header_format)
 
 
 		#MAIN DATA
+		cr = 8
 		for idx, val in enumerate(data["items"]):
-			for idx2, val2 in enumerate(data["items"][idx]):
-				worksheet.write(chr(idx2+65)+str(idx+8),data["items"][idx][val2], format_text)
+			#for idx2, val2 in enumerate(data["items"][idx]):
+			#	worksheet.write(chr(idx2+65)+str(idx+8),data["items"][idx][val2], format_text)
+			a1 = data["items"][idx]["tree_planting_detail_no"] if "tree_planting_detail_no" in data["items"][idx].keys() else ""
+			worksheet.write('A' + str(cr), a1 if a1 is not None else "", format_text)
 
+			a2 = data["items"][idx]["location"] if "location" in data["items"][idx].keys() else ""
+			worksheet.write('B' + str(cr), a2 if a2 is not None else "", format_text)
+
+			a3 = data["items"][idx]["assignment_num"] if "assignment_num" in data["items"][idx].keys() else ""
+			worksheet.write('C' + str(cr), a3 if a3 is not None else "", format_num)
+
+			a4 = data["items"][idx]["assignment_status"] if "assignment_status" in data["items"][idx].keys() else ""
+			worksheet.write('D' + str(cr), a4 if a4 is not None else "", format_text)
+
+			a5 = data["items"][idx]["planting_status"] if "planting_status" in data["items"][idx].keys() else ""
+			worksheet.write('E' + str(cr), a5 if a5 is not None else "", format_text)
+
+			a6 = data["items"][idx]["start_date"] if "start_date" in data["items"][idx].keys() else ""
+			worksheet.write('F' + str(cr), a6 if a6 is not None else "", format_text)
+
+			a7 = data["items"][idx]["end_date"] if "end_date" in data["items"][idx].keys() else ""
+			worksheet.write('G' + str(cr), a7 if a7 is not None else "", format_text)
+
+			a8 = data["items"][idx]["inspector"] if "inspector" in data["items"][idx].keys() else ""
+			worksheet.write('H' + str(cr), a8 if a8 is not None else "", format_text)
+
+			a9 = data["items"][idx]["inspection_status"] if "inspection_status" in data["items"][idx].keys() else""
+			worksheet.write('I' + str(cr), a9 if a9 is not None else "", format_text)
+			cr += 1
 
 		workbook.close()
 
 		xlsx_data = output.getvalue()
 		return xlsx_data
 
-
-# Nursery Inspection
+	# Nursery Inspection
 	def r52(res, rid):
 		output = BytesIO()
 		workbook = xlsxwriter.Workbook(output, {'in_memory': True})
@@ -958,7 +554,7 @@ class reports(object):
 		xlsx_data = output.getvalue()
 		return xlsx_data
 
-#Nursery Tagging Requirement
+	#Nursery Tagging Requirement
 	def r53(res, rid):
 		output = BytesIO()
 		workbook = xlsxwriter.Workbook(output, {'in_memory': True})
@@ -1609,8 +1205,14 @@ class reports(object):
 
 
 
-	d  =  {'2' : r2, '3' : r3, '4' : r4, '6' : r6, '7' : r7, '17': r17, '18': r17, '19': r17,
-		'51' : r51, 
+	d  =  {'3' : r3,
+	'4' : r4,
+	'6' : r6, 
+	'7' : r7, 
+	'17': r17, 
+	'18': r17, 
+	'19': r17,
+	'51' : r51, 
 	'52' : r52,
 	'53' : r53,
 	'54' : r54,
