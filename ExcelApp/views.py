@@ -14,6 +14,7 @@ d = {'2' : 'http://ykr-dev-apex.devyork.ca/apexenv/bsmart_data/bsmart_data/stp_w
 	 '4' : 'http://ykr-dev-apex.devyork.ca/apexenv/bsmart_data/bsmart_data/stp_ws/stp_top_performer/', #top performers
 	 '6' : 'http://ykr-dev-apex.devyork.ca/apexenv/bsmart_data/bsmart_data/stp_ws/stp_costing_bid/',
 	 '7' : 'http://ykr-dev-apex.devyork.ca/apexenv/bsmart_data/bsmart_data/stp_ws/stp_costing_bid/',
+	 '8' : 'http://ykr-dev-apex.devyork.ca/apexenv/bsmart_data/bsmart_data/stp_ws/stp_tree_planting/',
 	 '17' : 'http://ykr-dev-apex.devyork.ca/apexenv/bsmart_data/bsmart_data/stp_ws/stp_warranty_1yr/',
 	 '18' : 'http://ykr-dev-apex.devyork.ca/apexenv/bsmart_data/bsmart_data/stp_ws/stp_warranty_2yr/',
 	 '19' : 'http://ykr-dev-apex.devyork.ca/apexenv/bsmart_data/bsmart_data/stp_ws/stp_warranty_12mo/',
@@ -63,11 +64,12 @@ def getReport(request):
 	if rid in d:
 		#add year
 		url = d[rid] + str(year)
+
 		response = requests.get(url)
 
 		it = json.loads(response.content)
 		content = json.loads(response.content)
-
+		
 		pageNum = 1
 		while "next" in it:
 			response = requests.get(d[rid] + str(year) + '?page=' + str(pageNum))
