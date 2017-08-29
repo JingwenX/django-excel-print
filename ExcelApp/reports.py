@@ -477,7 +477,6 @@ class reports(object):
 
 		type = 'Year 1 Warranty' if rid == '17' else 'Year 2 Warranty' if rid == '18' else '12 Month Warranty'
 		title = 'Warranty Report Species Analysis ' + type
-		year = '2017'
 
 		#MAIN DATA FORMATING
 		format_text = workbook.add_format(stp_config.CONST.FORMAT_TEXT)
@@ -641,8 +640,7 @@ class reports(object):
 		worksheet = workbook.add_worksheet()
 
 		data = res
-		title = 'Nuersery Inspection Requirement'
-		year = '2017'
+		title = 'Nuersery Inspection Report'
 		
 
 		#set column width
@@ -694,7 +692,6 @@ class reports(object):
 
 		data = res
 		title = 'Nuersery Tagging Requirement'
-		year = '2017'
 
 		#MAIN DATA FORMATING
 		format_text = workbook.add_format(stp_config.CONST.FORMAT_TEXT)
@@ -750,7 +747,6 @@ class reports(object):
 
 		data = res
 		title = 'Summary of Contract Items - All Items'
-		year = '2017'
 
 		#MAIN DATA FORMATING
 		format_text = workbook.add_format(stp_config.CONST.FORMAT_TEXT)
@@ -794,12 +790,14 @@ class reports(object):
 			for idx2, val2 in enumerate(data["items"][idx]):
 				if chr(idx2 + 65) == 'F':
 					worksheet.write(chr(idx2+65)+str(idx+8),data["items"][idx][val2], format_num)
+					cr += 1
 				elif chr(idx2 + 65 ) != 'F' and chr(idx2 + 65 ) != 'J':
 					worksheet.write(chr(idx2+65)+str(idx+8),data["items"][idx][val2], format_text)
+					cr += 1
 				cr = idx2 #record the last row num
 
-		cr += 4
-
+		#cr += 4
+		cr += 3
 		##============TOP PERFORMAERS SUB TABLE=============
 		#TOP PERFORMERS COLUMN NAMES
 		item_fields = ['Contract Item No.',	'Top Performer', 'Top Performer %', 'Non Top Performer', 'Non Top Performer %', 'Total']
@@ -886,7 +884,6 @@ class reports(object):
 		data = res
 		title = 'Summary of Contract Items, Grouped by Area Forester'
 		title2 = 'Top Performers, Grouped by Area Forester'
-		year = '2017'
 
 		#MAIN DATA FORMATING
 		format_text = workbook.add_format(stp_config.CONST.FORMAT_TEXT)
@@ -916,34 +913,76 @@ class reports(object):
 		#additional header image
 		worksheet.insert_image('D1', stp_config.CONST.ENV_LOGO,{'x_offset':45,'y_offset':13, 'x_scale':0.5,'y_scale':0.5, 'positioning':2})
 		
+		#MAIN DATA
+		##Making dict with key as group by id and distinct contract item num as value
+		foresters = {}
 
-		# main data calculation
-		foresters = []
-		ft = {}
-
+		
 		for afid, forester in enumerate(data["items"]):
-			if not data["items"][afid]["area_forester"] in foresters:
-				foresters.append(data["items"][afid]["area_forester"])
+			if not data["items"][afid]["area_forester"] in foresters.keys():
+				# add mun as key
+				foresters[data["items"][afid]["area_forester"]] = []
+				# append contract item num to []
+				if data["items"][afid]["contract_item_num"] not in foresters[data["items"][afid]["area_forester"]]:
+					foresters[data["items"][afid]["area_forester"]].append(data["items"][afid]["contract_item_num"])
+			elif data["items"][afid]["area_forester"] in foresters.keys():
+				# append contract item num to []
+				if data["items"][afid]["contract_item_num"] not in foresters[data["items"][afid]["area_forester"]]:
+					foresters[data["items"][afid]["area_forester"]].append(data["items"][afid]["contract_item_num"])
 
-		# main data
-		cr = 8 #current row, starting at offset where data begins
+
+		# writing main data
+		cr = 7 #current row, starting at offset where data begins
 		item_fields = ['Contract Item No.', 'Location', 'RINs', 'Description', 'Item', 'Quantity']
-
-		for afid, forester in enumerate(foresters):
-			worksheet.merge_range('A' + str(cr) + ':F' + str(cr), str('Area Forester: ' + forester), format_text)
+		#loop over all programs
+		for afid, forester in enumerate(foresters.keys()):
+			worksheet.merge_range('A' + str(cr) + ':F' + str(cr), str('Area Forester: ' + forester), format_text) #was format_text
 			worksheet.write_row('A' + str(cr+1), item_fields, item_header_format)
 			cr += 2
-			for idx, val in enumerate(data["items"]):
-				if data["items"][idx]["area_forester"] == forester:
-					if forester in ft:
-						ft.update({forester: ft[forester] + list(data["items"][idx].values())[5]})
-					else:
-						ft.update({forester: list(data["items"][idx].values())[5]})
-					worksheet.write_row('A' + str(cr), list(data["items"][idx].values())[0:6], format_text)
-					cr += 1
-			cr += 1
 
-		worksheet.merge_range('A' + str(6) + ':F' + str(6), title2, format_text)
+			for cid, contract_item in enumerate(foresters[forester]):
+				merge_top_idx = cr
+				location = ''
+				rins = ''
+				description = ''
+
+				for idx, val in enumerate(data["items"]):
+					if data["items"][idx]["area_forester"] == forester and data["items"][idx]["contract_item_num"] == contract_item:
+
+						a1 = data["items"][idx]["contract_item_num"]  if "contract_item_num" in data["items"][idx].keys() else ""
+						worksheet.write('A' + str(cr), a1 if a1 is not None else "", format_text)
+
+						a2 = data["items"][idx]["location"] if "location" in data["items"][idx].keys() else ""
+						worksheet.write('B' + str(cr), a2 if a2 is not None else "", format_text)
+						
+						a3 = data["items"][idx]["rins"] if "rins" in data["items"][idx].keys() else ""
+						worksheet.write('C' + str(cr), a3 if a3 is not None else "", format_text)
+						
+						a4 = data["items"][idx]["description"] if "description" in data["items"][idx].keys() else ""
+						worksheet.write('D' + str(cr), a4 if a4 is not None else "", format_text)
+						
+						a5 = data["items"][idx]["item"] if "item" in data["items"][idx].keys() else ""
+						worksheet.write('E' + str(cr), a5 if a5 is not None else "", format_text)
+						
+						a6 = data["items"][idx]["quantity"] if "quantity" in data["items"][idx].keys() else ""
+						worksheet.write('F' + str(cr), a6 if a6 is not None else "", format_text)
+						
+						cr += 1
+						merge_bottom_idx = cr - 1
+						location = a2
+						rins = a3
+						description = a4
+
+
+				worksheet.merge_range('A'+ str(merge_top_idx) + ':A' + str(merge_bottom_idx) , contract_item, format_text)
+				worksheet.merge_range('B'+ str(merge_top_idx) + ':B' + str(merge_bottom_idx) , location, format_text)
+				worksheet.merge_range('C'+ str(merge_top_idx) + ':C' + str(merge_bottom_idx) , rins, format_text)
+				worksheet.merge_range('D'+ str(merge_top_idx) + ':D' + str(merge_bottom_idx) , description, format_text)
+				
+
+			cr += 1
+		
+
 		cr += 1
 		
 		##============TOP PERFORMAERS SUB TABLE=============
@@ -1031,7 +1070,6 @@ class reports(object):
 		data = res
 		title = 'Summary of Contract Items, Grouped by Program'
 		title2 = 'Top Performers, Grouped by Program'
-		year = '2017'
 
 		#MAIN DATA FORMATING
 		format_text = workbook.add_format(stp_config.CONST.FORMAT_TEXT)
@@ -1061,42 +1099,74 @@ class reports(object):
 		#additional header image
 		worksheet.insert_image('E1', stp_config.CONST.ENV_LOGO,{'x_offset':70,'y_offset':16, 'x_scale':0.5,'y_scale':0.5, 'positioning':2})
 	
+	
+		#MAIN DATA
+		##Making dict with key as group by id and distinct contract item num as value
+		foresters = {}
 
-		foresters = []
-		ft = {}
-
+		
 		for afid, forester in enumerate(data["items"]):
-			if not data["items"][afid]["program"] in foresters:
-				foresters.append(data["items"][afid]["program"])
+			if not data["items"][afid]["program"] in foresters.keys():
+				# add mun as key
+				foresters[data["items"][afid]["program"]] = []
+				# append contract item num to []
+				if data["items"][afid]["contract_item_num"] not in foresters[data["items"][afid]["program"]]:
+					foresters[data["items"][afid]["program"]].append(data["items"][afid]["contract_item_num"])
+			elif data["items"][afid]["program"] in foresters.keys():
+				# append contract item num to []
+				if data["items"][afid]["contract_item_num"] not in foresters[data["items"][afid]["program"]]:
+					foresters[data["items"][afid]["program"]].append(data["items"][afid]["contract_item_num"])
 
-		# main data
+
+		# writing main data
 		cr = 7 #current row, starting at offset where data begins
 		item_fields = ['Contract Item No.', 'Location', 'RINs', 'Description', 'Item', 'Quantity']
 		#loop over all programs
-		for afid, forester in enumerate(foresters):
-			worksheet.merge_range('A' + str(cr) + ':F' + str(cr), str('Program: ' + forester), format_text)
+		for afid, forester in enumerate(foresters.keys()):
+			worksheet.merge_range('A' + str(cr) + ':F' + str(cr), str('Program: ' + forester), format_text) #was format_text
 			worksheet.write_row('A' + str(cr+1), item_fields, item_header_format)
 			cr += 2
-			for idx, val in enumerate(data["items"]):
-				if data["items"][idx]["program"] == forester:
-					#if forester in ft:
-				    #ft.update({forester: ft[forester] + list(data["items"][idx].values())[6]})
-					#else:
-				#		ft.update({forester: list(data["items"][idx].values())[6]})
-					#worksheet.write_row('A' + str(cr), list(data["items"][idx].values())[0:5], format_text)
-					a1 = data["items"][idx]["contract_item_num"]
-					worksheet.write('A' + str(cr), a1 if a1 is not None else "", format_text)
-					a2 = data["items"][idx]["location"]
-					worksheet.write('B' + str(cr), a2 if a2 is not None else "", format_text)
-					a3 = data["items"][idx]["rins"]
-					worksheet.write('C' + str(cr), a3 if a3 is not None else "", format_text)
-					a4 = data["items"][idx]["description"]
-					worksheet.write('D' + str(cr), a4 if a4 is not None else "", format_text)
-					a5 = data["items"][idx]["item"]
-					worksheet.write('E' + str(cr), a5 if a5 is not None else "", format_text)
-					a6 = data["items"][idx]["quantity"]
-					worksheet.write('F' + str(cr), a6 if a6 is not None else "", format_text)
-					cr += 1
+
+			for cid, contract_item in enumerate(foresters[forester]):
+				merge_top_idx = cr
+				location = ''
+				rins = ''
+				description = ''
+
+				for idx, val in enumerate(data["items"]):
+					if data["items"][idx]["program"] == forester and data["items"][idx]["contract_item_num"] == contract_item:
+
+						a1 = data["items"][idx]["contract_item_num"]  if "contract_item_num" in data["items"][idx].keys() else ""
+						worksheet.write('A' + str(cr), a1 if a1 is not None else "", format_text)
+
+						a2 = data["items"][idx]["location"] if "location" in data["items"][idx].keys() else ""
+						worksheet.write('B' + str(cr), a2 if a2 is not None else "", format_text)
+						
+						a3 = data["items"][idx]["rins"] if "rins" in data["items"][idx].keys() else ""
+						worksheet.write('C' + str(cr), a3 if a3 is not None else "", format_text)
+						
+						a4 = data["items"][idx]["description"] if "description" in data["items"][idx].keys() else ""
+						worksheet.write('D' + str(cr), a4 if a4 is not None else "", format_text)
+						
+						a5 = data["items"][idx]["item"] if "item" in data["items"][idx].keys() else ""
+						worksheet.write('E' + str(cr), a5 if a5 is not None else "", format_text)
+						
+						a6 = data["items"][idx]["quantity"] if "quantity" in data["items"][idx].keys() else ""
+						worksheet.write('F' + str(cr), a6 if a6 is not None else "", format_text)
+						
+						cr += 1
+						merge_bottom_idx = cr - 1
+						location = a2
+						rins = a3
+						description = a4
+
+
+				worksheet.merge_range('A'+ str(merge_top_idx) + ':A' + str(merge_bottom_idx) , contract_item, format_text)
+				worksheet.merge_range('B'+ str(merge_top_idx) + ':B' + str(merge_bottom_idx) , location, format_text)
+				worksheet.merge_range('C'+ str(merge_top_idx) + ':C' + str(merge_bottom_idx) , rins, format_text)
+				worksheet.merge_range('D'+ str(merge_top_idx) + ':D' + str(merge_bottom_idx) , description, format_text)
+				
+
 			cr += 1
 
 
@@ -1185,7 +1255,6 @@ class reports(object):
 		data = res
 		title = 'Summary of Contract Items, Grouped by Program'
 		title2 = 'Top Performers, Grouped by Program'
-		year = '2017'
 
 		#MAIN DATA FORMATING
 		format_text = workbook.add_format(stp_config.CONST.FORMAT_TEXT)
@@ -1218,42 +1287,112 @@ class reports(object):
 		#additional header image
 		worksheet.insert_image('E1', stp_config.CONST.ENV_LOGO,{'x_offset':70,'y_offset':16, 'x_scale':0.5,'y_scale':0.5, 'positioning':2})
 
-		foresters = []
-		ft = {}
+		#MAIN DATA
+		##Making dict with key as group by id and distinct contract item num as value
+		foresters = {}
 
+		
 		for afid, forester in enumerate(data["items"]):
-			if not data["items"][afid]["municipality"] in foresters:
-				foresters.append(data["items"][afid]["municipality"])
+			if not data["items"][afid]["municipality"] in foresters.keys():
+				# add mun as key
+				foresters[data["items"][afid]["municipality"]] = []
+				# append contract item num to []
+				if data["items"][afid]["contract_item_num"] not in foresters[data["items"][afid]["municipality"]]:
+					foresters[data["items"][afid]["municipality"]].append(data["items"][afid]["contract_item_num"])
+			elif data["items"][afid]["municipality"] in foresters.keys():
+				# append contract item num to []
+				if data["items"][afid]["contract_item_num"] not in foresters[data["items"][afid]["municipality"]]:
+					foresters[data["items"][afid]["municipality"]].append(data["items"][afid]["contract_item_num"])
 
-		# main data
+
+		# writing main data
 		cr = 7 #current row, starting at offset where data begins
 		item_fields = ['Contract Item No.', 'Location', 'RINs', 'Description', 'Item', 'Quantity']
 		#loop over all programs
-		for afid, forester in enumerate(foresters):
-			worksheet.merge_range('A' + str(cr) + ':F' + str(cr), str('Municipality: ' + forester), format_text)
+		for afid, forester in enumerate(foresters.keys()):
+			worksheet.merge_range('A' + str(cr) + ':F' + str(cr), str('Municipality: ' + forester), format_text) #was format_text
 			worksheet.write_row('A' + str(cr+1), item_fields, item_header_format)
 			cr += 2
-			for idx, val in enumerate(data["items"]):
-				if data["items"][idx]["municipality"] == forester:
-					#if forester in ft:
-				    #ft.update({forester: ft[forester] + list(data["items"][idx].values())[6]})
-					#else:
-				#		ft.update({forester: list(data["items"][idx].values())[6]})
-					#worksheet.write_row('A' + str(cr), list(data["items"][idx].values())[0:5], format_text)
-					a1 = data["items"][idx]["contract_item_num"]
-					worksheet.write('A' + str(cr), a1 if a1 is not None else "", format_text)
-					a2 = data["items"][idx]["location"]
-					worksheet.write('B' + str(cr), a2 if a2 is not None else "", format_text)
-					a3 = data["items"][idx]["rins"]
-					worksheet.write('C' + str(cr), a3 if a3 is not None else "", format_text)
-					a4 = data["items"][idx]["description"]
-					worksheet.write('D' + str(cr), a4 if a4 is not None else "", format_text)
-					a5 = data["items"][idx]["item"]
-					worksheet.write('E' + str(cr), a5 if a5 is not None else "", format_text)
-					a6 = data["items"][idx]["quantity"]
-					worksheet.write('F' + str(cr), a6 if a6 is not None else "", format_text)
-					cr += 1
+
+			for cid, contract_item in enumerate(foresters[forester]):
+				merge_top_idx = cr
+				location = ''
+				rins = ''
+				description = ''
+
+				for idx, val in enumerate(data["items"]):
+					if data["items"][idx]["municipality"] == forester and data["items"][idx]["contract_item_num"] == contract_item:
+
+						a1 = data["items"][idx]["contract_item_num"]  if "contract_item_num" in data["items"][idx].keys() else ""
+						worksheet.write('A' + str(cr), a1 if a1 is not None else "", format_text)
+
+						a2 = data["items"][idx]["location"] if "location" in data["items"][idx].keys() else ""
+						worksheet.write('B' + str(cr), a2 if a2 is not None else "", format_text)
+						
+						a3 = data["items"][idx]["rins"] if "rins" in data["items"][idx].keys() else ""
+						worksheet.write('C' + str(cr), a3 if a3 is not None else "", format_text)
+						
+						a4 = data["items"][idx]["description"] if "description" in data["items"][idx].keys() else ""
+						worksheet.write('D' + str(cr), a4 if a4 is not None else "", format_text)
+						
+						a5 = data["items"][idx]["item"] if "item" in data["items"][idx].keys() else ""
+						worksheet.write('E' + str(cr), a5 if a5 is not None else "", format_text)
+						
+						a6 = data["items"][idx]["quantity"] if "quantity" in data["items"][idx].keys() else ""
+						worksheet.write('F' + str(cr), a6 if a6 is not None else "", format_text)
+						
+						cr += 1
+						merge_bottom_idx = cr - 1
+						location = a2
+						rins = a3
+						description = a4
+
+
+				worksheet.merge_range('A'+ str(merge_top_idx) + ':A' + str(merge_bottom_idx) , contract_item, format_text)
+				worksheet.merge_range('B'+ str(merge_top_idx) + ':B' + str(merge_bottom_idx) , location, format_text)
+				worksheet.merge_range('C'+ str(merge_top_idx) + ':C' + str(merge_bottom_idx) , rins, format_text)
+				worksheet.merge_range('D'+ str(merge_top_idx) + ':D' + str(merge_bottom_idx) , description, format_text)
+				
+
 			cr += 1
+
+		#Group by contract item number
+		contract_items = []
+		tp = {} # tp = top performers
+
+		for iid, item in enumerate(data["items"]):
+			if not data["items"][iid]["contract_item_num"] in contract_items:
+				contract_items.append(data["items"][iid]["contract_item_num"])
+		
+		#calculate number and overall
+		tp["Overall"] = {"top_p_qty": 0, "non_top_p_qty" : 0, "total_qty" : 0}
+
+		for cid, item in enumerate(data["items"]):
+			# first time having the key
+			if not data["items"][cid]["contract_item_num"] in tp.keys(): 
+				if data["items"][cid]["top_performer"] == 'Y':
+					#for different reports, change contract_item_num to other group by ids
+					tp[data["items"][cid]["contract_item_num"]] = {"top_p_qty": data["items"][cid]["quantity"], "non_top_p_qty" : 0, "total_qty" : data["items"][cid]["quantity"]}
+					tp["Overall"]["top_p_qty"] += data["items"][cid]["quantity"]
+					tp["Overall"]["total_qty"] += data["items"][cid]["quantity"]
+				elif data["items"][cid]["top_performer"] == 'N':
+					tp[data["items"][cid]["contract_item_num"]] = {"top_p_qty": 0, "non_top_p_qty" : data["items"][cid]["quantity"], "total_qty" : data["items"][cid]["quantity"]}
+					tp["Overall"]["non_top_p_qty"] += data["items"][cid]["quantity"]
+					tp["Overall"]["total_qty"] += data["items"][cid]["quantity"]
+
+			# second time having the key
+			elif data["items"][cid]["contract_item_num"] in tp.keys():
+				if data["items"][cid]["top_performer"] == 'Y':
+					tp[data["items"][cid]["contract_item_num"]]["top_p_qty"] += data["items"][cid]["quantity"]
+					tp[data["items"][cid]["contract_item_num"]]["total_qty"] += data["items"][cid]["quantity"]
+					tp["Overall"]["top_p_qty"] += data["items"][cid]["quantity"]
+					tp["Overall"]["total_qty"] += data["items"][cid]["quantity"]
+
+				elif data["items"][cid]["top_performer"] == 'N':
+					tp[data["items"][cid]["contract_item_num"]]["non_top_p_qty"] += data["items"][cid]["quantity"]
+					tp[data["items"][cid]["contract_item_num"]]["total_qty"] += data["items"][cid]["quantity"]
+					tp["Overall"]["non_top_p_qty"] += data["items"][cid]["quantity"]
+					tp["Overall"]["total_qty"] += data["items"][cid]["quantity"]
 
 
 		##============TOP PERFORMAERS SUB TABLE=============
@@ -1334,7 +1473,78 @@ class reports(object):
 		xlsx_data = output.getvalue()
 		return xlsx_data
 
+#Contract Item Detail
+	def r101(res, rid, year, con_num, asgn_num):
+		output = BytesIO()
+		workbook = xlsxwriter.Workbook(output, {'in_memory': True})
+		worksheet = workbook.add_worksheet()
 
+		data = res['items'][0]
+		title = 'Contact Item ' + data['contract_item_num']
+
+		# MAIN DATA FORMATING
+		format_text = workbook.add_format(stp_config.CONST.FORMAT_TEXT)
+		format_num = workbook.add_format(stp_config.CONST.FORMAT_NUM)
+		item_header_format = workbook.add_format(stp_config.CONST.ITEM_HEADER_FORMAT)
+
+
+		# TODO: SET ROW WIDTH
+
+		worksheet.set_column('A:A', 50)
+		worksheet.set_column('B:B', 50)
+		worksheet.set_row(0,36)
+		worksheet.set_row(1,36)
+		worksheet.set_row(5,23.4)
+
+		#HEADER
+		#write general header and format
+		rightmost_idx = 'B'
+		stp_config.const.write_gen_title(title, workbook, worksheet, rightmost_idx, data['year'], con_num) #change 2017 to year
+
+		# FILE SPECIFIC FORMATING
+		format_text = workbook.add_format(stp_config.CONST.FORMAT_TEXT)
+		item_header_format = workbook.add_format(stp_config.CONST.ITEM_HEADER_FORMAT)
+
+		#additional header image
+		worksheet.insert_image('B1', r'\\ykr-apexp1\staticenv\apps\199\env_internal_bw.png',{'x_offset':110,'y_offset':18, 'x_scale':0.5,'y_scale':0.5, 'positioning':2})
+
+
+
+		# Master data
+		worksheet.write_row('A7', ['Contract Number', con_num],format_text) 
+		worksheet.write_row('A8', ['Status', data.get('status', '')],format_text) 
+		worksheet.write_row('A9', ['Program', data.get('program', '') + ' ' + data.get('project_type','')],format_text) 
+		worksheet.write_row('A10', ['Ownership', data.get('ownership', '')],format_text) 
+		worksheet.write_row('A11', ['Municipality', data.get('municipality', '')],format_text) 
+		worksheet.write_row('A12', ['Regional Road', data.get('regional_road', '')],format_text) 
+		worksheet.write_row('A13', ['Between Road 1', data.get('between_road_1', '')],format_text) 
+		worksheet.write_row('A14', ['Between Road 2', data.get('between_road_2', '')],format_text) 
+		worksheet.write_row('A15', ['RINs', data.get('rins', '')],format_text) 
+
+		item_fields = ['Contract Detail', 'Quantity']
+		worksheet.write_row('A18', item_fields, item_header_format)
+
+
+		#MAIN DATA
+		cr = 19
+		for row in data.get('item_details', {}):
+			worksheet.write_row('A{}'.format(cr), [row['name'], row['qty']], format_text)
+			cr += 1;
+
+
+		
+		cr += 3;
+		worksheet.write_row('A{}'.format(cr), ['Comment', 'User'], item_header_format)
+		cr += 1;
+		for row in data.get('comment_details', {}):
+			worksheet.write_row('A{}'.format(cr), [row['comments'], row['name']], format_text)
+			cr += 1;
+
+
+		workbook.close()
+
+		xlsx_data = output.getvalue()
+		return xlsx_data
 
 
 	d  =  {'3' : r3,
@@ -1351,4 +1561,5 @@ class reports(object):
 	'54' : r54,
 	'55' : r55,
 	'56' : r56,
-	'57' : r57}
+	'57' : r57,
+	'101': r101}
