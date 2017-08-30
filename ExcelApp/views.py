@@ -15,6 +15,7 @@ d = {'2' : 'http://ykr-dev-apex.devyork.ca/apexenv/bsmart_data/bsmart_data/stp_w
 	 '6' : 'http://ykr-dev-apex.devyork.ca/apexenv/bsmart_data/bsmart_data/stp_ws/stp_costing_bid/',
 	 '7' : 'http://ykr-dev-apex.devyork.ca/apexenv/bsmart_data/bsmart_data/stp_ws/stp_costing_bid/',
 	 '8' : 'http://ykr-dev-apex.devyork.ca/apexenv/bsmart_data/bsmart_data/stp_ws/stp_tree_planting/',
+	 '9' : 'http://ykr-dev-apex.devyork.ca/apexenv/bsmart_data/bsmart_data/stp_ws/stp_tree_planting/',
 	 '17' : 'http://ykr-dev-apex.devyork.ca/apexenv/bsmart_data/bsmart_data/stp_ws/stp_warranty_1yr/',
 	 '18' : 'http://ykr-dev-apex.devyork.ca/apexenv/bsmart_data/bsmart_data/stp_ws/stp_warranty_2yr/',
 	 '19' : 'http://ykr-dev-apex.devyork.ca/apexenv/bsmart_data/bsmart_data/stp_ws/stp_warranty_12mo/',
@@ -33,6 +34,8 @@ file_name =	{'2' : 'Contract Item Summary - by Area Forester',
 	 '4' : 'Top Performers', 
 	 '6' : 'Costing Summary',
 	 '7' : 'Bid Form Summary',
+	 '8' : 'Tree Planting Details',
+	 '9' : 'Tree Planting Summary',
 	 '17' : 'Warranty Report Species Analysis - 1 year warranty',
 	 '18' : 'Warranty Report Species Analysis - 2 year warranty',
 	 '19' : 'Warranty Report Species Analysis - 12 months warranty',
@@ -81,11 +84,14 @@ def getReport(request):
 	if rid in d:
 		url = d[rid]
 		#add year
+		if rid != '8':
+			if year != -1:
+				url += str(year)
+			if item_num != -1:
+				url += str(item_num)
+		else:
+			url += '{}/{}'.format(year, item_num)
 
-		if year != -1:
-			url += str(year)
-		if item_num != -1:
-			url += str(item_num)
 
 		response = requests.get(url)
 

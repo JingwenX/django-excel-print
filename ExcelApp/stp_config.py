@@ -70,10 +70,11 @@ class const(object):
 	SUBTITLE_FORMAT = {
 			'font_name':'Calibri',
 			'font_size': 14,
+			'bold':True,
 			'font_color':'black',
 			'border':2,
 			'align':'left',
-			'bg_color':'#D3D3D3',
+			'bg_color':'#C0C0C0',
 		}
 	ITEM_FORMAT_MONEY = {
 			'font_name':'Calibri',
