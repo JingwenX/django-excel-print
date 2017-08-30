@@ -404,44 +404,43 @@ class reports(object):
 			summary = {}
 
 			for i, v in enumerate(data["items"]):
-				if (data["items"][i]["type_id"] in [1,2,3] and (str(asgn_num) == '-1' and not "assignment_num" in data["items"][i]) or 
-				(("assignment_num" in data["items"][i]) and (str(data["items"][i]["assignment_num"]) == str(asgn_num)))):
+				if (data["items"][i]["type_id"] in [1,2,3] and ((str(asgn_num) == '-1' and not "assignment_num" in data["items"][i]) or 
+				(("assignment_num" in data["items"][i]) and (str(data["items"][i]["assignment_num"]) == str(asgn_num))))):
 					if data["items"][i]["detail_num"] == val:
 						loc = data["items"][i]["regional_road"] + ', ' + data["items"][i]["between_road_1"] + ' to ' + data["items"][i]["between_road_2"]
-						if data["items"][i]["type_id"] in [1,2,3]:
-							tItem = ((data["items"][i].get("stock_type", "--") + ' - ' +
-								data["items"][i].get("plant_type", "--")  + ' - ' +
-								data["items"][i].get("species", "--")) if data["items"][i]["type_id"] == 1
-								else data["items"][i]["stump_size"] if data["items"][i]["type_id"] == 2
-								else data["items"][i]["transp_dis"] if data["items"][i]["type_id"] == 3
-								else ' ')
+						tItem = ((data["items"][i].get("stock_type", "--") + ' - ' +
+							data["items"][i].get("plant_type", "--")  + ' - ' +
+							data["items"][i].get("species", "--")) if data["items"][i]["type_id"] == 1
+							else data["items"][i]["stump_size"] if data["items"][i]["type_id"] == 2
+							else data["items"][i]["transp_dis"] if data["items"][i]["type_id"] == 3
+							else ' ')
 
-							summary[tItem] = summary.get(tItem, 0) + data["items"][i].get("quantity", 0)
+						summary[tItem] = summary.get(tItem, 0) + data["items"][i].get("quantity", 0)
 
-							if not loc in locs:
-								locs.update({loc : [[ 
-									data["items"][i].get("roadside", " "),
-									data["items"][i].get("mark_type", " "),
-									data["items"][i].get("marking_location", " "),
-									data["items"][i].get("offset_from_mark", " "),
-									data["items"][i].get("spacing_on_centre", " "),
-									tItem,
-									data["items"][i]["quantity"] if "quantity" in data["items"][i] else ' ',
-									data["items"][i]["hydro"] if "hydro" in data["items"][i] else ' ',
-									' '
-									]]})
-							else:
-								locs[loc].append([
-									data["items"][i].get("roadside", " "), 
-									data["items"][i]["mark_type"] if "mark_type" in data["items"][i] else ' ',
-									data["items"][i]["marking_location"] if "marking_location" in data["items"][i] else ' ',
-									data["items"][i]["offset_from_mark"] if "offset_from_mark" in data["items"][i] else ' ',
-									data["items"][i]["spacing_on_centre"] if "spacing_on_centre" in data["items"][i] else ' ',
-									tItem,
-									data["items"][i]["quantity"] if "quantity" in data["items"][i] else ' ',
-									data["items"][i]["hydro"] if "hydro" in data["items"][i] else ' ', 
-									' '
-									])
+						if not loc in locs:
+							locs.update({loc : [[ 
+								data["items"][i].get("roadside", " "),
+								data["items"][i].get("mark_type", " "),
+								data["items"][i].get("marking_location", " "),
+								data["items"][i].get("offset_from_mark", " "),
+								data["items"][i].get("spacing_on_centre", " "),
+								tItem,
+								data["items"][i]["quantity"] if "quantity" in data["items"][i] else ' ',
+								data["items"][i]["hydro"] if "hydro" in data["items"][i] else ' ',
+								' '
+								]]})
+						else:
+							locs[loc].append([
+								data["items"][i].get("roadside", " "), 
+								data["items"][i]["mark_type"] if "mark_type" in data["items"][i] else ' ',
+								data["items"][i]["marking_location"] if "marking_location" in data["items"][i] else ' ',
+								data["items"][i]["offset_from_mark"] if "offset_from_mark" in data["items"][i] else ' ',
+								data["items"][i]["spacing_on_centre"] if "spacing_on_centre" in data["items"][i] else ' ',
+								tItem,
+								data["items"][i]["quantity"] if "quantity" in data["items"][i] else ' ',
+								data["items"][i]["hydro"] if "hydro" in data["items"][i] else ' ', 
+								' '
+								])
 
 
 			for side in ['North', 'South', 'East', 'West', 'Centre Median']:
@@ -525,8 +524,8 @@ class reports(object):
 		mtots = {}
 
 		for idx, val in enumerate(data["items"]):
-			if (data["items"][idx]["type_id"] in [1,2,3] and (str(asgn_num) == '-1' and not "assignment_num" in data["items"][idx]) or 
-				(("assignment_num" in data["items"][idx]) and (str(data["items"][idx]["assignment_num"]) == str(asgn_num)))):
+			if (data["items"][idx]["type_id"] in [1,2,3] and ((str(asgn_num) == '-1' and not "assignment_num" in data["items"][idx]) or 
+				(("assignment_num" in data["items"][idx]) and (str(data["items"][idx]["assignment_num"]) == str(asgn_num))))):
 
 				locat = (data["items"][idx].get("regional_road", "--") + ", " + 
 					data["items"][idx].get("between_road_1", "--") + " to " + 
