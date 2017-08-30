@@ -1339,7 +1339,7 @@ class reports(object):
 
 		##============TOP PERFORMAERS SUB TABLE=============
 		#TOP PERFORMERS COLUMN NAMES
-		item_fields = ['Area Forester', 'Top Performer', 'Top Performer %', 'Non Top Performer', 'Non Top Performer %', 'Total']
+		item_fields = ['Program', 'Top Performer', 'Top Performer %', 'Non Top Performer', 'Non Top Performer %', 'Total']
 		worksheet.write_row( "A" + str(cr), item_fields, item_header_format)
 		cr += 1
 		
@@ -1421,7 +1421,7 @@ class reports(object):
 		worksheet = workbook.add_worksheet()
 		data = res
 		title = 'Summary of Contract Items, Grouped by Program'
-		title2 = 'Top Performers, Grouped by Program'
+		title2 = 'Top Performers, Grouped by Municipality'
 
 		#MAIN DATA FORMATING
 		format_text = workbook.add_format(stp_config.CONST.FORMAT_TEXT)
@@ -1564,7 +1564,7 @@ class reports(object):
 
 		##============TOP PERFORMAERS SUB TABLE=============
 		#TOP PERFORMERS COLUMN NAMES
-		item_fields = ['Area Forester', 'Top Performer', 'Top Performer %', 'Non Top Performer', 'Non Top Performer %', 'Total']
+		item_fields = ['Municipality', 'Top Performer', 'Top Performer %', 'Non Top Performer', 'Non Top Performer %', 'Total']
 		worksheet.write_row( "A" + str(cr), item_fields, item_header_format)
 		cr += 1
 		
