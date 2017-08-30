@@ -444,7 +444,7 @@ class reports(object):
 									])
 
 
-			for side in ['North', 'South', 'East', 'West', 'Center Median']:
+			for side in ['North', 'South', 'East', 'West', 'Centre Median']:
 
 				for lid, loc in enumerate(locs):
 					tLoc = []
