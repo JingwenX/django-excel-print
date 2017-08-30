@@ -784,20 +784,83 @@ class reports(object):
 		worksheet.write_row('A7', item_fields, item_header_format)
 
 
-		cr = 0 #initiate cr
-		#MAIN DATA
+		cr = 8 #initiate cr
+		"""
+		#ORI MAIN DATA
 		for idx, val in enumerate(data["items"]):
 			for idx2, val2 in enumerate(data["items"][idx]):
 				if chr(idx2 + 65) == 'F':
 					worksheet.write(chr(idx2+65)+str(idx+8),data["items"][idx][val2], format_num)
-					cr += 1
+					#cr += 1
 				elif chr(idx2 + 65 ) != 'F' and chr(idx2 + 65 ) != 'J':
 					worksheet.write(chr(idx2+65)+str(idx+8),data["items"][idx][val2], format_text)
+			cr += 1
+				#cr = idx2 #record the last row num
+		"""
+
+		##EDITED MAIN DATA
+		#loop over to add distinct 
+		contract_items1 = []
+
+		for iid, item in enumerate(data["items"]):
+			if not data["items"][iid]["contract_item_num"] in contract_items1:
+				contract_items1.append(data["items"][iid]["contract_item_num"])
+		
+		#loop over all programs to write 
+		for cid, contract_item in enumerate(contract_items1):
+			merge_top_idx = cr
+			location = ''
+			rins = ''
+			description = ''
+
+			for idx, val in enumerate(data["items"]):
+				if  data["items"][idx]["contract_item_num"] == contract_item:
+
+					a1 = data["items"][idx]["contract_item_num"]  if "contract_item_num" in data["items"][idx].keys() else ""
+					worksheet.write('A' + str(cr), a1 if a1 is not None else "", format_text)
+
+					a2 = data["items"][idx]["location"] if "location" in data["items"][idx].keys() else ""
+					worksheet.write('B' + str(cr), a2 if a2 is not None else "", format_text)
+					
+					a3 = data["items"][idx]["rins"] if "rins" in data["items"][idx].keys() else ""
+					worksheet.write('C' + str(cr), a3 if a3 is not None else "", format_text)
+					
+					a4 = data["items"][idx]["description"] if "description" in data["items"][idx].keys() else ""
+					worksheet.write('D' + str(cr), a4 if a4 is not None else "", format_text)
+					
+					a5 = data["items"][idx]["item"] if "item" in data["items"][idx].keys() else ""
+					worksheet.write('E' + str(cr), a5 if a5 is not None else "", format_text)
+					
+					a6 = data["items"][idx]["quantity"] if "quantity" in data["items"][idx].keys() else ""
+					worksheet.write('F' + str(cr), a6 if a6 is not None else "", format_text)
+
+					a7 = data["items"][idx]["program"] if "program" in data["items"][idx].keys() else ""
+					worksheet.write('G' + str(cr), a7 if a7 is not None else "", format_text)
+
+					a8 = data["items"][idx]["municipality"] if "municipality" in data["items"][idx].keys() else ""
+					worksheet.write('H' + str(cr), a8 if a8 is not None else "", format_text)
+
+					a9 = data["items"][idx]["area_forester"] if "area_forester" in data["items"][idx].keys() else ""
+					worksheet.write('I' + str(cr), a9 if a9 is not None else "", format_text)
+					
 					cr += 1
-				cr = idx2 #record the last row num
+					merge_bottom_idx = cr - 1
+					location = a2
+					rins = a3
+					description = a4
+
+
+			worksheet.merge_range('A'+ str(merge_top_idx) + ':A' + str(merge_bottom_idx) , contract_item, format_text)
+			worksheet.merge_range('B'+ str(merge_top_idx) + ':B' + str(merge_bottom_idx) , location, format_text)
+			worksheet.merge_range('C'+ str(merge_top_idx) + ':C' + str(merge_bottom_idx) , rins, format_text)
+			worksheet.merge_range('D'+ str(merge_top_idx) + ':D' + str(merge_bottom_idx) , description, format_text)
+
 
 		#cr += 4
 		cr += 3
+
+
+
 		##============TOP PERFORMAERS SUB TABLE=============
 		#TOP PERFORMERS COLUMN NAMES
 		item_fields = ['Contract Item No.',	'Top Performer', 'Top Performer %', 'Non Top Performer', 'Non Top Performer %', 'Total']
@@ -873,7 +936,6 @@ class reports(object):
 
 		xlsx_data = output.getvalue()
 		return xlsx_data
-
 
 #Summary of Contract Items by Area Forester
 	def r55(res, rid, year, con_num, asgn_num):
