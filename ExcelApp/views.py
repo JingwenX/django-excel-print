@@ -61,64 +61,52 @@ def details(request):
 #returns json for testing
 def getReport(request):
 
-	#response = request.session()
+	params = {
+		'rid':-1,
+		'year':-1,
+		'con_num':-1,
+		'assign_num':-1,
+		'item_num':-1,
+	}
 
-	start = time.time()
-	#report id
+	for p in params:
+		if p in request.GET:
+			params[p] = request.GET[p]
 
-	rid, year, con_num, asgn_num, item_num = -1,-1,-1,-1,-1,
-	if 'rid' in request.GET:
-		rid = request.GET['rid']
-
-	if 'p_year' in request.GET:
-		year = request.GET['p_year']
-
-	if 'con_num' in request.GET:
-		con_num = request.GET['con_num']
-
-	if 'asgn_num' in request.GET:
-		asgn_num = request.GET['asgn_num']
-
-	if 'item_num' in request.GET:
-		item_num = request.GET['item_num']
-	
-
+	#print(params)
 
 	#if the id is in the dictionary
-	if rid in d:
-		url = d[rid]
-		#add year
-		if not rid in ('8', '9'):
-			if year != -1:
-				url += str(year)
-			if item_num != -1:
-				url += str(item_num)
-		else:
-			url += '{}/{}'.format(year, item_num)
+	#if rid in d:
+	#	url = d[rid]
+	#	#add year
+	#	if not rid in ('8', '9'):
+	#		if year != -1:
+	#			url += str(year)
+	#		if item_num != -1:
+	#			url += str(item_num)
+	#	else:
+	#		url += '{}/{}'.format(year, item_num)
 
 		#add
-		s = requests.Session()
-		response = s.get(url)
+	s = requests.Session()
+	#print(rgen.ReportGenerator.get_url(params))
+	response = s.get(rgen.ReportGenerator.get_url(params))
 
+	it = json.loads(response.content)
+	#test
+	#return HttpResponse(response.content)
+	content = json.loads(response.content)
+	
+	pageNum = 1
+	while "next" in it:
+		response = s.get(rgen.ReportGenerator.get_url(params) + '?page=' + str(pageNum))
 		it = json.loads(response.content)
-		content = json.loads(response.content)
-		
-		pageNum = 1
-		while "next" in it:
-			response = s.get(url + '?page=' + str(pageNum))
-			it = json.loads(response.content)
-			content["items"].extend(it["items"])
-			pageNum += 1
+		content["items"].extend(it["items"])
+		pageNum += 1
 
 
-		# TODO: Convert config into json
-		file = HttpResponse(rgen.ReportGenerator.formExcel(content, rid, year, con_num, asgn_num), content_type='application/vnd.openxmlformats-officedocument.spreadsheetml.sheet')
-		file['Content-Disposition'] = 'attachment; filename=' + file_name[rid] + '.xlsx'
+	# TODO: Convert config into json
+	file = HttpResponse(rgen.ReportGenerator.formExcel(content, params), content_type='application/vnd.openxmlformats-officedocument.spreadsheetml.sheet')
+	file['Content-Disposition'] = 'attachment; filename=' + rgen.r_dict[params["rid"]][1] + '.xlsx'
 
-
-		end = time.time()
-		#print('Time Elapsed: ' + str(end - start))
-
-		return file 
-	else:
-		return HttpResponse('No API in Dictionary')
+	return file 

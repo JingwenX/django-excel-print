@@ -1,1 +1,1 @@
-__all__ = ["ExcelApp"]
+__all__ = ["ExcelApp", "r_test"]
