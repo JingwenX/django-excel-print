@@ -9,24 +9,24 @@ from . import rgen
 from . import stp_config
 
 #Dictionary mapping report id to restful API
-d = {'2' : 'http://ykr-dev-apex.devyork.ca/apexenv/bsmart_data/bsmart_data/stp_ws/stp_contract_item_summary/',
-	 '3' : 'http://ykr-dev-apex.devyork.ca/apexenv/bsmart_data/bsmart_data/stp_ws/stp_contract_detail/', #species summary
-	 '4' : 'http://ykr-dev-apex.devyork.ca/apexenv/bsmart_data/bsmart_data/stp_ws/stp_top_performer/', #top performers
-	 '6' : 'http://ykr-dev-apex.devyork.ca/apexenv/bsmart_data/bsmart_data/stp_ws/stp_costing_bid/',
-	 '7' : 'http://ykr-dev-apex.devyork.ca/apexenv/bsmart_data/bsmart_data/stp_ws/stp_costing_bid/',
-	 '8' : 'http://ykr-dev-apex.devyork.ca/apexenv/bsmart_data/bsmart_data/stp_ws/stp_tree_planting/',
-	 '9' : 'http://ykr-dev-apex.devyork.ca/apexenv/bsmart_data/bsmart_data/stp_ws/stp_tree_planting/',
-	 '17' : 'http://ykr-dev-apex.devyork.ca/apexenv/bsmart_data/bsmart_data/stp_ws/stp_warranty_1yr/',
-	 '18' : 'http://ykr-dev-apex.devyork.ca/apexenv/bsmart_data/bsmart_data/stp_ws/stp_warranty_2yr/',
-	 '19' : 'http://ykr-dev-apex.devyork.ca/apexenv/bsmart_data/bsmart_data/stp_ws/stp_warranty_12mo/',
-	 '51' : 'http://ykr-dev-apex.devyork.ca/apexenv/bsmart_data/bsmart_data/stp_ws/stp_contractor_plant_tree/',
-	 '52' : 'http://ykr-dev-apex.devyork.ca/apexenv/bsmart_data/bsmart_data/stp_ws/stp_nusery_inspection/',
-	 '53' : 'http://ykr-dev-apex.devyork.ca/apexenv/bsmart_data/bsmart_data/stp_ws/stp_nursery_requirement/',
-	 '54' : 'http://ykr-dev-apex.devyork.ca/apexenv/bsmart_data/bsmart_data/stp_ws/stp_contract_item_summary/',
-	 '55' : 'http://ykr-dev-apex.devyork.ca/apexenv/bsmart_data/bsmart_data/stp_ws/stp_contract_item_summary/',
-	 '56' : 'http://ykr-dev-apex.devyork.ca/apexenv/bsmart_data/bsmart_data/stp_ws/stp_contract_summary/',
-	 '57' : 'http://ykr-dev-apex.devyork.ca/apexenv/bsmart_data/bsmart_data/stp_ws/stp_contract_summary/',
-	 '101': 'http://ykr-dev-apex.devyork.ca/apexenv/bsmart_data/bsmart_data/stp_ws/stp_contract_item_detail/'}
+d = {'2' : 'http://ykr-apexp1/ords/bsmart_data/bsmart_data/stp_ws/stp_contract_item_summary/',
+	 '3' : 'http://ykr-apexp1/ords/stp_contract_detail/', #species summary
+	 '4' : 'http://ykr-apexp1/ords/bsmart_data/bsmart_data/stp_ws/stp_top_performer/', #top performers
+	 '6' : 'http://ykr-apexp1/ords/bsmart_data/bsmart_data/stp_ws/stp_costing_bid/',
+	 '7' : 'http://ykr-apexp1/ords/bsmart_data/bsmart_data/stp_ws/stp_costing_bid/',
+	 '8' : 'http://ykr-apexp1/ords/bsmart_data/bsmart_data/stp_ws/stp_tree_planting/',
+	 '9' : 'http://ykr-apexp1/ords/bsmart_data/bsmart_data/stp_ws/stp_tree_planting/',
+	 '17' : 'http://ykr-apexp1/ords/bsmart_data/bsmart_data/stp_ws/stp_warranty_1yr/',
+	 '18' : 'http://ykr-apexp1/ords/bsmart_data/bsmart_data/stp_ws/stp_warranty_2yr/',
+	 '19' : 'http://ykr-apexp1/ords/bsmart_data/bsmart_data/stp_ws/stp_warranty_12mo/',
+	 '51' : 'http://ykr-apexp1/ords/bsmart_data/bsmart_data/stp_ws/stp_contractor_plant_tree/',
+	 '52' : 'http://ykr-apexp1/ords/bsmart_data/bsmart_data/stp_ws/stp_nusery_inspection/',
+	 '53' : 'http://ykr-apexp1/ords/bsmart_data/bsmart_data/stp_ws/stp_nursery_requirement/',
+	 '54' : 'http://ykr-apexp1/ords/bsmart_data/bsmart_data/stp_ws/stp_contract_item_summary/',
+	 '55' : 'http://ykr-apexp1/ords/bsmart_data/bsmart_data/stp_ws/stp_contract_item_summary/',
+	 '56' : 'http://ykr-apexp1/ords/bsmart_data/bsmart_data/stp_ws/stp_contract_summary/',
+	 '57' : 'http://ykr-apexp1/ords/bsmart_data/bsmart_data/stp_ws/stp_contract_summary/',
+	 '101': 'http://ykr-apexp1/ords/bsmart_data/bsmart_data/stp_ws/stp_contract_item_detail/'}
 
 
 file_name =	{'2' : 'Contract Item Summary - by Area Forester',
@@ -57,8 +57,12 @@ def index(request):
 def details(request):
 	return render(request, 'ExcelApp/main.html')
 
+
 #returns json for testing
 def getReport(request):
+
+	#response = request.session()
+
 	start = time.time()
 	#report id
 
@@ -92,15 +96,16 @@ def getReport(request):
 		else:
 			url += '{}/{}'.format(year, item_num)
 
-
-		response = requests.get(url)
+		#add
+		s = requests.Session()
+		response = s.get(url)
 
 		it = json.loads(response.content)
 		content = json.loads(response.content)
 		
 		pageNum = 1
 		while "next" in it:
-			response = requests.get(url + '?page=' + str(pageNum))
+			response = s.get(url + '?page=' + str(pageNum))
 			it = json.loads(response.content)
 			content["items"].extend(it["items"])
 			pageNum += 1

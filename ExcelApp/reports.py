@@ -1078,7 +1078,7 @@ class reports(object):
 		stp_config.const.write_gen_title(title, workbook, worksheet, rightmost_idx, year, con_num)
 
 		#additional header image
-		worksheet.insert_image('D1', stp_config.CONST.ENV_LOGO,{'x_offset':45,'y_offset':13, 'x_scale':0.5,'y_scale':0.5, 'positioning':2})
+		worksheet.insert_image('E1', stp_config.CONST.ENV_LOGO,{'x_offset':90,'y_offset':17, 'x_scale':0.5,'y_scale':0.5, 'positioning':2})
 		
 		#MAIN DATA
 		##Making dict with key as group by id and distinct contract item num as value
