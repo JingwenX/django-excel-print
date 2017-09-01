@@ -7,7 +7,7 @@ from . import stp_config
 class reports(object):
 
 	#Species Summary
-	def r3(res, rid, year, con_num, asgn_num):
+	def r3(res, params):
 		output = BytesIO()
 		workbook = xlsxwriter.Workbook(output, {'in_memory': True})
 		worksheet = workbook.add_worksheet()

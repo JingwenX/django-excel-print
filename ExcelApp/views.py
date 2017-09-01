@@ -60,31 +60,36 @@ def details(request):
 #returns json for testing
 def getReport(request):
 	start = time.time()
-	#report id
+	params = {}
 
 	rid, year, con_num, asgn_num, item_num = -1,-1,-1,-1,-1,
 	if 'rid' in request.GET:
-		rid = request.GET['rid']
+		#rid = request.GET['rid']
+		params['rid'] = request.GET['rid']
 
 	if 'p_year' in request.GET:
-		year = request.GET['p_year']
+		#year = request.GET['p_year']
+		params['year'] = request.GET['p_year']
 
 	if 'con_num' in request.GET:
-		con_num = request.GET['con_num']
+		#con_num = request.GET['con_num']
+		params['con_num'] = request.GET['con_num']
 
 	if 'asgn_num' in request.GET:
-		asgn_num = request.GET['asgn_num']
+		#asgn_num = request.GET['asgn_num']
+		params['asgn_num'] = request.GET['asgn_num']
 
 	if 'item_num' in request.GET:
-		item_num = request.GET['item_num']
+		#item_num = request.GET['item_num']
+		params['item_num'] = request.GET['item_num']
 	
 
 
 	#if the id is in the dictionary
-	if rid in d:
-		url = d[rid]
+	if params['rid'] in d:
+		url = d[params['rid']]
 		#add year
-		if not rid in ('8', '9'):
+		if not params['rid'] in ('8', '9'):
 			if year != -1:
 				url += str(year)
 			if item_num != -1:
@@ -93,27 +98,28 @@ def getReport(request):
 			url += '{}/{}'.format(year, item_num)
 
 
-		response = requests.get(url)
+		response = requests.get(url, headers={'Connection':'close'})
 
 		it = json.loads(response.content)
 		content = json.loads(response.content)
 		
 		pageNum = 1
 		while "next" in it:
-			response = requests.get(url + '?page=' + str(pageNum))
+			response = requests.get(url + '?page=' + str(pageNum), headers={'Connection':'close'})
 			it = json.loads(response.content)
 			content["items"].extend(it["items"])
 			pageNum += 1
 
 
 		# TODO: Convert config into json
-		file = HttpResponse(rgen.ReportGenerator.formExcel(content, rid, year, con_num, asgn_num), content_type='application/vnd.openxmlformats-officedocument.spreadsheetml.sheet')
-		file['Content-Disposition'] = 'attachment; filename=' + file_name[rid] + '.xlsx'
+		file = HttpResponse(rgen.ReportGenerator.formExcel(content, params), content_type='application/vnd.openxmlformats-officedocument.spreadsheetml.sheet')
+		file['Content-Disposition'] = 'attachment; filename=' + file_name[params['rid']] + '.xlsx'
 
 
 		end = time.time()
 		#print('Time Elapsed: ' + str(end - start))
 
+		response.connection.close()
 		return file 
 	else:
 		return HttpResponse('No API in Dictionary')

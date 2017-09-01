@@ -10,8 +10,8 @@ class ReportGenerator(object):
         self.rid = rid
         self.response = response
 
-    def formExcel(res, rid, year, con_num, asgn_num = 0):
-    	down = reports.reports.d[rid](res, rid, year, con_num, asgn_num)
+    def formExcel(res, params):
+    	down = reports.reports.d[rid](res, params)
     	return down
 
 
