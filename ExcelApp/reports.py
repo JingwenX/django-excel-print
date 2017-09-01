@@ -1078,7 +1078,7 @@ class reports(object):
 		stp_config.const.write_gen_title(title, workbook, worksheet, rightmost_idx, year, con_num)
 
 		#additional header image
-		worksheet.insert_image('D1', stp_config.CONST.ENV_LOGO,{'x_offset':45,'y_offset':13, 'x_scale':0.5,'y_scale':0.5, 'positioning':2})
+		worksheet.insert_image('E1', stp_config.CONST.ENV_LOGO,{'x_offset':90,'y_offset':17, 'x_scale':0.5,'y_scale':0.5, 'positioning':2})
 		
 		#MAIN DATA
 		##Making dict with key as group by id and distinct contract item num as value
@@ -1339,7 +1339,7 @@ class reports(object):
 
 		##============TOP PERFORMAERS SUB TABLE=============
 		#TOP PERFORMERS COLUMN NAMES
-		item_fields = ['Area Forester', 'Top Performer', 'Top Performer %', 'Non Top Performer', 'Non Top Performer %', 'Total']
+		item_fields = ['Program', 'Top Performer', 'Top Performer %', 'Non Top Performer', 'Non Top Performer %', 'Total']
 		worksheet.write_row( "A" + str(cr), item_fields, item_header_format)
 		cr += 1
 		
@@ -1421,7 +1421,7 @@ class reports(object):
 		worksheet = workbook.add_worksheet()
 		data = res
 		title = 'Summary of Contract Items, Grouped by Program'
-		title2 = 'Top Performers, Grouped by Program'
+		title2 = 'Top Performers, Grouped by Municipality'
 
 		#MAIN DATA FORMATING
 		format_text = workbook.add_format(stp_config.CONST.FORMAT_TEXT)
@@ -1564,7 +1564,7 @@ class reports(object):
 
 		##============TOP PERFORMAERS SUB TABLE=============
 		#TOP PERFORMERS COLUMN NAMES
-		item_fields = ['Area Forester', 'Top Performer', 'Top Performer %', 'Non Top Performer', 'Non Top Performer %', 'Total']
+		item_fields = ['Municipality', 'Top Performer', 'Top Performer %', 'Non Top Performer', 'Non Top Performer %', 'Total']
 		worksheet.write_row( "A" + str(cr), item_fields, item_header_format)
 		cr += 1
 		
