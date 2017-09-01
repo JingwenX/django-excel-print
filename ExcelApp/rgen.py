@@ -23,6 +23,9 @@ r_dict = {
     	"55" : [stp_cis_af.Report, 'Contract Item Summary - by Area Forester'],
     	"56" : [stp_cis_p.Report, 'Contract Item Summary - by Program'],
     	"57" : [stp_cis_m.Report, 'Contract Item Summary - by Municipality'],
+        "58" : [stp_niraua.Report, 'Nursery Tagging Requirement - Assigned and Unassiged Species'],
+        "70" : [stp_iwa.Report, 'Issued Watering Assignment'],
+        "71" : [stp_iwar.Report, 'Issued Watering Assignment Report'],
     	"101": [stp_cid.Report, 'Contract Item Detail'],
 	}
 
