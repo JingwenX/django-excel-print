@@ -81,6 +81,8 @@ class const(object):
 			'font_size':12,
 			'align': 'left',
 			'num_format': '$#,##0',
+			'border' : True,
+			'border_color':'gray',
 		}
 	SUBTOTAL_FORMAT = {
 			'font_name':'Calibri',

@@ -67,6 +67,7 @@ def getReport(request):
 		'con_num':-1,
 		'assign_num':-1,
 		'item_num':-1,
+		'wtype': -1,
 	}
 
 	for p in params:
