@@ -6,7 +6,7 @@ import datetime
 from .. import stp_config
 
 def form_url(params):
-	base_url = 'http://ykr-apexp1/ords/bsmart_data/bsmart_data/stp_ws/stp_warranty_dlist/'
+	base_url = 'http://ykr-apexp1/ords/bsmart_data/bsmart_data/stp_ws/stp_warranty_lists/'
 	base_url += str(params["wtype"])
 	return base_url
 

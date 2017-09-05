@@ -68,6 +68,8 @@ def getReport(request):
 		'assign_num':-1,
 		'item_num':-1,
 		'wtype': -1,
+		'payno': -1,
+		'snap': -1,
 	}
 
 	for p in params:
