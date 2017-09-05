@@ -1,6 +1,9 @@
 import datetime
 
 class const(object):
+	# API PREFIX
+	API_URL_PREFIX = 'http://ykr-apexp1/ords/'
+
 	# Header and Title format
 	
 	MAIN_HEADER1_FORMAT = {'bold':True,
