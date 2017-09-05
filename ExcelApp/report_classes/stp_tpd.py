@@ -50,7 +50,7 @@ def render(res, params):
 	cons_main = {}
 
 	for idx, val in enumerate(data["items"]):
-		if (data["items"][idx]["type_id"] in [1,2,3] and (str(assign_num) == '-1' and not "assignment_num" in data["items"][idx]) or 
+		if (data["items"][idx]["type_id"] in [1,2,3,5,6] and (str(assign_num) == '-1' and not "assignment_num" in data["items"][idx]) or 
 			(("assignment_num" in data["items"][idx]) and (str(data["items"][idx]["assignment_num"]) == str(assign_num)))):
 			if not data["items"][idx]["detail_num"] in cons_main:
 				cons_main.update({data["items"][idx]["detail_num"] : {
@@ -86,7 +86,7 @@ def render(res, params):
 		summary = {}
 
 		for i, v in enumerate(data["items"]):
-			if (data["items"][i]["type_id"] in [1,2,3] and ((str(assign_num) == '-1' and not "assignment_num" in data["items"][i]) or 
+			if (data["items"][i]["type_id"] in [1,2,3,5,6] and ((str(assign_num) == '-1' and not "assignment_num" in data["items"][i]) or 
 			(("assignment_num" in data["items"][i]) and (str(data["items"][i]["assignment_num"]) == str(assign_num))))):
 				if data["items"][i]["detail_num"] == val:
 					loc = data["items"][i]["regional_road"] + ', ' + data["items"][i]["between_road_1"] + ' to ' + data["items"][i]["between_road_2"]
@@ -95,6 +95,8 @@ def render(res, params):
 						data["items"][i].get("species", "--")) if data["items"][i]["type_id"] == 1
 						else data["items"][i]["stump_size"] if data["items"][i]["type_id"] == 2
 						else data["items"][i]["transp_dis"] if data["items"][i]["type_id"] == 3
+						else 'Supplemental Tree Maintenance' if data["items"][i]["type_id"] == 5
+						else 'Extra Work' if data["items"][i]["type_id"] == 6
 						else ' ')
 
 					summary[tItem] = summary.get(tItem, 0) + data["items"][i].get("quantity", 0)
