@@ -59,7 +59,7 @@ def render(res, params):
 	mtots = {}
 
 	for idx, val in enumerate(data["items"]):
-		if (data["items"][idx]["type_id"] in [1,2,3] and ((str(assign_num) == '-1' and not "assignment_num" in data["items"][idx]) or 
+		if (data["items"][idx]["type_id"] in [1,2,3,5,6] and ((str(assign_num) == '-1' and not "assignment_num" in data["items"][idx]) or 
 			(("assignment_num" in data["items"][idx]) and (str(data["items"][idx]["assignment_num"]) == str(assign_num))))):
 
 			locat = (data["items"][idx].get("regional_road", "--") + ", " + 
@@ -68,7 +68,9 @@ def render(res, params):
 
 			act = ("Tree Planting" if data["items"][idx]["type_id"] == 1
 					else "Stumping" if data["items"][idx]["type_id"] == 2
-					else "Transplanting")
+					else "Transplanting" if data["items"][idx]["type_id"] == 3
+					else "Supplemental Tree Maintenance" if data["items"][idx]["type_id"] == 5
+					else "Extra Work")
 
 			if not data["items"][idx]["municipality"] in muns:
 				muns.update({data["items"][idx]["municipality"] : [[
