@@ -16,6 +16,8 @@ r_dict = {
     	"19" : [stp_wrha, 'Warranty Report Health Analysis'],
     	"20" : [stp_wrca, 'Warranty Report Contract Analysis'],
     	"21" : [stp_wrdd, 'Warranty Report Deficiency List Details'],
+    	"22" : [stp_wrds, 'Warranty Report Deficiency List Summary'],
+    	"23" : [stp_wrsl, 'Warranty Report Species List'],
     	"51" : [stp_cpt.Report, 'Contractor Plant Trees'],
     	"52" : [stp_nir.Report, 'Nursery Inspection Report'],
     	"53" : [stp_ntrr.Report, 'Nursery Tagging Requirement Report'],
