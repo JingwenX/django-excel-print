@@ -6,7 +6,7 @@ import datetime
 from .. import stp_config
 
 def form_url(params):
-	if params["snap"] == '-1':
+	if params["snap"] == '0':
 		base_url = 'http://ykr-apexp1/ords/bsmart_data/bsmart_data/stp_ws/stp_tree_planting_deficiency_current/'
 		base_url += str(params["year"])
 	else:
