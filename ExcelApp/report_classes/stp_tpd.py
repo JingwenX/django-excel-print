@@ -111,7 +111,7 @@ def render(res, params):
 							tItem,
 							data["items"][i]["quantity"] if "quantity" in data["items"][i] else ' ',
 							data["items"][i]["hydro"] if "hydro" in data["items"][i] else ' ',
-							' '
+							data["items"][i].get("comments", ' ')
 							]]})
 					else:
 						locs[loc].append([
@@ -123,7 +123,7 @@ def render(res, params):
 							tItem,
 							data["items"][i]["quantity"] if "quantity" in data["items"][i] else ' ',
 							data["items"][i]["hydro"] if "hydro" in data["items"][i] else ' ', 
-							' '
+							data["items"][i].get("comments", ' ')
 							])
 
 
