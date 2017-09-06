@@ -108,6 +108,6 @@ def getReport(request):
 	file = HttpResponse(rgen.ReportGenerator.formExcel(content, params), content_type='application/vnd.openxmlformats-officedocument.spreadsheetml.sheet')
 	file['Content-Disposition'] = 'attachment; filename=' + rgen.r_dict[params["rid"]][1] + '.xlsx'
 
-	response.close()
+	s.close()
 	return file 
 
