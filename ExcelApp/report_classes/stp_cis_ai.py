@@ -142,8 +142,8 @@ def render(res, params):
 	##============TOP PERFORMAERS SUB TABLE=============
 	#TOP PERFORMERS COLUMN NAMES
 	item_fields = ['Contract Item No.',	'Top Performer', 'Top Performer %', 'Non Top Performer', 'Non Top Performer %', 'Total']
-	worksheet.write_row( "A" + str(cr), item_fields, item_header_format)
-	cr += 1
+	# worksheet.write_row( "A" + str(cr), item_fields, item_header_format)
+	# cr += 1
 	
 	#TOP PERFORMER CALCULATION
 	contract_items = []
@@ -186,27 +186,32 @@ def render(res, params):
 	#calculate percentage and write top performers into table
 	percent_fmt = workbook.add_format({'num_format': '0.00%','border':True,'border_color':'gray',})
 	rowcount = 0
-	cr -= 1 # overall is the first row
+	#cr -= 1 # overall is the first row
 
-	for idx, cnum in enumerate(tp):
-		if cnum != "Overall":
-			worksheet.write("A" + str(idx + cr), cnum, format_text)
-			worksheet.write("B" + str(idx + cr), tp[cnum]["top_p_qty"], format_num)
-			worksheet.write("C" + str(idx + cr), tp[cnum]["top_p_qty"]/tp[cnum]["total_qty"], percent_fmt)
-			worksheet.write("D" + str(idx + cr), tp[cnum]["non_top_p_qty"], format_num)
-			worksheet.write("E" + str(idx + cr), tp[cnum]["non_top_p_qty"]/tp[cnum]["total_qty"], percent_fmt)
-			worksheet.write("F" + str(idx + cr), tp[cnum]["total_qty"], format_num)
+	if tp["Overall"]["total_qty"] >0: #avoid zero division error
 
-			rowcount = idx
+		worksheet.write_row( "A" + str(cr), item_fields, item_header_format)
+		#cr += 1
 
-	cr += 1 # overall was the first row
-	#write overall data
-	worksheet.write("A" + str(rowcount + cr), "Overall", format_text)
-	worksheet.write("B" + str(rowcount + cr), tp["Overall"]["top_p_qty"], format_num)
-	worksheet.write("C" + str(rowcount + cr), tp["Overall"]["top_p_qty"]/tp["Overall"]["total_qty"], percent_fmt)
-	worksheet.write("D" + str(rowcount + cr), tp["Overall"]["non_top_p_qty"], format_num)
-	worksheet.write("E" + str(rowcount + cr), tp["Overall"]["non_top_p_qty"]/tp["Overall"]["total_qty"], percent_fmt)
-	worksheet.write("F" + str(rowcount + cr), tp["Overall"]["total_qty"], format_num)
+		for idx, cnum in enumerate(tp):
+			if cnum != "Overall":
+				worksheet.write("A" + str(idx + cr), cnum, format_text)
+				worksheet.write("B" + str(idx + cr), tp[cnum]["top_p_qty"], format_num)
+				worksheet.write("C" + str(idx + cr), tp[cnum]["top_p_qty"]/tp[cnum]["total_qty"], percent_fmt)
+				worksheet.write("D" + str(idx + cr), tp[cnum]["non_top_p_qty"], format_num)
+				worksheet.write("E" + str(idx + cr), tp[cnum]["non_top_p_qty"]/tp[cnum]["total_qty"], percent_fmt)
+				worksheet.write("F" + str(idx + cr), tp[cnum]["total_qty"], format_num)
+
+				rowcount = idx
+
+		cr += 1 # overall was the first row
+		#write overall data
+		worksheet.write("A" + str(rowcount + cr), "Overall", format_text)
+		worksheet.write("B" + str(rowcount + cr), tp["Overall"]["top_p_qty"], format_num)
+		worksheet.write("C" + str(rowcount + cr), tp["Overall"]["top_p_qty"]/tp["Overall"]["total_qty"], percent_fmt)
+		worksheet.write("D" + str(rowcount + cr), tp["Overall"]["non_top_p_qty"], format_num)
+		worksheet.write("E" + str(rowcount + cr), tp["Overall"]["non_top_p_qty"]/tp["Overall"]["total_qty"], percent_fmt)
+		worksheet.write("F" + str(rowcount + cr), tp["Overall"]["total_qty"], format_num)
 
 	#====ending=======
 
