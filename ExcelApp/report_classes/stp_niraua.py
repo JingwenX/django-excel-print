@@ -6,7 +6,7 @@ import datetime
 from .. import stp_config
 
 def form_url(params):
-	base_url = str(stp_config.CONST.API_URL_PREFIX) + 'bsmart_data/bsmart_data/stp_ws/stp_nursery_requirement_aua/{}'.format(str(params["year"]))
+	base_url = str(stp_config.CONST.API_URL_PREFIX) + 'bsmart_data/bsmart_data/stp_ws/stp_nursery_aua/{}'.format(str(params["year"]))
 	return base_url
 
 
@@ -56,7 +56,7 @@ def render(res, params):
 	worksheet.insert_image('F1', stp_config.CONST.ENV_LOGO,{'x_offset':35,'y_offset':18, 'x_scale':0.5,'y_scale':0.5, 'positioning':2})
 	
 	#COLUMN NAMES
-	item_fields = ['Stock Type',	'Plant Type', 'Species', 'Qty Required', 'Qty Tagged', 'Qty Substituted', 'Qty Left to Tag']
+	item_fields = ['Stock Type', 'Plant Type', 'Species', 'Qty Required', 'Qty Tagged', 'Qty Substituted', 'Qty Left to Tag']
 	worksheet.write_row('A7', item_fields, item_header_format)
 
 
@@ -78,32 +78,32 @@ def render(res, params):
 	#loop over to add distinct 
 
 
-	for idx, val in enumerate(data["items"][0]["assigned"]):
+	for idx, val in enumerate(data["items"]):
+		if data["items"][idx]["table_name"] == "ASSIGNED":
+		
+			a1 = data["items"][idx]["stock_type"]  if "stock_type" in data["items"][idx].keys() else ""
+			worksheet.write('A' + str(cr), a1 if a1 is not None else "", format_text)
 
-		
-		a1 = data["items"][0]["assigned"][idx]["stock_type"]  if "stock_type" in data["items"][0]["assigned"][idx].keys() else ""
-		worksheet.write('A' + str(cr), a1 if a1 is not None else "", format_text)
+			a2 = data["items"][idx]["plant_type"] if "plant_type" in data["items"][idx].keys() else ""
+			worksheet.write('B' + str(cr), a2 if a2 is not None else "", format_text)
+			
+			a3 = data["items"][idx]["species"] if "species" in data["items"][idx].keys() else ""
+			worksheet.write('C' + str(cr), a3 if a3 is not None else "", format_text)
+			
+			a4 = data["items"][idx]["required"] if "required" in data["items"][idx].keys() else ""
+			worksheet.write('D' + str(cr), a4 if a4 is not None else "", format_text)
+			
+			a5 = data["items"][idx]["tagged"] if "tagged" in data["items"][idx].keys() else ""
+			worksheet.write('E' + str(cr), a5 if a5 is not None else "", format_text)
+			
+			a6 = data["items"][idx]["substituted"] if "substituted" in data["items"][idx].keys() else ""
+			worksheet.write('F' + str(cr), a6 if a6 is not None else "", format_text)
 
-		a2 = data["items"][0]["assigned"][idx]["plant_type"] if "plant_type" in data["items"][0]["assigned"][idx].keys() else ""
-		worksheet.write('B' + str(cr), a2 if a2 is not None else "", format_text)
-		
-		a3 = data["items"][0]["assigned"][idx]["species"] if "species" in data["items"][0]["assigned"][idx].keys() else ""
-		worksheet.write('C' + str(cr), a3 if a3 is not None else "", format_text)
-		
-		a4 = data["items"][0]["assigned"][idx]["required"] if "required" in data["items"][0]["assigned"][idx].keys() else ""
-		worksheet.write('D' + str(cr), a4 if a4 is not None else "", format_text)
-		
-		a5 = data["items"][0]["assigned"][idx]["tagged"] if "tagged" in data["items"][0]["assigned"][idx].keys() else ""
-		worksheet.write('E' + str(cr), a5 if a5 is not None else "", format_text)
-		
-		a6 = data["items"][0]["assigned"][idx]["substituted"] if "substituted" in data["items"][0]["assigned"][idx].keys() else ""
-		worksheet.write('F' + str(cr), a6 if a6 is not None else "", format_text)
+			a7 = data["items"][idx]["left"] if "left" in data["items"][idx].keys() else ""
+			worksheet.write('G' + str(cr), a7 if a7 is not None else "", format_text)
 
-		a7 = data["items"][0]["assigned"][idx]["left"] if "left" in data["items"][0]["assigned"][idx].keys() else ""
-		worksheet.write('G' + str(cr), a7 if a7 is not None else "", format_text)
-
-		cr += 1
-		merge_bottom_idx = cr - 1
+			cr += 1
+			merge_bottom_idx = cr - 1
 		
 
 	cr += 4
@@ -112,26 +112,27 @@ def render(res, params):
 	worksheet.write_row('A'+str(cr), item_fields2, item_header_format)
 	cr+=1
 
-	for idx, val in enumerate(data["items"][0]["unassigned"]):
-		if data["items"][0]["unassigned"][idx]["substituted"] >0:
-		
-			a1 = data["items"][0]["unassigned"][idx]["stock_type"]  if "stock_type" in data["items"][0]["unassigned"][idx].keys() else ""
-			worksheet.write('A' + str(cr), a1 if a1 is not None else "", format_text)
+	for idx, val in enumerate(data["items"]):
+		if data["items"][idx]["table_name"] == "UNASSIGNED":
+			if data["items"][idx]["sub"] >0:
+			
+				a1 = data["items"][idx]["stock_type"]  if "stock_type" in data["items"][idx].keys() else ""
+				worksheet.write('A' + str(cr), a1 if a1 is not None else "", format_text)
 
-			a2 = data["items"][0]["unassigned"][idx]["plant_type"] if "plant_type" in data["items"][0]["unassigned"][idx].keys() else ""
-			worksheet.write('B' + str(cr), a2 if a2 is not None else "", format_text)
+				a2 = data["items"][idx]["plant_type"] if "plant_type" in data["items"][idx].keys() else ""
+				worksheet.write('B' + str(cr), a2 if a2 is not None else "", format_text)
+				
+				a3 = data["items"][idx]["species"] if "species" in data["items"][idx].keys() else ""
+				worksheet.write('C' + str(cr), a3 if a3 is not None else "", format_text)
+				
+				a4 = data["items"][idx]["subspecies"] if "subspecies" in data["items"][idx].keys() else ""
+				worksheet.write('D' + str(cr), a4 if a4 is not None else "", format_text)
+				
+				a5 = data["items"][idx]["sub"] if "sub" in data["items"][idx].keys() else ""
+				worksheet.write('E' + str(cr), a5 if a5 is not None else "", format_text)
 			
-			a3 = data["items"][0]["unassigned"][idx]["species"] if "species" in data["items"][0]["unassigned"][idx].keys() else ""
-			worksheet.write('C' + str(cr), a3 if a3 is not None else "", format_text)
-			
-			a4 = data["items"][0]["unassigned"][idx]["subspecies"] if "subspecies" in data["items"][0]["unassigned"][idx].keys() else ""
-			worksheet.write('D' + str(cr), a4 if a4 is not None else "", format_text)
-			
-			a5 = data["items"][0]["unassigned"][idx]["substituted"] if "substituted" in data["items"][0]["unassigned"][idx].keys() else ""
-			worksheet.write('E' + str(cr), a5 if a5 is not None else "", format_text)
-		
 
-			cr += 1
+				cr += 1
 
 	#====ending=======
 
