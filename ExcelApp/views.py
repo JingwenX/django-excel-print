@@ -69,7 +69,7 @@ def getReport(request):
 		'item_num':-1,
 		'wtype': -1,
 		'payno': -1,
-		'snap': -1,
+		'snap': 0, #default is 0 for snapshots (for now)
 	}
 
 	for p in params:
