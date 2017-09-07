@@ -31,7 +31,10 @@ r_dict = {
         "58" : [stp_niraua, 'Nursery Tagging Requirement - Assigned and Unassiged Species'],
         "70" : [stp_iwa, 'Issued Watering Assignment'],
         "71" : [stp_iwar, 'Issued Watering Assignment Report'],
+        "72" : [stp_ewr, 'Extra Work Payment Report'],
+        "73" : [stp_wpr, 'Watering Payment Report'],
     	"101": [stp_cid, 'Contract Item Detail'],
+        "102": [stp_cid_no_cursor, 'Contract Item Detail'],
 	}
 
 #calls the specific report function and returns the excel as a download

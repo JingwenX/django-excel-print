@@ -76,34 +76,40 @@ def getReport(request):
 		if p in request.GET:
 			params[p] = request.GET[p]
 
-	#if rid in d:
-	#	url = d[rid]
-	#	#add year
-	#	if not rid in ('8', '9'):
-	#		if year != -1:
-	#			url += str(year)
-	#		if item_num != -1:
-	#			url += str(item_num)
-	#	else:
-	#		url += '{}/{}'.format(year, item_num)
 
-		#add
 	s = requests.Session()
 	#print(rgen.ReportGenerator.get_url(params))
-	response = s.get(rgen.ReportGenerator.get_url(params))
+	if not isinstance(rgen.ReportGenerator.get_url(params), dict):
+		response = s.get(rgen.ReportGenerator.get_url(params))
 
-	it = json.loads(response.content)
-	#test
-	#return HttpResponse(response.content)
-	content = json.loads(response.content)
-	
-	pageNum = 1
-	while "next" in it:
-		response = s.get(rgen.ReportGenerator.get_url(params) + '?page=' + str(pageNum))
 		it = json.loads(response.content)
-		content["items"].extend(it["items"])
-		pageNum += 1
+		content = json.loads(response.content)
+		
+		pageNum = 1
+		while "next" in it:
+			response = s.get(rgen.ReportGenerator.get_url(params) + '?page=' + str(pageNum))
+			it = json.loads(response.content)
+			content["items"].extend(it["items"])
+			pageNum += 1
 
+	else:
+		#if the url is a list
+		content = {}
+		for part in rgen.ReportGenerator.get_url(params):
+			response = s.get(rgen.ReportGenerator.get_url(params)[part])
+			it = json.loads(response.content)
+			#content = {"part1":{"items":[]}, "part2":{"items":[]}, "part3":{"items":[]}}
+			
+			content[part] = {}
+			content[part]["items"] = []
+			content[part]["items"].extend(it["items"])
+
+			pageNum = 1
+			while "next" in it:
+				response = s.get(rgen.ReportGenerator.get_url(params)[part] + '?page=' + str(pageNum))
+				it = json.loads(response.content)
+				content[part]["items"].extend(it["items"])
+				pageNum += 1
 	# TODO: Convert config into json
 	file = HttpResponse(rgen.ReportGenerator.formExcel(content, params), content_type='application/vnd.openxmlformats-officedocument.spreadsheetml.sheet')
 	file['Content-Disposition'] = 'attachment; filename=' + rgen.r_dict[params["rid"]][1] + '.xlsx'
