@@ -1,5 +1,5 @@
 # -*- coding: utf-8 -*
-#rid 54 STP
+#rid 70 STP
 import xlsxwriter
 from io import BytesIO
 import datetime
@@ -29,14 +29,21 @@ def render(res, params):
 	#MAIN DATA FORMATING
 	format_text = workbook.add_format(stp_config.CONST.FORMAT_TEXT)
 	format_num = workbook.add_format(stp_config.CONST.FORMAT_NUM)
+	format_text.set_locked(False)
+	format_num.set_locked(False)
 	item_header_format = workbook.add_format(stp_config.CONST.ITEM_HEADER_FORMAT)
+	format_text_lock = workbook.add_format(stp_config.CONST.FORMAT_TEXT_LOCK)
+	format_text_lock_hidden = workbook.add_format(stp_config.CONST.FORMAT_TEXT_LOCK_HIDDEN)
+	format_num_lock = workbook.add_format(stp_config.CONST.FORMAT_NUM_LOCK)
+
 
 	#set column width
 	right_most_idx = 'T'
-	title= ["SEQ_ID", "New or Updated Information", "RIN", "Municipality", "Main Road", "Between Road 1", "Between Road 2", "Roadside", "Location Notes", "Deciduous with Watering Bags", "Conifers with Blue Flagging", "Other Items with Blue Flagging", "Total Items", "Date Watered", "24 Hr Time Watered", "Truck ID", "Total Items Reported", "Total Items Confirmed", "Comments", "CONTRACTOR_WATERING_ID"]
-	worksheet.write_row('A1', title, format_text)
+	title= ["New or Updated Information", "RIN", "Municipality", "Main Road", "Between Road 1", "Between Road 2", "Roadside", "Location Notes", "Deciduous with Watering Bags", "Conifers with Blue Flagging", "Other Items with Blue Flagging", "Total Items", "Date Watered", "24 Hr Time Watered", "Truck ID", "Total Items Reported", "Total Items Confirmed", "Comments"]
+	worksheet.write('A1', "SEQ_ID", format_text_lock_hidden)
+	worksheet.write_row('B1', title, format_text)
 
-	col_wid = [8.11, 16.89, 8.33, 18.33, 24.56, 31.89, 31.89, 10.89, 20.22, 7.56, 12.11, 12.11,7.89, 8.33, 8.33, 8.33, 8.33, 8.33, 8.33]
+	col_wid = [0, 16.89, 8.33, 18.33, 24.56, 31.89, 31.89, 10.89, 20.22, 7.56, 12.11, 12.11,7.89, 8.33, 8.33, 8.33, 8.33, 8.33, 8.33]
 	for i in range (0,ord(right_most_idx)-65):
 	#for i in range (0,19):
 
@@ -44,11 +51,12 @@ def render(res, params):
 	#worksheet.set_column('J:J', 9.65)
 
 	#set row
-	worksheet.set_row(0,36)
+	worksheet.set_row(0,45)
 	worksheet.set_row(1,36)
 	worksheet.set_row(5,23.4)
 	worksheet.set_row(6, 31.2)
 
+	
 
 
 	cr = 2
@@ -61,43 +69,44 @@ def render(res, params):
 		cr += 1
 		"""
 		a1 = data["items"][idx]["seq_id"]  if "seq_id" in data["items"][idx].keys() else ""
-		worksheet.write('A' + str(cr), a1 if a1 is not None else "", format_text)
+		worksheet.write('A' + str(cr), a1 if a1 is not None else "", format_text_lock_hidden )
 
 		a2 = data["items"][idx]["NEW_OR_UPDATED_RIN"] if "NEW_OR_UPDATED_RIN" in data["items"][idx].keys() else ""
-		worksheet.write('B' + str(cr), a2 if a2 is not None else "", format_text)
+		worksheet.write('B' + str(cr), a2 if a2 is not None else "", format_text_lock)
 		
 		a3 = data["items"][idx]["rin"] if "rin" in data["items"][idx].keys() else ""
-		worksheet.write('C' + str(cr), a3 if a3 is not None else "", format_text)
+		worksheet.write('C' + str(cr), a3 if a3 is not None else "", format_text_lock)
 		
 		a4 = data["items"][idx]["municipality"] if "municipality" in data["items"][idx].keys() else ""
-		worksheet.write('D' + str(cr), a4 if a4 is not None else "", format_text)
+		worksheet.write('D' + str(cr), a4 if a4 is not None else "", format_text_lock)
 		
 		a5 = data["items"][idx]["main_road"] if "main_road" in data["items"][idx].keys() else ""
-		worksheet.write('E' + str(cr), a5 if a5 is not None else "", format_text)
-		
+		worksheet.write('E' + str(cr), a5 if a5 is not None else "", format_text_lock)
+
+
 		a6 = data["items"][idx]["between_1"] if "between_1" in data["items"][idx].keys() else ""
-		worksheet.write('F' + str(cr), a6 if a6 is not None else "", format_text)
+		worksheet.write('F' + str(cr), a6 if a6 is not None else "", format_text_lock)
 
 		a7 = data["items"][idx]["between_2"]  if "between_2" in data["items"][idx].keys() else ""
-		worksheet.write('G' + str(cr), a7 if a7 is not None else "", format_text)
+		worksheet.write('G' + str(cr), a7 if a7 is not None else "", format_text_lock)
 
 		a8 = data["items"][idx]["road_side"] if "road_side" in data["items"][idx].keys() else ""
-		worksheet.write('H' + str(cr), a8 if a8 is not None else "", format_text)
+		worksheet.write('H' + str(cr), a8 if a8 is not None else "", format_text_lock)
 		
 		a9 = data["items"][idx]["LOCATION_NOTES"] if "LOCATION_NOTES" in data["items"][idx].keys() else ""
-		worksheet.write('I' + str(cr), a9 if a9 is not None else "", format_text)
+		worksheet.write('I' + str(cr), a9 if a9 is not None else "", format_text_lock)
 		
 		a10 = data["items"][idx]["broadleaved_(gator_bags)"] if "broadleaved_(gator_bags)" in data["items"][idx].keys() else ""
-		worksheet.write('J' + str(cr), a10 if a10 is not None else "", format_num)
+		worksheet.write('J' + str(cr), a10 if a10 is not None else "", format_num_lock)
 		
 		a11 = data["items"][idx]["conifers"] if "conifers" in data["items"][idx].keys() else ""
-		worksheet.write('K' + str(cr), a11 if a11 is not None else "", format_num)
+		worksheet.write('K' + str(cr), a11 if a11 is not None else "", format_num_lock)
 		
 		a12 = data["items"][idx]["other_trees"] if "other_trees" in data["items"][idx].keys() else ""
-		worksheet.write('L' + str(cr), a12 if a12 is not None else "", format_num)
+		worksheet.write('L' + str(cr), a12 if a12 is not None else "", format_num_lock)
 
 		a13 = data["items"][idx]["total_items"] if "total_items" in data["items"][idx].keys() else ""
-		worksheet.write('M' + str(cr), a13 if a13 is not None else "", format_num)
+		worksheet.write('M' + str(cr), a13 if a13 is not None else "", format_num_lock)
 		
 		a14 = data["items"][idx]["date_watered"] if "date_watered" in data["items"][idx].keys() else ""
 		worksheet.write('N' + str(cr), a14 if a14 is not None else "", format_text)
@@ -118,11 +127,13 @@ def render(res, params):
 		worksheet.write('S' + str(cr), a19 if a19 is not None else "", format_text)
 		
 		cr += 1
+
 		
-		
+	worksheet.write('A' + str(cr), 'test hidden', format_text_lock_hidden)
 
 	cr += 4
 
+	worksheet.protect()
 
 	#====ending=======
 
