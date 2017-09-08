@@ -27,7 +27,7 @@ def render(res, params):
 	workbook = xlsxwriter.Workbook(output, {'in_memory': True})
 	worksheets = []
 
-	title = 'Tree Planting Deficiency List'
+	title = 'Tree Planting Deficiency List' + (' Current' if snap == 0 else ' Snap - ' + str(snap))
 
 	#MAIN DATA FORMATING
 	format_text = workbook.add_format(stp_config.CONST.FORMAT_TEXT)
