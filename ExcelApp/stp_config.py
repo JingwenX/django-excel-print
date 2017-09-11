@@ -56,7 +56,8 @@ class const(object):
 		'valign': 'vcenter',
 		'text_wrap': True,
 		'border': True,
-		'border_color':'gray',}
+		'border_color':'gray',
+		'locked': 0}
 
 	FORMAT_NUM = {'font_name':'Calibri',
 		'font_size':12,
@@ -64,7 +65,36 @@ class const(object):
 		'valign': 'vcenter',
 		'text_wrap': True,
 		'border':True,
-		'border_color':'gray',}
+		'border_color':'gray',
+		'locked': 0}
+
+	FORMAT_TEXT_LOCK = {'font_name':'Calibri',
+		'font_size':12,
+		'align': 'left',
+		'valign': 'vcenter',
+		'text_wrap': True,
+		'border': True,
+		'border_color':'gray',
+		'locked': 1}
+	FORMAT_TEXT_LOCK_HIDDEN = {'font_name':'Calibri',
+		'font_size':12,
+		'align': 'left',
+		'valign': 'vcenter',
+		'text_wrap': True,
+		'border': True,
+		'border_color':'gray',
+		'locked': 1,
+		'hidden' :1,}
+
+	FORMAT_NUM_LOCK = {'font_name':'Calibri',
+		'font_size':12,
+		'align': 'center',
+		'valign': 'vcenter',
+		'text_wrap': True,
+		'border':True,
+		'border_color':'gray',
+		'locked': 1,}
+
 	FOOTER_PAGE_NUM = '&LPage &P of &N'
 
 	ENV_LOGO = r'\\ykr-apexp1\staticenv\apps\199\env_internal_bw.png'
@@ -94,6 +124,7 @@ class const(object):
 			'align':'left ',
 			'border' : True,
 			'border_color':'gray',
+			'bold' : True,
 			#'bg_color':'#D3D3D3',
 		}
 	SUBTOTAL_FORMAT_MONEY = {
@@ -105,6 +136,7 @@ class const(object):
 			'border' : True,
 			'border_color':'gray',
 			'num_format': '$#,##0',
+			'bold' : True,
 		}
 
 	def write_gen_title(title, workbook, worksheet, rightmost_idx, year, con_num):
