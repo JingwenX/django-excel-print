@@ -51,8 +51,8 @@ def render(res, params):
 	#worksheet.write_row('A1', title, format_text)
 
 	col_head =["A"  , "B" , "C","D",  "E",  "F",  "G", "H"]
-	col_wid = [13.22, 7.78, 8.11, 47.33, 8.67, 11.22,9.44, 9.56]
-	for i in range (0,ord(rightmost_idx)-65):
+	col_wid = [13.22, 7.78, 9.67, 47.33, 8.67, 11.22,9.44, 10.78]
+	for i in range (0,ord(rightmost_idx)-64):
 	#for i in range (0,19):
 
 		worksheet.set_column(chr(i+65)+':'+chr(i+65), col_wid[i])
@@ -110,13 +110,13 @@ def render(res, params):
 				a4 = data["items"][idx]["location"] if "location" in data["items"][idx].keys() else ""
 				worksheet.write('D' + str(cr), a4 if a4 is not None else "", format_text)
 				
-				a5 = data["items"][idx]["qty_to_pay"] if "qty_to_pay" in data["items"][idx].keys() else ""
+				a5 = data["items"][idx]["qty_to_pay"] if "qty_to_pay" in data["items"][idx].keys() else 0
 				worksheet.write('E' + str(cr), a5 if a5 is not None else "", format_num)
 				
-				a6 = data["items"][idx]["yr_audit_water_count_confirmed"] if "yr_audit_water_count_confirmed" in data["items"][idx].keys() else ""
+				a6 = data["items"][idx]["yr_audit_water_count_confirmed"] if "yr_audit_water_count_confirmed" in data["items"][idx].keys() else 0
 				worksheet.write('F' + str(cr), a6 if a6 is not None else "", format_num)
 
-				a7 = data["items"][idx]["qty_assigned_to_pay"]  if "qty_assigned_to_pay" in data["items"][idx].keys() else ""
+				a7 = data["items"][idx]["qty_assigned_to_pay"]  if "qty_assigned_to_pay" in data["items"][idx].keys() else 0
 				worksheet.write('G' + str(cr), a7 if a7 is not None else "", format_num)
 
 				a8 = data["items"][idx]["payment"]  if "payment" in data["items"][idx].keys() else 0
@@ -143,12 +143,13 @@ def render(res, params):
 		
 
 	#write grand total
-	worksheet.write('A' + str(cr), 'Grand Total:', subtotal_format)
-	worksheet.write_row('B' + str(cr)+':D' + str(cr), ["", "", ""], subtotal_format)
-	worksheet.write('E' + str(cr), total_assign, subtotal_format) #write total
-	worksheet.write('F' + str(cr), total_confirmed, subtotal_format) #write total
-	worksheet.write('G' + str(cr), total_to_pay, subtotal_format) #write total
-	worksheet.write('H' + str(cr), total_payment, subtotal_format_money) #write total
+	if total_to_pay!=0 or total_assign!=0 or total_confirmed!=0 or total_payment!=0:
+		worksheet.write('A' + str(cr), 'Grand Total:', subtotal_format)
+		worksheet.write_row('B' + str(cr)+':D' + str(cr), ["", "", ""], subtotal_format)
+		worksheet.write('E' + str(cr), total_assign, subtotal_format) #write total
+		worksheet.write('F' + str(cr), total_confirmed, subtotal_format) #write total
+		worksheet.write('G' + str(cr), total_to_pay, subtotal_format) #write total
+		worksheet.write('H' + str(cr), total_payment, subtotal_format_money) #write total
 
 
 	#====ending=======

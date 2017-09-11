@@ -43,7 +43,8 @@ def render(res, params):
 	worksheet.write('A1', "SEQ_ID", format_text_lock_hidden)
 	worksheet.write_row('B1', title, format_text)
 
-	col_wid = [0, 16.89, 8.33, 18.33, 24.56, 31.89, 31.89, 10.89, 20.22, 7.56, 12.11, 12.11,7.89, 8.33, 8.33, 8.33, 8.33, 8.33, 8.33]
+	col_idx = ['A', 'B', 'C',  'D',   'E',   'F',   'G',   'H',   'I',   'J', 'K',    'L', 'M',   'N',  'O',  'P',  'Q',   'R', 'S']
+	col_wid = [0, 16.89, 8.33, 18.33, 24.56, 31.89, 31.89, 10.89, 20.22, 7.56, 12.11, 12.11,7.89, 8.33, 8.33, 8.33, 9.33, 10.33, 10.33]
 	for i in range (0,ord(right_most_idx)-65):
 	#for i in range (0,19):
 

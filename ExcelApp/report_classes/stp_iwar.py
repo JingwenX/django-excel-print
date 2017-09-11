@@ -6,7 +6,7 @@ import datetime
 from .. import stp_config
 
 def form_url(params):
-	base_url = str(stp_config.CONST.API_URL_PREFIX) + 'bsmart_data/bsmart_data/stp_ws/stp_issued_watering_assignment/{}/{}/{}'.format(str(params["year"]), str(params["assign_num"]), str(params["item_num"]))
+	base_url = str(stp_config.CONST.API_URL_PREFIX) + 'bsmart_data/bsmart_data/stp_ws/stp_issued_watering_assignment_report/{}/{}'.format(str(params["year"]), str(params["assign_num"]))
 	return base_url
 
 
@@ -47,7 +47,7 @@ def render(res, params):
 
 	col_wid = [32.11, 11.44, 45.11, 12.33, 11.44, 8.89, 8.89,8.89]
 
-	for i in range (0,ord(rightmost_idx)-65):
+	for i in range (0,ord(rightmost_idx)-64):
 		worksheet.set_column(chr(i+65)+':'+chr(i+65), col_wid[i])
 
 	#set row
@@ -94,29 +94,29 @@ def render(res, params):
 			if data["items"][idx]["municipality"] == mun:
 				
 
-				a1 = data["items"][idx]["watering_item_id"]  if "watering_item_id" in data["items"][idx].keys() else ""
-				worksheet.write('A' + str(cr), a1 if a1 is not None else "", format_text)
+				a1 = data["items"][idx]["watering_item_id"] if "watering_item_id" in data["items"][idx].keys() else ""
+				worksheet.write('A' + str(cr), a1 if a1 is not None else "2", format_text)
 
 				a2 = data["items"][idx]["rin"] if "rin" in data["items"][idx].keys() else ""
 				worksheet.write('B' + str(cr), a2 if a2 is not None else "", format_text)
 				
 				a3 = data["items"][idx]["location"] if "location" in data["items"][idx].keys() else ""
-				worksheet.write('C' + str(cr), a3 if a3 is not None else "", format_text)
+				worksheet.write('C' + str(cr), a3 if a3 is not None else "1", format_text)
 				
 				a4 = data["items"][idx]["road_side"] if "road_side" in data["items"][idx].keys() else ""
 				worksheet.write('D' + str(cr), a4 if a4 is not None else "", format_text)
 				
 				a5 = data["items"][idx]["broadleaved"] if "broadleaved" in data["items"][idx].keys() else ""
-				worksheet.write('E' + str(cr), a5 if a5 is not None else "", format_text)
+				worksheet.write('E' + str(cr), a5 if a5 is not None else 0, format_num)
 				
 				a6 = data["items"][idx]["conifers"] if "conifers" in data["items"][idx].keys() else ""
-				worksheet.write('F' + str(cr), a6 if a6 is not None else "", format_text)
+				worksheet.write('F' + str(cr), a6 if a6 is not None else 0, format_num)
 
 				a7 = data["items"][idx]["other_trees"]  if "other_trees" in data["items"][idx].keys() else ""
-				worksheet.write('G' + str(cr), a7 if a7 is not None else "", format_text)
+				worksheet.write('G' + str(cr), a7 if a7 is not None else 0, format_num)
 
 				a8 = data["items"][idx]["total_items"] if "total_items" in data["items"][idx].keys() else ""
-				worksheet.write('H' + str(cr), a8 if a8 is not None else "", format_text)
+				worksheet.write('H' + str(cr), a8 if a8 is not None else 0, format_num)
 				
 				cr += 1
 
@@ -141,12 +141,13 @@ def render(res, params):
 
 	cr += 3
 	#write grand total
-	worksheet.write('A' + str(cr), 'Grand Total:', subtotal_format)
-	worksheet.write_row('B' + str(cr)+':D' + str(cr), ["", "", ""], subtotal_format)
-	worksheet.write('E' + str(cr), total_broadleaved, subtotal_format) #write total
-	worksheet.write('F' + str(cr), total_conifers, subtotal_format) #write total
-	worksheet.write('G' + str(cr), total_others, subtotal_format) #write total
-	worksheet.write('H' + str(cr), total_trees, subtotal_format) #write total
+	if total_trees != 0:
+		worksheet.write('A' + str(cr), 'Grand Total:', subtotal_format)
+		worksheet.write_row('B' + str(cr)+':D' + str(cr), ["", "", ""], subtotal_format)
+		worksheet.write('E' + str(cr), total_broadleaved, subtotal_format) #write total
+		worksheet.write('F' + str(cr), total_conifers, subtotal_format) #write total
+		worksheet.write('G' + str(cr), total_others, subtotal_format) #write total
+		worksheet.write('H' + str(cr), total_trees, subtotal_format) #write total
 
 
 	#====ending=======
