@@ -30,14 +30,17 @@ def render(res, params):
 	format_text = workbook.add_format(stp_config.CONST.FORMAT_TEXT)
 	format_num = workbook.add_format(stp_config.CONST.FORMAT_NUM)
 	item_header_format = workbook.add_format(stp_config.CONST.ITEM_HEADER_FORMAT)
-
+	item_format_money = workbook.add_format(stp_config.CONST.ITEM_FORMAT_MONEY)
+	subtotal_format = workbook.add_format(stp_config.CONST.SUBTOTAL_FORMAT)
+	subtotal_format_money = workbook.add_format(stp_config.CONST.SUBTOTAL_FORMAT_MONEY)
+	
 	#HEADER
 	#write general header and format
 	rightmost_idx = 'H'
 	stp_config.const.write_gen_title(title, workbook, worksheet, rightmost_idx, year, con_num)
 
 	#additional header image
-	worksheet.insert_image('F1', stp_config.CONST.ENV_LOGO,{'x_offset':180,'y_offset':18, 'x_scale':0.5,'y_scale':0.5, 'positioning':2})
+	worksheet.insert_image('E1', stp_config.CONST.ENV_LOGO,{'x_offset':35,'y_offset':18, 'x_scale':0.5,'y_scale':0.5, 'positioning':2})
 
 	#set column width
 
@@ -51,7 +54,7 @@ def render(res, params):
 	worksheet.set_row(0,36)
 	worksheet.set_row(1,36)
 	worksheet.set_row(5,23.4)
-	worksheet.set_row(6, 31.2)
+	#worksheet.set_row(6, 31.2)
 
 	#CREATE MUN LIST
 	mun_list = []
@@ -60,14 +63,26 @@ def render(res, params):
 		if not data["items"][iid]["municipality"] in mun_list:
 			mun_list.append(data["items"][iid]["municipality"])
 
-	cr = 8
+	cr = 7
+
+	total_broadleaved = 0
+	total_conifers = 0
+	total_others = 0 
+	total_trees = 0
+
 	tag_list  = ["watering_item_id", "rin", "location", "road_side", "broadleaved", "conifers", "other_trees", "total_items"]
 	for munidx, mun in enumerate(mun_list):
-		worksheet.write('A' + str(cr), "Municipality:"+mun, format_text)
+		#worksheet.write('A' + str(cr), "Municipality:"+mun, format_text)
+		worksheet.merge_range('A' + str(cr) + ':' + rightmost_idx + str(cr), str('Municipality: ' + mun), format_text)
 		cr +=1
 		title= ["Watering Item No.", "RIN", "Location", "Roadside", "No. of Broadleaved", "No. of Conifers", "No. of Others", "Total No. of Tree"]
 		worksheet.write_row('A' + str(cr), title, item_header_format)
 		cr += 1
+
+		mun_total_broadleaved = 0
+		mun_total_conifers = 0
+		mun_total_others = 0 
+		mun_total_trees = 0
 
 		for idx, val in enumerate(data["items"]):
 			"""
@@ -104,11 +119,34 @@ def render(res, params):
 				worksheet.write('H' + str(cr), a8 if a8 is not None else "", format_text)
 				
 				cr += 1
+
+				mun_total_broadleaved += data["items"][idx]["broadleaved"] if "broadleaved" in data["items"][idx].keys() else 0
+				mun_total_conifers += data["items"][idx]["conifers"] if "conifers" in data["items"][idx].keys() else 0
+				mun_total_others  += data["items"][idx]["other_trees"] if "other_trees" in data["items"][idx].keys() else 0
+				mun_total_trees += data["items"][idx]["total_items"] if "total_items" in data["items"][idx].keys() else 0
+				total_broadleaved += data["items"][idx]["broadleaved"] if "broadleaved" in data["items"][idx].keys() else 0
+				total_conifers += data["items"][idx]["conifers"] if "conifers" in data["items"][idx].keys() else 0
+				total_others  += data["items"][idx]["other_trees"] if "other_trees" in data["items"][idx].keys() else 0
+				total_trees += data["items"][idx]["total_items"] if "total_items" in data["items"][idx].keys() else 0
+				
 		
+		worksheet.write('A' + str(cr), "Total:", subtotal_format) #write total
+		worksheet.write_row('B' + str(cr)+':D' + str(cr), ["", "", ""], subtotal_format)
+		worksheet.write('E' + str(cr), mun_total_broadleaved, subtotal_format) #write total
+		worksheet.write('F' + str(cr), mun_total_conifers, subtotal_format) #write total
+		worksheet.write('G' + str(cr), mun_total_others, subtotal_format) #write total
+		worksheet.write('H' + str(cr), mun_total_trees, subtotal_format) #write total
 		cr += 2
 		
 
-	cr += 4
+	cr += 3
+	#write grand total
+	worksheet.write('A' + str(cr), 'Grand Total:', subtotal_format)
+	worksheet.write_row('B' + str(cr)+':D' + str(cr), ["", "", ""], subtotal_format)
+	worksheet.write('E' + str(cr), total_broadleaved, subtotal_format) #write total
+	worksheet.write('F' + str(cr), total_conifers, subtotal_format) #write total
+	worksheet.write('G' + str(cr), total_others, subtotal_format) #write total
+	worksheet.write('H' + str(cr), total_trees, subtotal_format) #write total
 
 
 	#====ending=======

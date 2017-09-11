@@ -49,13 +49,13 @@ def render(res, params):
 	item_fields = ["Contract Item No.", "Location", "Description", "Unit", "Quantity", "Unit Price", "Payment"]
 	#worksheet.write_row('A1', title, format_text)
 
-	col_wid = [13.22, 54.11, 23.67, 7.33, 8.22, 8.56, 10.33]
+	col_wid = [13.22, 54.11, 23.67, 7.33, 8.22, 8.56, 19]
 	for i in range (0,ord(rightmost_idx)-65):
 	#for i in range (0,19):
 
 		worksheet.set_column(chr(i+65)+':'+chr(i+65), col_wid[i])
 	#worksheet.set_column('J:J', 9.65)
-
+	worksheet.set_column('G:G', 12)
 	#set row
 	worksheet.set_row(0,36)
 	worksheet.set_row(1,36)
@@ -79,7 +79,10 @@ def render(res, params):
 		worksheet.write_row('A' + str(cr+1), item_fields, item_header_format)
 		cr += 2
 
-		mun_total = 0
+
+		mun_total_qty = 0
+		mun_total_payment = 0
+
 		for idx, val in enumerate(data["items"]):
 			"""
 			for i in range (0,ord(right_most_idx)-65):
@@ -114,15 +117,16 @@ def render(res, params):
 			
 				
 				cr += 1
-				mun_total += data["items"][idx]["payment"] if "payment" in data["items"][idx].keys() else 0
+				mun_total_qty += data["items"][idx]["qty_commited_to_pay"] if "qty_commited_to_pay" in data["items"][idx].keys() else 0
+				mun_total_payment += data["items"][idx]["payment"] if "payment" in data["items"][idx].keys() else 0
 				total_to_pay += data["items"][idx]["qty_commited_to_pay"] if "payment" in data["items"][idx].keys() else 0
 				total_payment += data["items"][idx]["payment"] if "payment" in data["items"][idx].keys() else 0
 
 		#cr += 1
 		worksheet.write('A' + str(cr), "Total:", subtotal_format) #write total
 		worksheet.write_row('B' + str(cr)+':G' + str(cr), ["", "", "", "", ""], subtotal_format)
-		worksheet.write('E' + str(cr), mun_total, subtotal_format) #write total
-		worksheet.write('G' + str(cr), mun_total, subtotal_format_money) #write total
+		worksheet.write('E' + str(cr), mun_total_qty, subtotal_format) #write total
+		worksheet.write('G' + str(cr), mun_total_payment, subtotal_format_money) #write total
 		cr += 2
 		
 
@@ -130,6 +134,7 @@ def render(res, params):
 	worksheet.write('A' + str(cr), 'Grand Total:', subtotal_format)
 	worksheet.write_row('B' + str(cr)+':D' + str(cr), ["", "", ""], subtotal_format)
 	worksheet.write('E' + str(cr), total_to_pay, subtotal_format) #write total
+	worksheet.write('F' + str(cr), "", subtotal_format) #write total
 	worksheet.write('G' + str(cr), total_payment, subtotal_format_money) #write total
 
 
