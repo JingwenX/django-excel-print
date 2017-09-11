@@ -60,7 +60,8 @@ def render(res, params):
 					data["items"][iid].get("item"),
 					data["items"][iid].get("health"),
 					data["items"][iid].get("def"),
-					data["items"][iid].get("rep")
+					data["items"][iid].get("rep"),
+					data["items"][iid].get("tpuc")
 					]]})
 			else:
 				regions[rKey].append([
@@ -69,10 +70,10 @@ def render(res, params):
 					data["items"][iid].get("item"),
 					data["items"][iid].get("health"),
 					data["items"][iid].get("def"),
-					data["items"][iid].get("rep")
+					data["items"][iid].get("rep"),
+					data["items"][iid].get("tpuc")
 					])
 				
-	print(regions.keys())
 	for reg_id, reg in enumerate(sorted(regions)):
 		worksheets.append(workbook.add_worksheet(reg[:31]))
 
@@ -89,9 +90,17 @@ def render(res, params):
 		worksheets[reg_id].write_row('A{}'.format(cr+1), item_fields, item_header_format)
 		cr += 2
 		for tree in regions[reg]:
-			worksheets[reg_id].write_row('A{}'.format(cr), tree, format_text)
+			worksheets[reg_id].write_row('A{}'.format(cr), tree[0:6], format_text)
 			cr += 1
 		cr += 1
+
+		worksheets[reg_id].merge_range('A{}:B{}'.format(cr,cr), 'Summary', item_header_format)
+		cr += 1
+		worksheets[reg_id].write('A{}'.format(cr), 'Number of Deficient Trees: ', subtotal_format)
+		worksheets[reg_id].write('B{}'.format(cr), (cr - 2 - 9), subtotal_format)
+		cr += 1
+		worksheets[reg_id].write('A{}'.format(cr), 'Total Trees Planted on Contract: ', subtotal_format)
+		worksheets[reg_id].write('B{}'.format(cr), regions[reg][0][6], subtotal_format)
 		
 	workbook.close()
 
