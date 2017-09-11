@@ -128,8 +128,6 @@ def render(res, params):
 		
 		cr += 1
 
-		
-	worksheet.write('A' + str(cr), 'test hidden', format_text_lock_hidden)
 
 	cr += 4
 
