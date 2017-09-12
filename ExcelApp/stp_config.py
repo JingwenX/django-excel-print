@@ -112,8 +112,8 @@ class const(object):
 	ITEM_FORMAT_MONEY = {
 			'font_name':'Calibri',
 			'font_size':12,
-			'align': 'left',
-			'num_format': '$#,##0.##',
+			'align': 'right',
+			'num_format': '$#,##0.00',
 			'border' : True,
 			'border_color':'gray',
 		}
@@ -121,21 +121,24 @@ class const(object):
 			'font_name':'Calibri',
 			'font_size': 14,
 			'font_color':'black',
-			'align':'left ',
+			'align':'center',
+			'valign': 'vcenter',
 			'border' : True,
 			'border_color':'gray',
 			'bold' : True,
+			'num_format': '#,##0',
 			#'bg_color':'#D3D3D3',
 		}
 	SUBTOTAL_FORMAT_MONEY = {
 			'font_name':'Calibri',
 			'font_size': 14,
 			'font_color':'black',
-			'align':'left',
+			'align':'right',
+			'valign': 'vcenter',
 			#'bg_color':'#D3D3D3',
 			'border' : True,
 			'border_color':'gray',
-			'num_format': '$#,##0.##',
+			'num_format': '$#,##0.00',
 			'bold' : True,
 		}
 
