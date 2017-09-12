@@ -113,7 +113,7 @@ class const(object):
 			'font_name':'Calibri',
 			'font_size':12,
 			'align': 'left',
-			'num_format': '$#,##0',
+			'num_format': '$#,##0.##',
 			'border' : True,
 			'border_color':'gray',
 		}
@@ -135,7 +135,7 @@ class const(object):
 			#'bg_color':'#D3D3D3',
 			'border' : True,
 			'border_color':'gray',
-			'num_format': '$#,##0',
+			'num_format': '$#,##0.##',
 			'bold' : True,
 		}
 

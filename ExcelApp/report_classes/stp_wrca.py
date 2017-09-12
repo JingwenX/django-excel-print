@@ -95,11 +95,11 @@ def render(res, params):
 			worksheets[cid].write_row('A{}'.format(cr), d, format_text)
 			cr += 1
 
-		worksheets[cid].write('A' + str(cr), 'Totals: ', format_text)
-		worksheets[cid].write_formula('B' + str(cr), '=SUM(B9:B' + str(cr-1) + ')', format_text)
-		worksheets[cid].write_formula('C' + str(cr), '=SUM(C9:C' + str(cr-1) + ')', format_text)
-		worksheets[cid].write_formula('D' + str(cr), '=SUM(D9:D' + str(cr-1) + ')', format_text)
-		worksheets[cid].write_formula('E' + str(cr), '=SUM(E9:E' + str(cr-1) + ')', format_text)
+		worksheets[cid].write('A' + str(cr), 'Totals: ', subtotal_format)
+		worksheets[cid].write_formula('B' + str(cr), '=SUM(B9:B' + str(cr-1) + ')', subtotal_format)
+		worksheets[cid].write_formula('C' + str(cr), '=SUM(C9:C' + str(cr-1) + ')', subtotal_format)
+		worksheets[cid].write_formula('D' + str(cr), '=SUM(D9:D' + str(cr-1) + ')', subtotal_format)
+		worksheets[cid].write_formula('E' + str(cr), '=SUM(E9:E' + str(cr-1) + ')', subtotal_format)
 		cr += 2
 		
 	workbook.close()

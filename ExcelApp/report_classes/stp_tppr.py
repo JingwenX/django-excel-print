@@ -77,7 +77,7 @@ def render(res, params):
 		worksheets.append(workbook.add_worksheet(con[:31]))
 
 		stp_config.const.write_gen_title(title, workbook, worksheets[cid], rightmost_idx, year, con_num)
-		worksheets[cid].insert_image('C1', stp_config.CONST.ENV_LOGO,{'x_offset':180,'y_offset':18, 'x_scale':0.5,'y_scale':0.5, 'positioning':2})
+		worksheets[cid].insert_image('C1', stp_config.CONST.ENV_LOGO,{'x_offset':300,'y_offset':18, 'x_scale':0.5,'y_scale':0.5, 'positioning':2})
 
 		worksheets[cid].set_column('A:D', 45)
 		worksheets[cid].set_row(0,36)

@@ -24,7 +24,7 @@ def render(res, params):
 	worksheet = workbook.add_worksheet()
 
 	data = res
-	title = 'Contractor Plant Tree'
+	title = 'Tree Planting Status'
 	#year = year #delete
 
 	# MAIN DATA FORMATING

@@ -84,11 +84,11 @@ def render(res, params):
 		cr += 1
 
 	#FORMULAE AND FOOTERS
-	worksheet.write('A' + str(cr), 'Totals: ', format_text)
-	worksheet.write_formula('B' + str(cr), '=SUM(B8:B' + str(cr-1) + ')', format_text)
-	worksheet.write_formula('C' + str(cr), '=SUM(C8:C' + str(cr-1) + ')', format_text)
-	worksheet.write_formula('D' + str(cr), '=SUM(D8:D' + str(cr-1) + ')', format_text)
-	worksheet.write_formula('E' + str(cr), '=SUM(E8:E' + str(cr-1) + ')', format_text)
+	worksheet.write('A' + str(cr), 'Totals: ', subtotal_format)
+	worksheet.write_formula('B' + str(cr), '=SUM(B8:B' + str(cr-1) + ')', subtotal_format)
+	worksheet.write_formula('C' + str(cr), '=SUM(C8:C' + str(cr-1) + ')', subtotal_format)
+	worksheet.write_formula('D' + str(cr), '=SUM(D8:D' + str(cr-1) + ')', subtotal_format)
+	worksheet.write_formula('E' + str(cr), '=SUM(E8:E' + str(cr-1) + ')', subtotal_format)
 
 	workbook.close()
 

@@ -24,7 +24,7 @@ r_dict = {
     	"51" : [stp_cpt, 'Contractor Plant Trees'],
     	"52" : [stp_nir, 'Nursery Inspection Report'],
     	"53" : [stp_ntrr, 'Nursery Tagging Requirement Report'],
-		"54":  [stp_cis_ai, 'Contract Item Summary - by All Items'],
+		"54" : [stp_cis_ai, 'Contract Item Summary - by All Items'],
     	"55" : [stp_cis_af, 'Contract Item Summary - by Area Forester'],
     	"56" : [stp_cis_p, 'Contract Item Summary - by Program'],
     	"57" : [stp_cis_m, 'Contract Item Summary - by Municipality'],
