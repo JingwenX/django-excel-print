@@ -24,7 +24,7 @@ def render(res, params):
 	worksheet = workbook.add_worksheet()
 
 	data = res
-	title = 'Issued Watering Assignment'
+	title = 'Issued Watering Assignment - Assignment No. ' + assign_num
 
 	#MAIN DATA FORMATING
 	format_text = workbook.add_format(stp_config.CONST.FORMAT_TEXT)
@@ -33,6 +33,7 @@ def render(res, params):
 	item_format_money = workbook.add_format(stp_config.CONST.ITEM_FORMAT_MONEY)
 	subtotal_format = workbook.add_format(stp_config.CONST.SUBTOTAL_FORMAT)
 	subtotal_format_money = workbook.add_format(stp_config.CONST.SUBTOTAL_FORMAT_MONEY)
+	subtitle_format = workbook.add_format(stp_config.CONST.SUBTITLE_FORMAT)
 	
 	#HEADER
 	#write general header and format
@@ -44,8 +45,8 @@ def render(res, params):
 
 	#set column width
 
-
-	col_wid = [32.11, 11.44, 45.11, 12.33, 11.44, 8.89, 8.89,8.89]
+	col_name= ["A",   "B",   "C",   "D",   "E",   "F",  "G", "H"]
+	col_wid = [32.11, 11.44, 45.11, 12.33, 12.33, 8.89, 8.89, 9.89]
 
 	for i in range (0,ord(rightmost_idx)-64):
 		worksheet.set_column(chr(i+65)+':'+chr(i+65), col_wid[i])
@@ -73,7 +74,8 @@ def render(res, params):
 	tag_list  = ["watering_item_id", "rin", "location", "road_side", "broadleaved", "conifers", "other_trees", "total_items"]
 	for munidx, mun in enumerate(mun_list):
 		#worksheet.write('A' + str(cr), "Municipality:"+mun, format_text)
-		worksheet.merge_range('A' + str(cr) + ':' + rightmost_idx + str(cr), str('Municipality: ' + mun), format_text)
+		worksheet.merge_range('A' + str(cr) + ':' + rightmost_idx + str(cr), str('Municipality: ' + mun), subtitle_format)
+		worksheet.set_row(cr-1,stp_config.CONST.BREAKDOWN_SUBTITLE_HEIGHT)
 		cr +=1
 		title= ["Watering Item No.", "RIN", "Location", "Roadside", "No. of Broadleaved", "No. of Conifers", "No. of Others", "Total No. of Tree"]
 		worksheet.write_row('A' + str(cr), title, item_header_format)
@@ -136,7 +138,9 @@ def render(res, params):
 		worksheet.write('F' + str(cr), mun_total_conifers, subtotal_format) #write total
 		worksheet.write('G' + str(cr), mun_total_others, subtotal_format) #write total
 		worksheet.write('H' + str(cr), mun_total_trees, subtotal_format) #write total
-		cr += 2
+		cr += 1
+		worksheet.set_row(cr-1,stp_config.CONST.BREAKDOWN_INBETWEEN_HEIGHT)
+		cr += 1
 		
 
 	cr += 3

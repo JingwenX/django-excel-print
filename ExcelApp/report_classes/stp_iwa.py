@@ -46,7 +46,7 @@ def render(res, params):
 	worksheet.write_row('B1', title, format_text)
 
 	col_idx = ['A', 'B', 'C',  'D',   'E',   'F',   'G',   'H',   'I',   'J', 'K',    'L', 'M',   'N',  'O',  'P',  'Q',   'R', 'S']
-	col_wid = [0, 16.89, 8.33, 18.33, 24.56, 31.89, 31.89, 10.89, 20.22, 7.56, 12.11, 12.11,7.89, 8.33, 8.33, 8.33, 9.33, 10.33, 10.33]
+	col_wid = [0, 16.89, 8.33, 18.33, 24.56, 31.89, 31.89, 10.89, 20.22, 11.22, 12.11, 12.11,7.89, 9.67, 9.89, 8.33, 9.33, 10.33, 10.33]
 	for i in range (0,ord(right_most_idx)-65):
 	#for i in range (0,19):
 
@@ -76,9 +76,11 @@ def render(res, params):
 
 		a2 = str(data["items"][idx]["new_or_updated_rin"]) if "new_or_updated_rin" in data["items"][idx].keys() else ""
 		if a2 == '1':
-			worksheet.write('B' + str(cr), "New" if a2 is not None else "", format_text_bold)
+			worksheet.write('B' + str(cr), "New" if a2 is not None else "", format_text)
 		elif a2 == '2':
-			worksheet.write('B' + str(cr), "Updated" if a2 is not None else "", format_text_bold)
+			worksheet.write('B' + str(cr), "Updated" if a2 is not None else "", format_text)
+		else:
+			worksheet.write('B' + str(cr), "", format_text)
 		
 		a3 = data["items"][idx]["rin"] if "rin" in data["items"][idx].keys() else ""
 		worksheet.write('C' + str(cr), a3 if a3 is not None else "", format_text_lock)
@@ -129,7 +131,7 @@ def render(res, params):
 		a18 = data["items"][idx]["yr_audit_water_count_confirmed"] if "yr_audit_water_count_confirmed" in data["items"][idx].keys() else ""
 		worksheet.write('R' + str(cr), a18 if a18 is not None else "", format_num)
 		
-		a19 = data["items"][idx]["COMMENTS"] if "COMMENTS" in data["items"][idx].keys() else ""
+		a19 = data["items"][idx]["comments"] if "comments" in data["items"][idx].keys() else ""
 		worksheet.write('S' + str(cr), a19 if a19 is not None else "", format_text)
 		
 		cr += 1
@@ -137,7 +139,23 @@ def render(res, params):
 
 	cr += 4
 
-	worksheet.protect()
+	worksheet.protect(options = {
+	    'objects':               False,
+	    'scenarios':             False,
+	    'format_cells':          True,
+	    'format_columns':        True,
+	    'format_rows':           True,
+	    'insert_columns':        False,
+	    'insert_rows':           False,
+	    'insert_hyperlinks':     False,
+	    'delete_columns':        False,
+	    'delete_rows':           False,
+	    'select_locked_cells':   True,
+	    'sort':                  False,
+	    'autofilter':            False,
+	    'pivot_tables':          False,
+	    'select_unlocked_cells': True,
+		})
 
 	#====ending=======
 

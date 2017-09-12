@@ -30,7 +30,7 @@ def render(res, params):
 	worksheet = workbook.add_worksheet()
 
 	data = res
-	title = 'Watering Payment Report: Payment No. ' + str(assign_num)
+	title = 'Watering Payment Report: Payment Report No. ' + str(assign_num)
 
 	#MAIN DATA FORMATING
 	format_text = workbook.add_format(stp_config.CONST.FORMAT_TEXT)
@@ -39,6 +39,7 @@ def render(res, params):
 	item_format_money = workbook.add_format(stp_config.CONST.ITEM_FORMAT_MONEY)
 	subtotal_format = workbook.add_format(stp_config.CONST.SUBTOTAL_FORMAT)
 	subtotal_format_money = workbook.add_format(stp_config.CONST.SUBTOTAL_FORMAT_MONEY)
+	subtitle_format = workbook.add_format(stp_config.CONST.SUBTITLE_FORMAT)
 
 	#set column width
 	rightmost_idx = 'H'
@@ -47,11 +48,11 @@ def render(res, params):
 	#additional header image
 	worksheet.insert_image('E1', stp_config.CONST.ENV_LOGO,{'x_offset':55,'y_offset':18, 'x_scale':0.5,'y_scale':0.5, 'positioning':2})
 	
-	item_fields = ["Watering Item No.", "RIN", "Roadside", "Location", "No. of Trees Assign", "No. of Trees Confirmed", "No. of Trees to Pay", "Payment"]
+	item_fields = ["Watering Item No.", "RIN", "Location", "Roadside", "No. of Trees Assign", "No. of Trees Confirmed", "No. of Trees to Pay", "Total Cost"]
 	#worksheet.write_row('A1', title, format_text)
 
-	col_head =["A"  , "B" , "C","D",  "E",  "F",  "G", "H"]
-	col_wid = [13.22, 7.78, 9.67, 47.33, 8.67, 11.22,9.44, 10.78]
+	col_head =["A"  , "B" , "C",  "D",  "E",  "F",  "G", "H"]
+	col_wid = [13.22, 7.78, 47.33,9.67, 8.67, 11.22,9.44, 10.78]
 	for i in range (0,ord(rightmost_idx)-64):
 	#for i in range (0,19):
 
@@ -71,7 +72,7 @@ def render(res, params):
 			mun_list.append(data["items"][iid]["municipality"])
 
 	cr = 7
-	tag_list  = ["watering_item_id", "rin", "road_side", "location", "qty_to_pay", "yr_audit_water_count_confirmed", "qty_assigned_to_pay", "payment"]
+	tag_list  = ["watering_item_id", "rin", "location", "road_side", "qty_to_pay", "yr_audit_water_count_confirmed", "qty_assigned_to_pay", "payment"]
 	
 	total_assign = 0
 	total_confirmed = 0
@@ -79,8 +80,9 @@ def render(res, params):
 	total_payment = 0
 
 	for mid, mun in enumerate(mun_list):
-		worksheet.merge_range('A' + str(cr) + ':' + rightmost_idx + str(cr), str('Municipality: ' + mun), format_text) #was format_text
+		worksheet.merge_range('A' + str(cr) + ':' + rightmost_idx + str(cr), str('Municipality: ' + mun), subtitle_format) #was format_text
 		worksheet.write_row('A' + str(cr+1), item_fields, item_header_format)
+		worksheet.set_row(cr-1,stp_config.CONST.BREAKDOWN_SUBTITLE_HEIGHT)
 		cr += 2
 
 		mun_total_assign = 0
@@ -104,11 +106,12 @@ def render(res, params):
 				a2 = data["items"][idx]["rin"] if "rin" in data["items"][idx].keys() else ""
 				worksheet.write('B' + str(cr), a2 if a2 is not None else "", format_text)
 				
-				a3 = data["items"][idx]["road_side"] if "road_side" in data["items"][idx].keys() else ""
+				a3 = data["items"][idx]["location"] if "location" in data["items"][idx].keys() else ""
 				worksheet.write('C' + str(cr), a3 if a3 is not None else "", format_text)
 				
-				a4 = data["items"][idx]["location"] if "location" in data["items"][idx].keys() else ""
+				a4 = data["items"][idx]["road_side"] if "road_side" in data["items"][idx].keys() else ""
 				worksheet.write('D' + str(cr), a4 if a4 is not None else "", format_text)
+
 				
 				a5 = data["items"][idx]["qty_to_pay"] if "qty_to_pay" in data["items"][idx].keys() else 0
 				worksheet.write('E' + str(cr), a5 if a5 is not None else "", format_num)
@@ -139,7 +142,9 @@ def render(res, params):
 		worksheet.write('F' + str(cr), mun_total_confirmed, subtotal_format) #write total
 		worksheet.write('G' + str(cr), mun_total_to_pay, subtotal_format) #write total
 		worksheet.write('H' + str(cr), mun_total_payment, subtotal_format_money) #write total
-		cr += 2
+		cr += 1
+		worksheet.set_row(cr-1,stp_config.CONST.BREAKDOWN_INBETWEEN_HEIGHT)
+		cr += 1
 		
 
 	#write grand total
