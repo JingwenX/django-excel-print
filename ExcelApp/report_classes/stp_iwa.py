@@ -28,6 +28,8 @@ def render(res, params):
 
 	#MAIN DATA FORMATING
 	format_text = workbook.add_format(stp_config.CONST.FORMAT_TEXT)
+	format_text_bold =  workbook.add_format(stp_config.CONST.FORMAT_TEXT)
+	#format_text_bold.add_format({'bold':True})
 	format_num = workbook.add_format(stp_config.CONST.FORMAT_NUM)
 	format_text.set_locked(False)
 	format_num.set_locked(False)
@@ -72,8 +74,11 @@ def render(res, params):
 		a1 = data["items"][idx]["seq_id"]  if "seq_id" in data["items"][idx].keys() else ""
 		worksheet.write('A' + str(cr), a1 if a1 is not None else "", format_text_lock_hidden )
 
-		a2 = data["items"][idx]["NEW_OR_UPDATED_RIN"] if "NEW_OR_UPDATED_RIN" in data["items"][idx].keys() else ""
-		worksheet.write('B' + str(cr), a2 if a2 is not None else "", format_text_lock)
+		a2 = str(data["items"][idx]["new_or_updated_rin"]) if "new_or_updated_rin" in data["items"][idx].keys() else ""
+		if a2 == '1':
+			worksheet.write('B' + str(cr), "New" if a2 is not None else "", format_text_bold)
+		elif a2 == '2':
+			worksheet.write('B' + str(cr), "Updated" if a2 is not None else "", format_text_bold)
 		
 		a3 = data["items"][idx]["rin"] if "rin" in data["items"][idx].keys() else ""
 		worksheet.write('C' + str(cr), a3 if a3 is not None else "", format_text_lock)
