@@ -64,13 +64,13 @@ def render(res, params):
 					data["items"][iid].get("total")
 					])
 
-			if not data["items"][iid]["item"] in summary:
-				summary.update({data["items"][iid]["item"] : [
-					1,
-					data["items"][iid].get("up")
-					]})
-			else:
-				summary[data["items"][iid]["item"]][0] += 1
+			#if not data["items"][iid]["item"] in summary:
+			#	summary.update({data["items"][iid]["item"] : [
+			#		1,
+			#		data["items"][iid].get("up")
+			#		]})
+			#else:
+			#	summary[data["items"][iid]["item"]][0] += 1
 				
 
 	for cid, con in enumerate(sorted(cons)):
@@ -89,7 +89,16 @@ def render(res, params):
 		worksheets[cid].write_row('A{}'.format(cr+1), item_fields, item_header_format)
 		cr += 2
 		start = cr
+
 		for contract in cons[con]:
+			if not contract[0] in summary:
+				summary.update({contract[0] : [
+					contract[1],
+					contract[2]
+					]})
+			else:
+				summary[contract[0]][0] += contract[1]
+
 			worksheets[cid].write_row('A{}'.format(cr), [contract[0], contract[1]], format_text)
 			worksheets[cid].write_row('C{}'.format(cr), [contract[2], contract[3]], item_format_money)
 			cr += 1
@@ -112,6 +121,8 @@ def render(res, params):
 	worksheets[-1].merge_range('A{}:D{}'.format(cr,cr), 'Summary', item_header_format)
 	worksheets[-1].write_row('A{}'.format(cr+1), item_fields, item_header_format)
 	cr += 2
+
+	print(summary)
 
 	for sid, sitem in enumerate(sorted(summary)):
 		d = [sitem]
