@@ -59,9 +59,15 @@ def render(res, params):
 
 	for iid, val in enumerate(data["items"]):
 		if str(data["items"][iid]["contractyear"]) == year:
-			rKey = str(data["items"][iid]["municipality"]) + ' - ' + str(data["items"][iid]["contract item"]) + ' - ' + str(data["items"][iid]["road side"])
+			rKey = str(str(data["items"][iid].get("municipality")) + ' - ' + str(data["items"][iid].get("contract item")) + ' - ' + str(data["items"][iid].get("road")) + ' - ' + str(data["items"][iid].get("road side")))
 			if not rKey in regions:
 				regions.update({rKey : [[
+					data["items"][iid].get("municipality"),
+					data["items"][iid].get("contract item"),
+					data["items"][iid].get("road"),
+					data["items"][iid].get("between1"),
+					data["items"][iid].get("between2"),
+					data["items"][iid].get("road side"),
 					data["items"][iid].get("tree id"),
 					data["items"][iid].get("tag colour"),
 					data["items"][iid].get("tag number"),
@@ -72,6 +78,12 @@ def render(res, params):
 					]]})
 			else:
 				regions[rKey].append([
+					data["items"][iid].get("municipality"),
+					data["items"][iid].get("contract item"),
+					data["items"][iid].get("road"),
+					data["items"][iid].get("between1"),
+					data["items"][iid].get("between2"),
+					data["items"][iid].get("road side"),
 					data["items"][iid].get("tree id"),
 					data["items"][iid].get("tag colour"),
 					data["items"][iid].get("tag number"),
@@ -83,11 +95,17 @@ def render(res, params):
 				
 
 	for reg_id, reg in enumerate(sorted(regions)):
-		worksheet.merge_range('A{}:G{}'.format(cr,cr), reg, item_header_format)
-		worksheet.write_row('A{}'.format(cr+1), item_fields, item_header_format)
+		worksheet.merge_range('A{}:C{}'.format(cr, cr), "Municipality: " + str(regions[reg][0][0]), item_header_format)
+		worksheet.merge_range('A{}:C{}'.format(cr+1, cr+1), "Contract Item No.: " + str(regions[reg][0][1]), item_header_format)
+		(worksheet.merge_range('A{}:C{}'.format(cr+2, cr+2), "Regional Road: " + str(regions[reg][0][2]) + " Between " + 
+			str(regions[reg][0][3]) + " and " + str(regions[reg][0][4]), item_header_format))
 		cr += 2
+
+		worksheet.write_row('A{}'.format(cr+1), item_fields, item_header_format)
+		cr += 1
+
 		for tree in regions[reg]:
-			worksheet.write_row('A{}'.format(cr), tree, format_text)
+			worksheet.write_row('A{}'.format(cr), tree[6:], format_text)
 			cr += 1
 		cr += 1
 		

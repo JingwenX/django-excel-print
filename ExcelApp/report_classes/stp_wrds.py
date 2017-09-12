@@ -59,11 +59,14 @@ def render(res, params):
 
 	for iid, val in enumerate(data["items"]):
 		if str(data["items"][iid]["contractyear"]) == year:
-			rKey = str(data["items"][iid]["municipality"]) + ' - ' + str(data["items"][iid]["contract item"]) + ' - ' + str(data["items"][iid]["road side"])
+			rKey = str(data["items"][iid].get("municipality")) + ' - ' + str(data["items"][iid].get("contract item")) + ' - ' + str(data["items"][iid].get("road side"))
 			if not rKey in regions:
 				regions.update({rKey : {data["items"][iid]["deficiency"] : [data["items"][iid].get("deficiency type"), 1]}})
 			else:
-				regions[rKey][data["items"][iid]["deficiency"]][1] += 1
+				if data["items"][iid]["deficiency"] in regions[rKey]:
+					regions[rKey][data["items"][iid]["deficiency"]][1] += 1
+				else:
+					regions[rKey].update({data["items"][iid]["deficiency"]: [data["items"][iid].get("deficiency type"), 1]})
 				
 
 	for reg_id, reg in enumerate(sorted(regions)):
