@@ -93,6 +93,7 @@ def render(res, params):
 					data["items"][iid].get("required repair")
 					])
 				
+	breaks = []
 
 	for reg_id, reg in enumerate(sorted(regions)):
 		worksheet.merge_range('A{}:C{}'.format(cr, cr), "Municipality: " + str(regions[reg][0][0]), item_header_format)
@@ -107,8 +108,12 @@ def render(res, params):
 		for tree in regions[reg]:
 			worksheet.write_row('A{}'.format(cr), tree[6:], format_text)
 			cr += 1
+
+		breaks.append(cr)
 		cr += 1
-		
+	
+	worksheet.set_h_pagebreaks(breaks)
+
 	workbook.close()
 
 	xlsx_data = output.getvalue()

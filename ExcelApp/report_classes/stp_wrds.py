@@ -68,7 +68,7 @@ def render(res, params):
 				else:
 					regions[rKey].update({data["items"][iid]["deficiency"]: [data["items"][iid].get("deficiency type"), 1]})
 				
-
+	breaks = []
 	for reg_id, reg in enumerate(sorted(regions)):
 		worksheet.merge_range('A{}:C{}'.format(cr,cr), reg, item_header_format)
 		worksheet.write_row('A{}'.format(cr+1), item_fields, item_header_format)
@@ -82,8 +82,10 @@ def render(res, params):
 		worksheet.write('A{}'.format(cr), "Subtotal: ", subtotal_format)
 		worksheet.write('B{}'.format(cr), " ", subtotal_format)
 		worksheet.write_formula('C{}'.format(cr), "=SUM(C{}:C{})".format(start, cr-1), subtotal_format)
+		breaks.append(cr)
 		cr += 2
-		
+	
+	worksheet.set_h_pagebreaks(breaks)
 	workbook.close()
 
 	xlsx_data = output.getvalue()
