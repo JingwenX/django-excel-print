@@ -30,6 +30,7 @@ def render(res, params):
 	format_text = workbook.add_format(stp_config.CONST.FORMAT_TEXT)
 	format_num = workbook.add_format(stp_config.CONST.FORMAT_NUM)
 	item_header_format = workbook.add_format(stp_config.CONST.ITEM_HEADER_FORMAT)		
+	subtitle_format = workbook.add_format(stp_config.CONST.SUBTITLE_FORMAT)
 
 	#set column width
 	worksheet.set_column('A:A', 12.56)
@@ -80,7 +81,7 @@ def render(res, params):
 	item_fields = ['Contract Item No.', 'Location', 'RINs', 'Description', 'Item', 'Quantity']
 	#loop over all programs
 	for afid, forester in enumerate(foresters.keys()):
-		worksheet.merge_range('A' + str(cr) + ':F' + str(cr), str('Municipality: ' + forester), format_text) #was format_text
+		worksheet.merge_range('A' + str(cr) + ':F' + str(cr), str('Municipality: ' + forester), subtitle_format) #was format_text
 		worksheet.write_row('A' + str(cr+1), item_fields, item_header_format)
 		cr += 2
 
@@ -122,6 +123,7 @@ def render(res, params):
 			worksheet.merge_range('B'+ str(merge_top_idx) + ':B' + str(merge_bottom_idx) , location, format_text)
 			worksheet.merge_range('C'+ str(merge_top_idx) + ':C' + str(merge_bottom_idx) , rins, format_text)
 			worksheet.merge_range('D'+ str(merge_top_idx) + ':D' + str(merge_bottom_idx) , description, format_text)
+			worksheet.set_row(cr,stp_config.CONST.BREAKDOWN_INBETWEEN_HEIGHT)
 			
 
 		cr += 1

@@ -95,16 +95,16 @@ def render(res, params):
 			worksheet.write('C' + str(cr), a3 if a3 is not None else "", format_text)
 			
 			a4 = data["items"][idx]["required"] if "required" in data["items"][idx].keys() else ""
-			worksheet.write('D' + str(cr), a4 if a4 is not None else "", format_text)
+			worksheet.write('D' + str(cr), a4 if a4 is not None else "", format_num)
 			
 			a5 = data["items"][idx]["tagged"] if "tagged" in data["items"][idx].keys() else ""
-			worksheet.write('E' + str(cr), a5 if a5 is not None else "", format_text)
+			worksheet.write('E' + str(cr), a5 if a5 is not None else "", format_num)
 			
 			a6 = data["items"][idx]["substituted"] if "substituted" in data["items"][idx].keys() else ""
-			worksheet.write('F' + str(cr), a6 if a6 is not None else "", format_text)
+			worksheet.write('F' + str(cr), a6 if a6 is not None else "", format_num)
 
 			a7 = data["items"][idx]["left"] if "left" in data["items"][idx].keys() else ""
-			worksheet.write('G' + str(cr), a7 if a7 is not None else "", format_text)
+			worksheet.write('G' + str(cr), a7 if a7 is not None else "", format_num)
 
 			cr += 1
 			merge_bottom_idx = cr - 1
@@ -129,6 +129,8 @@ def render(res, params):
 	# worksheet.write_row('A'+str(cr_unassigned_header), item_fields2, item_header_format)
 	cr+=1
 
+	sub_table_total = 0
+
 	for idx, val in enumerate(data["items"]):
 		if data["items"][idx]["table_name"] == "UNASSIGNED":
 			if data["items"][idx]["sub"] >0:
@@ -149,10 +151,17 @@ def render(res, params):
 				worksheet.write('D' + str(cr), a4 if a4 is not None else "", format_text)
 				
 				a5 = data["items"][idx]["sub"] if "sub" in data["items"][idx].keys() else ""
-				worksheet.write('E' + str(cr), a5 if a5 is not None else "", format_text)
-			
+				worksheet.write('E' + str(cr), a5 if a5 is not None else "", format_num)
+	
+				sub_table_total += data["items"][idx]["sub"] if "sub" in data["items"][idx].keys() else 0
+
 
 				cr += 1
+
+	if sub_table_total != 0:
+		worksheet.write('A' + str(cr), "Total:", subtotal_format) #write total
+		worksheet.write_row('B' + str(cr)+':D' + str(cr), ["", "", ""], subtotal_format)
+		worksheet.write('E' + str(cr), sub_table_total, subtotal_format) #write total
 
 	#====ending=======
 

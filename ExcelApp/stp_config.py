@@ -69,6 +69,7 @@ class const(object):
 		'text_wrap': True,
 		'border':True,
 		'border_color':'gray',
+		'num_format': '#,##0',
 		'locked': 0}
 
 	FORMAT_TEXT_LOCK = {'font_name':'Calibri',

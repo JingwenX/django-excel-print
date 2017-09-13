@@ -42,8 +42,8 @@ def render(res, params):
 	#set column width
 	right_most_idx = 'T'
 	title= ["New or Updated Information", "RIN", "Municipality", "Main Road", "Between Road 1", "Between Road 2", "Roadside", "Location Notes", "Deciduous with Watering Bags", "Conifers with Blue Flagging", "Other Items with Blue Flagging", "Total Items", "Date Watered", "24 Hr Time Watered", "Truck ID", "Total Items Reported", "Total Items Confirmed", "Comments"]
-	worksheet.write('A1', "SEQ_ID", format_text_lock_hidden)
-	worksheet.write_row('B1', title, format_text)
+	worksheet.write_row('A1', "SEQ_ID", format_text_lock_hidden)
+	worksheet.write_row('B1', title, format_text_lock)
 
 	col_idx = ['A', 'B', 'C',  'D',   'E',   'F',   'G',   'H',   'I',   'J', 'K',    'L', 'M',   'N',  'O',  'P',  'Q',   'R', 'S']
 	col_wid = [0, 16.89, 8.33, 18.33, 24.56, 31.89, 31.89, 10.89, 20.22, 11.22, 12.11, 12.11,7.89, 9.67, 9.89, 8.33, 9.33, 10.33, 10.33]
@@ -76,11 +76,11 @@ def render(res, params):
 
 		a2 = str(data["items"][idx]["new_or_updated_rin"]) if "new_or_updated_rin" in data["items"][idx].keys() else ""
 		if a2 == '1':
-			worksheet.write('B' + str(cr), "New" if a2 is not None else "", format_text)
+			worksheet.write('B' + str(cr), "New" if a2 is not None else "", format_text_lock)
 		elif a2 == '2':
-			worksheet.write('B' + str(cr), "Updated" if a2 is not None else "", format_text)
+			worksheet.write('B' + str(cr), "Updated" if a2 is not None else "", format_text_lock)
 		else:
-			worksheet.write('B' + str(cr), "", format_text)
+			worksheet.write('B' + str(cr), "", format_text_lock)
 		
 		a3 = data["items"][idx]["rin"] if "rin" in data["items"][idx].keys() else ""
 		worksheet.write('C' + str(cr), a3 if a3 is not None else "", format_text_lock)
