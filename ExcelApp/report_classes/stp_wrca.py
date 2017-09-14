@@ -36,6 +36,7 @@ def render(res, params):
 	item_format_money = workbook.add_format(stp_config.CONST.ITEM_FORMAT_MONEY)
 	subtitle_format = workbook.add_format(stp_config.CONST.SUBTITLE_FORMAT)
 	subtotal_format = workbook.add_format(stp_config.CONST.SUBTOTAL_FORMAT)
+	subtotal_format_text = workbook.add_format(stp_config.CONST.SUBTOTAL_FORMAT_TEXT)
 	subtotal_format_money = workbook.add_format(stp_config.CONST.SUBTOTAL_FORMAT_MONEY)
 
 	#HEADER
@@ -82,20 +83,20 @@ def render(res, params):
 		stp_config.const.write_gen_title(title, workbook, worksheets[cid], rightmost_idx, year, con_num)
 
 		#additional header image
-		worksheets[cid].insert_image('B1', stp_config.CONST.ENV_LOGO,{'x_offset':180,'y_offset':18, 'x_scale':0.5,'y_scale':0.5, 'positioning':2})
+		worksheets[cid].insert_image('D1', stp_config.CONST.ENV_LOGO,{'x_offset':100,'y_offset':18, 'x_scale':0.5,'y_scale':0.5, 'positioning':2})
 		cr = 7
 
 		worksheets[cid].merge_range('A{}:E{}'.format(cr,cr), con, item_header_format)
 		worksheets[cid].write_row('A{}'.format(cr+1), item_fields, item_header_format)
 		cr += 2
 
-		for hid, hel in enumerate(cons[con]):
+		for hid, hel in enumerate(sorted(cons[con])):
 			d = [str(hel) + ' - ' + str(cons[con][hel][0])]
 			d.extend(cons[con][hel][1:])
 			worksheets[cid].write_row('A{}'.format(cr), d, format_text)
 			cr += 1
 
-		worksheets[cid].write('A' + str(cr), 'Totals: ', subtotal_format)
+		worksheets[cid].write('A' + str(cr), 'Totals: ', subtotal_format_text)
 		worksheets[cid].write_formula('B' + str(cr), '=SUM(B9:B' + str(cr-1) + ')', subtotal_format)
 		worksheets[cid].write_formula('C' + str(cr), '=SUM(C9:C' + str(cr-1) + ')', subtotal_format)
 		worksheets[cid].write_formula('D' + str(cr), '=SUM(D9:D' + str(cr-1) + ')', subtotal_format)

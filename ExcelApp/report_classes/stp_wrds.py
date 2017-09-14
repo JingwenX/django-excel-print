@@ -36,6 +36,7 @@ def render(res, params):
 	item_format_money = workbook.add_format(stp_config.CONST.ITEM_FORMAT_MONEY)
 	subtitle_format = workbook.add_format(stp_config.CONST.SUBTITLE_FORMAT)
 	subtotal_format = workbook.add_format(stp_config.CONST.SUBTOTAL_FORMAT)
+	subtotal_format_text = workbook.add_format(stp_config.CONST.SUBTOTAL_FORMAT_TEXT)
 	subtotal_format_money = workbook.add_format(stp_config.CONST.SUBTOTAL_FORMAT_MONEY)
 
 	#HEADER
@@ -79,7 +80,7 @@ def render(res, params):
 			d.extend(regions[reg][deficiency])
 			worksheet.write_row('A{}'.format(cr), d, format_text)
 			cr += 1
-		worksheet.write('A{}'.format(cr), "Subtotal: ", subtotal_format)
+		worksheet.write('A{}'.format(cr), "Subtotal: ", subtotal_format_text)
 		worksheet.write('B{}'.format(cr), " ", subtotal_format)
 		worksheet.write_formula('C{}'.format(cr), "=SUM(C{}:C{})".format(start, cr-1), subtotal_format)
 		breaks.append(cr)

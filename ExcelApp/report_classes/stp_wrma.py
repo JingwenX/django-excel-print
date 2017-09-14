@@ -36,6 +36,7 @@ def render(res, params):
 	item_format_money = workbook.add_format(stp_config.CONST.ITEM_FORMAT_MONEY)
 	subtitle_format = workbook.add_format(stp_config.CONST.SUBTITLE_FORMAT)
 	subtotal_format = workbook.add_format(stp_config.CONST.SUBTOTAL_FORMAT)
+	subtotal_format_text = workbook.add_format(stp_config.CONST.SUBTOTAL_FORMAT_TEXT)
 	subtotal_format_money = workbook.add_format(stp_config.CONST.SUBTOTAL_FORMAT_MONEY)
 
 	#HEADER
@@ -44,7 +45,7 @@ def render(res, params):
 	stp_config.const.write_gen_title(title, workbook, worksheet, rightmost_idx, year, con_num)
 
 	#additional header image
-	worksheet.insert_image('B1', stp_config.CONST.ENV_LOGO,{'x_offset':180,'y_offset':18, 'x_scale':0.5,'y_scale':0.5, 'positioning':2})
+	worksheet.insert_image('D1', stp_config.CONST.ENV_LOGO,{'x_offset':100,'y_offset':18, 'x_scale':0.5,'y_scale':0.5, 'positioning':2})
 
 	data = res
 
@@ -90,7 +91,7 @@ def render(res, params):
 			worksheet.write_row('A{}'.format(cr), d, format_text)
 			cr += 1
 
-		worksheet.write('A' + str(cr), 'Totals: ', subtotal_format)
+		worksheet.write('A' + str(cr), 'Totals: ', subtotal_format_text)
 		worksheet.write_formula('B' + str(cr), '=SUM(B' + str(start) + ':B' + str(cr-1) + ')', subtotal_format)
 		worksheet.write_formula('C' + str(cr), '=SUM(C' + str(start) + ':C' + str(cr-1) + ')', subtotal_format)
 		worksheet.write_formula('D' + str(cr), '=SUM(D' + str(start) + ':D' + str(cr-1) + ')', subtotal_format)
