@@ -29,7 +29,7 @@ def render(res, params):
 	worksheet = workbook.add_worksheet()
 
 	data = res
-	title = 'Extra Work Payment'
+	title = 'Extra Work Payment - Payment Report No. ' + assign_num
 
 	#MAIN DATA FORMATING
 	format_text = workbook.add_format(stp_config.CONST.FORMAT_TEXT)
@@ -38,6 +38,7 @@ def render(res, params):
 	item_format_money = workbook.add_format(stp_config.CONST.ITEM_FORMAT_MONEY)
 	subtotal_format = workbook.add_format(stp_config.CONST.SUBTOTAL_FORMAT)
 	subtotal_format_money = workbook.add_format(stp_config.CONST.SUBTOTAL_FORMAT_MONEY)
+	subtitle_format = workbook.add_format(stp_config.CONST.SUBTITLE_FORMAT)
 
 	#set column width
 	rightmost_idx = 'G'
@@ -46,7 +47,7 @@ def render(res, params):
 	#additional header image
 	worksheet.insert_image('D1', stp_config.CONST.ENV_LOGO,{'x_offset':-35,'y_offset':18, 'x_scale':0.5,'y_scale':0.5, 'positioning':2})
 	
-	item_fields = ["Contract Item No.", "Location", "Description", "Unit", "Quantity", "Unit Price", "Payment"]
+	item_fields = ["Contract Item No.", "Location", "Description", "Unit", "Quantity", "Unit Price", "Total Cost"]
 	#worksheet.write_row('A1', title, format_text)
 
 	col_wid = [13.22, 54.11, 23.67, 7.33, 8.22, 8.56, 19]
@@ -75,7 +76,8 @@ def render(res, params):
 
 	tag_list  = ["contract_item_id", "contract_item_num", "location", "municipality", "description", "measurement", "qty_commited_to_pay", "price", "payment"]
 	for mid, mun in enumerate(mun_list):
-		worksheet.merge_range('A' + str(cr) + ':' + rightmost_idx + str(cr), str('Municipality: ' + mun), format_text) #was format_text
+		worksheet.merge_range('A' + str(cr) + ':' + rightmost_idx + str(cr), str('Municipality: ' + mun), subtitle_format) #was format_text
+		worksheet.set_row(cr-1,stp_config.CONST.BREAKDOWN_SUBTITLE_HEIGHT)
 		worksheet.write_row('A' + str(cr+1), item_fields, item_header_format)
 		cr += 2
 
@@ -127,7 +129,9 @@ def render(res, params):
 		worksheet.write_row('B' + str(cr)+':G' + str(cr), ["", "", "", "", ""], subtotal_format)
 		worksheet.write('E' + str(cr), mun_total_qty, subtotal_format) #write total
 		worksheet.write('G' + str(cr), mun_total_payment, subtotal_format_money) #write total
-		cr += 2
+		cr += 1
+		worksheet.set_row(cr-1,stp_config.CONST.BREAKDOWN_INBETWEEN_HEIGHT)
+		cr += 1
 		
 
 	#write grand total

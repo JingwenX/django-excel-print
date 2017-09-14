@@ -3,6 +3,9 @@ import datetime
 class const(object):
 	# API PREFIX
 	API_URL_PREFIX = 'http://ykr-apexp1/ords/'
+	# breakdown header height
+	BREAKDOWN_SUBTITLE_HEIGHT = 23.4
+	BREAKDOWN_INBETWEEN_HEIGHT = 31.2
 
 	# Header and Title format
 	
@@ -66,6 +69,7 @@ class const(object):
 		'text_wrap': True,
 		'border':True,
 		'border_color':'gray',
+		'num_format': '#,##0',
 		'locked': 0}
 
 	FORMAT_TEXT_LOCK = {'font_name':'Calibri',
@@ -105,9 +109,10 @@ class const(object):
 			'font_size': 14,
 			'bold':True,
 			'font_color':'black',
-			'border':2,
+			#'border':2,
 			'align':'left',
-			'bg_color':'#C0C0C0',
+			'valign':'vcenter',
+			#'bg_color':'#C0C0C0',
 		}
 	ITEM_FORMAT_MONEY = {
 			'font_name':'Calibri',
@@ -117,6 +122,7 @@ class const(object):
 			'num_format': '$#,##0.00',
 			'border' : True,
 			'border_color':'gray',
+			'valign':'vcenter',
 		}
 	SUBTOTAL_FORMAT = {
 			'font_name':'Calibri',
@@ -124,8 +130,8 @@ class const(object):
 			'font_color':'black',
 			'align':'center',
 			'valign': 'vcenter',
-			'border' : True,
-			'border_color':'gray',
+			'border' : 2,
+			'border_color':'black',
 			'bold' : True,
 			'num_format': '#,##0',
 			#'bg_color':'#D3D3D3',
@@ -149,8 +155,8 @@ class const(object):
 			'align':'center',
 			'valign': 'vcenter',
 			#'bg_color':'#D3D3D3',
-			'border' : True,
-			'border_color':'gray',
+			'border' : 2,
+			'border_color':'black',
 			'num_format': '$#,##0.00',
 			'bold' : True,
 		}
