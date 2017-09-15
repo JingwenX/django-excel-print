@@ -29,6 +29,7 @@ def render(res, params):
 	#MAIN DATA FORMATING
 	format_text = workbook.add_format(stp_config.CONST.FORMAT_TEXT)
 	format_num = workbook.add_format(stp_config.CONST.FORMAT_NUM)
+	format_num2 = workbook.add_format(stp_config.CONST.FORMAT_NUM2)
 	item_header_format = workbook.add_format(stp_config.CONST.ITEM_HEADER_FORMAT)
 	##Hunter's additional formatting
 	item_format = workbook.add_format(stp_config.CONST.ITEM_FORMAT)
@@ -86,14 +87,15 @@ def render(res, params):
 		worksheets[cid].insert_image('D1', stp_config.CONST.ENV_LOGO,{'x_offset':100,'y_offset':18, 'x_scale':0.5,'y_scale':0.5, 'positioning':2})
 		cr = 7
 
-		worksheets[cid].merge_range('A{}:E{}'.format(cr,cr), con, item_header_format)
+		worksheets[cid].merge_range('A{}:E{}'.format(cr,cr), con, subtitle_format)
 		worksheets[cid].write_row('A{}'.format(cr+1), item_fields, item_header_format)
 		cr += 2
 
 		for hid, hel in enumerate(sorted(cons[con])):
 			d = [str(hel) + ' - ' + str(cons[con][hel][0])]
 			d.extend(cons[con][hel][1:])
-			worksheets[cid].write_row('A{}'.format(cr), d, format_text)
+			worksheets[cid].write('A{}'.format(cr), d[0], format_text)
+			worksheets[cid].write_row('B{}'.format(cr), d[1:], format_num)
 			cr += 1
 
 		worksheets[cid].write('A' + str(cr), 'Totals: ', subtotal_format_text)

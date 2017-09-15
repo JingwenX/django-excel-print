@@ -29,6 +29,7 @@ def render(res, params):
 	#MAIN DATA FORMATING
 	format_text = workbook.add_format(stp_config.CONST.FORMAT_TEXT)
 	format_num = workbook.add_format(stp_config.CONST.FORMAT_NUM)
+	format_num2 = workbook.add_format(stp_config.CONST.FORMAT_NUM2)
 	item_header_format = workbook.add_format(stp_config.CONST.ITEM_HEADER_FORMAT)
 	##Hunter's additional formatting
 	item_format = workbook.add_format(stp_config.CONST.ITEM_FORMAT)
@@ -51,7 +52,7 @@ def render(res, params):
 	worksheet.set_column('A:G', 25)
 	worksheet.set_row(0,36)
 	worksheet.set_row(1,36)
-	item_fields = ['Tree ID', 'Tag Colour', 'Tag Number', 'Item', 'Health Rating', 'Deficiency', 'Required Repair']
+	item_fields = ['Tag Number', 'Tag Colour', 'Item', 'Tree ID', 'Health Rating', 'Deficiency', 'Required Repair']
 
 	#MAIN DATA
 	cr = 7
@@ -100,13 +101,17 @@ def render(res, params):
 		worksheet.merge_range('A{}:C{}'.format(cr+1, cr+1), "Contract Item No.: " + str(regions[reg][0][1]), item_header_format)
 		(worksheet.merge_range('A{}:C{}'.format(cr+2, cr+2), "Regional Road: " + str(regions[reg][0][2]) + " Between " + 
 			str(regions[reg][0][3]) + " and " + str(regions[reg][0][4]), item_header_format))
-		cr += 2
+		cr += 3
 
-		worksheet.write_row('A{}'.format(cr+1), item_fields, item_header_format)
+		worksheet.write_row('A{}'.format(cr), item_fields, item_header_format)
 		cr += 1
 
 		for tree in regions[reg]:
-			worksheet.write_row('A{}'.format(cr), tree[6:], format_text)
+			worksheet.write('A{}'.format(cr), tree[6], format_num2)
+			worksheet.write('B{}'.format(cr), tree[7], format_text)
+			worksheet.write('C{}'.format(cr), tree[8], format_text)
+			worksheet.write('D{}'.format(cr), tree[9], format_num2)
+			worksheet.write_row('E{}'.format(cr), tree[10:], format_text)
 			cr += 1
 
 		breaks.append(cr)

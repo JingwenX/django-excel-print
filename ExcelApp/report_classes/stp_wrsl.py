@@ -29,6 +29,7 @@ def render(res, params):
 	#MAIN DATA FORMATING
 	format_text = workbook.add_format(stp_config.CONST.FORMAT_TEXT)
 	format_num = workbook.add_format(stp_config.CONST.FORMAT_NUM)
+	format_num2 = workbook.add_format(stp_config.CONST.FORMAT_NUM2)
 	item_header_format = workbook.add_format(stp_config.CONST.ITEM_HEADER_FORMAT)
 	##Hunter's additional formatting
 	item_format = workbook.add_format(stp_config.CONST.ITEM_FORMAT)
@@ -71,10 +72,11 @@ def render(res, params):
 	for sid, spec in enumerate(sorted(species)):
 		d = [spec]
 		d.extend(species[spec])
-		worksheet.write_row('A{}'.format(cr), d, format_text)
+		worksheet.write_row('A{}'.format(cr), [d[0], d[1]], format_text)
+		worksheet.write('C{}'.format(cr), d[2], format_num)
 		cr += 1
 
-	worksheet.write('A{}'.format(cr), "Subtotal: ", subtotal_format)
+	worksheet.write('A{}'.format(cr), "Subtotal: ", subtotal_format_text)
 	worksheet.write('B{}'.format(cr), " ", subtotal_format)
 	worksheet.write_formula('C{}'.format(cr), "=SUM(C{}:C{})".format(8, cr-1), subtotal_format)
 		

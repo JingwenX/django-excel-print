@@ -29,6 +29,7 @@ def render(res, params):
 	#MAIN DATA FORMATING
 	format_text = workbook.add_format(stp_config.CONST.FORMAT_TEXT)
 	format_num = workbook.add_format(stp_config.CONST.FORMAT_NUM)
+	format_num2 = workbook.add_format(stp_config.CONST.FORMAT_NUM2)
 	item_header_format = workbook.add_format(stp_config.CONST.ITEM_HEADER_FORMAT)
 	##Hunter's additional formatting
 	item_format = workbook.add_format(stp_config.CONST.ITEM_FORMAT)
@@ -71,14 +72,15 @@ def render(res, params):
 				
 	breaks = []
 	for reg_id, reg in enumerate(sorted(regions)):
-		worksheet.merge_range('A{}:C{}'.format(cr,cr), reg, item_header_format)
+		worksheet.merge_range('A{}:C{}'.format(cr,cr), reg, subtitle_format)
 		worksheet.write_row('A{}'.format(cr+1), item_fields, item_header_format)
 		cr += 2
 		start = cr
 		for deficiency in regions[reg]:
 			d = [deficiency]
 			d.extend(regions[reg][deficiency])
-			worksheet.write_row('A{}'.format(cr), d, format_text)
+			worksheet.write_row('A{}'.format(cr), [d[0], d[1]], format_text)
+			worksheet.write('C{}'.format(cr), d[2], format_num)
 			cr += 1
 		worksheet.write('A{}'.format(cr), "Subtotal: ", subtotal_format_text)
 		worksheet.write('B{}'.format(cr), " ", subtotal_format)

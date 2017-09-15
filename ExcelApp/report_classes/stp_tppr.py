@@ -35,6 +35,7 @@ def render(res, params):
 	item_format_money = workbook.add_format(stp_config.CONST.ITEM_FORMAT_MONEY)
 	subtitle_format = workbook.add_format(stp_config.CONST.SUBTITLE_FORMAT)
 	subtotal_format = workbook.add_format(stp_config.CONST.SUBTOTAL_FORMAT)
+	subtotal_format_text = workbook.add_format(stp_config.CONST.SUBTOTAL_FORMAT_TEXT)
 	subtotal_format_money = workbook.add_format(stp_config.CONST.SUBTOTAL_FORMAT_MONEY)
 
 	#HEADER
@@ -63,16 +64,7 @@ def render(res, params):
 					data["items"][iid].get("up"),
 					data["items"][iid].get("total")
 					])
-
-			#if not data["items"][iid]["item"] in summary:
-			#	summary.update({data["items"][iid]["item"] : [
-			#		1,
-			#		data["items"][iid].get("up")
-			#		]})
-			#else:
-			#	summary[data["items"][iid]["item"]][0] += 1
 				
-
 	for cid, con in enumerate(sorted(cons)):
 		worksheets.append(workbook.add_worksheet(con[:31]))
 
@@ -102,7 +94,7 @@ def render(res, params):
 			worksheets[cid].write_row('A{}'.format(cr), [contract[0], contract[1]], format_text)
 			worksheets[cid].write_row('C{}'.format(cr), [contract[2], contract[3]], item_format_money)
 			cr += 1
-		worksheets[cid].write('A{}'.format(cr), "Subtotal: ", subtotal_format)
+		worksheets[cid].write('A{}'.format(cr), "Subtotal: ", subtotal_format_text)
 		worksheets[cid].write_formula('B{}'.format(cr), "=SUM(B{}:B{})".format(start, cr - 1), subtotal_format)
 		worksheets[cid].write('C{}'.format(cr), " ", subtotal_format_money)
 		worksheets[cid].write_formula('D{}'.format(cr), "=SUM(D{}:D{})".format(start, cr - 1), subtotal_format_money)
@@ -132,7 +124,7 @@ def render(res, params):
 		worksheets[-1].write_formula('D{}'.format(cr), '=B{}*C{}'.format(cr, cr), item_format_money)
 		cr += 1
 
-	worksheets[-1].write('A{}'.format(cr), 'Grand Total: ', subtotal_format)
+	worksheets[-1].write('A{}'.format(cr), 'Grand Total: ', subtotal_format_text)
 	worksheets[-1].write_formula('B{}'.format(cr), '=SUM(B9:B{})'.format(cr-1), subtotal_format)
 	worksheets[-1].write('C{}'.format(cr), ' ', subtotal_format)
 	worksheets[-1].write_formula('D{}'.format(cr), '=SUM(D9:D{})'.format(cr-1), subtotal_format_money)

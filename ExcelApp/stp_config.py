@@ -72,6 +72,15 @@ class const(object):
 		'num_format': '#,##0',
 		'locked': 0}
 
+	FORMAT_NUM2 = {'font_name':'Calibri',
+		'font_size':12,
+		'align': 'center',
+		'valign': 'vcenter',
+		'text_wrap': True,
+		'border':True,
+		'border_color':'gray',
+		'locked': 0}
+
 	FORMAT_TEXT_LOCK = {'font_name':'Calibri',
 		'font_size':12,
 		'align': 'left',
@@ -142,8 +151,8 @@ class const(object):
 			'font_color':'black',
 			'align':'left',
 			'valign': 'vcenter',
-			'border' : True,
-			'border_color':'gray',
+			'border' : 2,
+			'border_color':'black',
 			'bold' : True,
 			'num_format': '#,##0',
 			#'bg_color':'#D3D3D3',
@@ -226,7 +235,7 @@ class const(object):
 		format_text = workbook.add_format(FORMAT_TEXT) #text left align
 		format_num = workbook.add_format(FORMAT_NUM) #number center align
 		#insert YORKREGION logo
-		worksheet.insert_image('A1',r'\\ykr-apexp1\staticenv\York_Logo.png',{'x_offset':10,'y_offset':10,'x_scale':0.25,'y_scale':0.25})
+		worksheet.insert_image('A1',r'\\ykr-apexp1\staticenv\York_Logo.png',{'x_offset':10,'y_offset':22,'x_scale':0.25,'y_scale':0.25})
 
 		worksheet.merge_range('A1:'+ rightmost_idx + '2','Natural Heritage and Forestry Division, Environmental Services Department', main_header1_format)
 		worksheet.merge_range('A4:' + rightmost_idx + '4', str(con_num) + ' (' + str(year) +') - Street Tree Planting and Establishment Activities', main_header2_format)

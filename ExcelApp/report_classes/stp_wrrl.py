@@ -29,6 +29,7 @@ def render(res, params):
 	#MAIN DATA FORMATING
 	format_text = workbook.add_format(stp_config.CONST.FORMAT_TEXT)
 	format_num = workbook.add_format(stp_config.CONST.FORMAT_NUM)
+	format_num2 = workbook.add_format(stp_config.CONST.FORMAT_NUM2)
 	item_header_format = workbook.add_format(stp_config.CONST.ITEM_HEADER_FORMAT)
 	##Hunter's additional formatting
 	item_format = workbook.add_format(stp_config.CONST.ITEM_FORMAT)
@@ -50,7 +51,7 @@ def render(res, params):
 
 	for iid, val in enumerate(data["items"]):
 		if str(data["items"][iid]["contractyear"]) == year:
-			rKey = str(data["items"][iid]["municipality"]) + '-' + str(data["items"][iid]["contract item"]) + '-' + str(data["items"][iid]["road side"])
+			rKey = str(data["items"][iid].get("municipality")) + '-' + str(data["items"][iid].get("contract item")) + '-' + str(data["items"][iid].get("road side"))
 			if not rKey in regions:
 				regions.update({rKey : [[
 					data["items"][iid].get("tag number"),
@@ -70,7 +71,7 @@ def render(res, params):
 	for reg_id, reg in enumerate(sorted(regions)):
 		worksheets.append(workbook.add_worksheet(reg[:31]))
 
-		worksheets[reg_id].insert_image('C1', stp_config.CONST.ENV_LOGO,{'x_offset':240,'y_offset':18, 'x_scale':0.5,'y_scale':0.5, 'positioning':2})
+		worksheets[reg_id].insert_image('C1', stp_config.CONST.ENV_LOGO,{'x_offset':180,'y_offset':18, 'x_scale':0.5,'y_scale':0.5, 'positioning':2})
 
 		worksheets[reg_id].set_column('A:D', 35)
 		worksheets[reg_id].set_row(0,36)
@@ -85,7 +86,8 @@ def render(res, params):
 		cr += 2
 
 		for tree in regions[reg]:
-			worksheets[reg_id].write_row('A{}'.format(cr), tree, format_text)
+			worksheets[reg_id].write('A{}'.format(cr), tree[0], format_num2)
+			worksheets[reg_id].write_row('B{}'.format(cr), tree[1:], format_text)
 			cr += 1
 		cr += 1
 		

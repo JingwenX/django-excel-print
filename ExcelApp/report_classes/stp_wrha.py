@@ -29,6 +29,7 @@ def render(res, params):
 	#MAIN DATA FORMATING
 	format_text = workbook.add_format(stp_config.CONST.FORMAT_TEXT)
 	format_num = workbook.add_format(stp_config.CONST.FORMAT_NUM)
+	format_num2 = workbook.add_format(stp_config.CONST.FORMAT_NUM2)
 	item_header_format = workbook.add_format(stp_config.CONST.ITEM_HEADER_FORMAT)
 	##Hunter's additional formatting
 	item_format = workbook.add_format(stp_config.CONST.ITEM_FORMAT)
@@ -82,14 +83,15 @@ def render(res, params):
 						muns[mun][data["items"][item_id]["health"]][4] += 1 if data["items"][item_id].get("warrantyaction") == 'Missing Tree' else 0
 
 	for mid, mun in enumerate(muns):
-		worksheet.merge_range('A{}:E{}'.format(cr,cr), mun, item_header_format)
+		worksheet.merge_range('A{}:E{}'.format(cr,cr), mun, subtitle_format)
 		worksheet.write_row('A{}'.format(cr+1), item_fields, item_header_format)
 		cr += 2
 		start = cr
 		for hid, hel in enumerate(sorted(muns[mun])):
 			d = [str(hel) + ' - ' + str(muns[mun][hel][0])]
 			d.extend(muns[mun][hel][1:])
-			worksheet.write_row('A{}'.format(cr), d, format_text)
+			worksheet.write('A{}'.format(cr), d[0], format_text)
+			worksheet.write_row('B{}'.format(cr), d[1:], format_num)
 			cr += 1
 
 		worksheet.write('A' + str(cr), 'Totals: ', subtotal_format_text)

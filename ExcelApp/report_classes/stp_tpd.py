@@ -40,6 +40,7 @@ def render(res, params):
 	item_format_money = workbook.add_format(stp_config.CONST.ITEM_FORMAT_MONEY)
 	subtitle_format = workbook.add_format(stp_config.CONST.SUBTITLE_FORMAT)
 	subtotal_format = workbook.add_format(stp_config.CONST.SUBTOTAL_FORMAT)
+	subtotal_format_text = workbook.add_format(stp_config.CONST.SUBTOTAL_FORMAT_TEXT)
 	subtotal_format_money = workbook.add_format(stp_config.CONST.SUBTOTAL_FORMAT_MONEY)
 
 	#HEADER
@@ -147,7 +148,9 @@ def render(res, params):
 						worksheets[idx].write('A' + str(cr), loc, format_text)
 
 					for item in tLoc:
-						worksheets[idx].write_row('B' + str(cr), item, format_text)
+						worksheets[idx].write_row('B' + str(cr), item[1:5], format_text)
+						worksheets[idx].write('G{}'.format(cr), item[6], format_num)
+						worksheets[idx].write_row('H{}'.format(cr), item[7:], format_text)
 						cr += 1
 
 		cr += 1
@@ -156,10 +159,11 @@ def render(res, params):
 
 		tStart = cr
 		for sid, item in enumerate(summary):
-			worksheets[idx].write_row('A' + str(cr), [item, summary[item]], format_text)
+			worksheets[idx].write('A{}'.format(cr), item, format_text)
+			worksheets[idx].write('B{}'.format(cr), summary[item], format_num)
 			cr += 1
-		worksheets[idx].write('A'+str(cr), "Total: ", subtotal_format)
-		worksheets[idx].write_formula('B' + str(cr), '=SUM(B' + str(tStart) + ':B' + str(cr-1) + ')', format_text)
+		worksheets[idx].write('A'+str(cr), "Total: ", subtotal_format_text)
+		worksheets[idx].write_formula('B' + str(cr), '=SUM(B' + str(tStart) + ':B' + str(cr-1) + ')', format_num)
 
 
 	workbook.close()

@@ -81,7 +81,7 @@ def render(res, params):
 						muns[mun][data["items"][item_id]["species"]][3] += 1 if data["items"][item_id].get("warrantyaction") == 'Missing Tree' else 0
 
 	for mid, mun in enumerate(muns):
-		worksheet.merge_range('A{}:E{}'.format(cr,cr), mun, item_header_format)
+		worksheet.merge_range('A{}:E{}'.format(cr,cr), mun, subtitle_format)
 		worksheet.write_row('A{}'.format(cr+1), item_fields, item_header_format)
 		cr += 2
 		start = cr

@@ -29,6 +29,7 @@ def render(res, params):
 	#MAIN DATA FORMATING
 	format_text = workbook.add_format(stp_config.CONST.FORMAT_TEXT)
 	format_num = workbook.add_format(stp_config.CONST.FORMAT_NUM)
+	format_num2 = workbook.add_format(stp_config.CONST.FORMAT_NUM2)
 	item_header_format = workbook.add_format(stp_config.CONST.ITEM_HEADER_FORMAT)
 	##Hunter's additional formatting
 	item_format = workbook.add_format(stp_config.CONST.ITEM_FORMAT)
@@ -81,7 +82,7 @@ def render(res, params):
 
 
 		worksheet.write('A' + str(cr), species[sid], format_text)
-		worksheet.write_row('B' + str(cr), totals[spec], format_text)
+		worksheet.write_row('B' + str(cr), totals[spec], format_num)
 		cr += 1
 
 	#FORMULAE AND FOOTERS

@@ -45,6 +45,7 @@ def render(res, params):
 	item_format_money = workbook.add_format(stp_config.CONST.ITEM_FORMAT_MONEY)
 	subtitle_format = workbook.add_format(stp_config.CONST.SUBTITLE_FORMAT)
 	subtotal_format = workbook.add_format(stp_config.CONST.SUBTOTAL_FORMAT)
+	subtotal_format_text = workbook.add_format(stp_config.CONST.SUBTOTAL_FORMAT_TEXT)
 	subtotal_format_money = workbook.add_format(stp_config.CONST.SUBTOTAL_FORMAT_MONEY)
 
 	#HEADER
@@ -82,7 +83,7 @@ def render(res, params):
 	for idx, val in enumerate(items):
 		if items[val]:
 			worksheet.merge_range('A' + str(cr) + ':F' + str(cr), miDict[val], subtitle_format)
-			worksheet.write_row('A' + str(cr+1) + ':F' + str(cr+1), item_fields, subtitle_format)
+			worksheet.write_row('A' + str(cr+1) + ':F' + str(cr+1), item_fields, item_header_format)
 			cr += 2
 			start = cr
 			for idx2, val2 in enumerate(items[val]):
@@ -91,11 +92,13 @@ def render(res, params):
 				for i, v in enumerate(d):
 						d[i] = '$0' if i >= 1 and (d[i] == 0 or d[i] =='0' or d[i] =='$.00') else str(d[i]).lstrip()
 
-				worksheet.write_row('A' + str(cr), d, format_text)
+				worksheet.write_row('A{}'.format(cr), [d[0], d[1], d[2]], format_text)
+				worksheet.write('D{}'.format(cr), d[3], format_num)
+				worksheet.write('E{}'.format(cr), d[3], item_format_money)
 				worksheet.write_formula('F' + str(cr), '=D' + str(cr) + '*E' + str(cr), item_format_money)
 				cr += 1
 
-			worksheet.write('A' + str(cr), 'SubTotal: ', subtotal_format)
+			worksheet.write('A' + str(cr), 'SubTotal: ', subtotal_format_text)
 			worksheet.write('B' + str(cr), '', subtotal_format)
 			worksheet.write('C' + str(cr), '', subtotal_format)
 			worksheet.write_formula('D' + str(cr), '=SUM(D' + str(start) + ':D' + str(cr-1) + ')', subtotal_format)
