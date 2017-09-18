@@ -28,7 +28,7 @@ def render(res, params):
 
 	item_fields = ["Description of Tree Planting Locations", "Mark Type", "Mark Location", "Offset From Mark (m)", 
 						"Spacing", "Item", "Quantity", "Hydro", "Comments"]
-	item_fields2 = ["Species Summary, This Location", "Number of Trees"]
+	item_fields2 = ["Species Summary, This Location", "Total Items"]
 
 	#MAIN DATA FORMATING
 	format_text = workbook.add_format(stp_config.CONST.FORMAT_TEXT)
