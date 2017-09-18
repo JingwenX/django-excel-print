@@ -41,8 +41,8 @@ def render(res, params):
 
 	#set column width
 	right_most_idx = 'T'
-	title= ["New or Updated Information", "RIN", "Municipality", "Main Road", "Between Road 1", "Between Road 2", "Roadside", "Location Notes", "Deciduous with Watering Bags", "Conifers with Blue Flagging", "Other Items with Blue Flagging", "Total Items", "Date Watered", "24 Hr Time Watered", "Truck ID", "Total Items Reported", "Total Items Confirmed", "Comments"]
-	worksheet.write_row('A1', "SEQ_ID", format_text_lock_hidden)
+	title= [ "New or Updated Information", "RIN", "Municipality", "Main Road", "Between Road 1", "Between Road 2", "Roadside", "Location Notes", "Deciduous with Watering Bags", "Conifers with Blue Flagging", "Other Items with Blue Flagging", "Total Items", "Date Watered", "24 Hr Time Watered", "Truck ID", "Total Items Reported", "Total Items Confirmed", "Comments"]
+	worksheet.write('A1', "SEQ_ID", format_text_lock_hidden)
 	worksheet.write_row('B1', title, format_text_lock)
 
 	col_idx = ['A', 'B', 'C',  'D',   'E',   'F',   'G',   'H',   'I',   'J', 'K',    'L', 'M',   'N',  'O',  'P',  'Q',   'R', 'S']
@@ -101,7 +101,7 @@ def render(res, params):
 		a8 = data["items"][idx]["road_side"] if "road_side" in data["items"][idx].keys() else ""
 		worksheet.write('H' + str(cr), a8 if a8 is not None else "", format_text_lock)
 		
-		a9 = data["items"][idx]["LOCATION_NOTES"] if "LOCATION_NOTES" in data["items"][idx].keys() else ""
+		a9 = data["items"][idx]["location_notes"] if "location_notes" in data["items"][idx].keys() else ""
 		worksheet.write('I' + str(cr), a9 if a9 is not None else "", format_text_lock)
 		
 		a10 = data["items"][idx]["broadleaved_(gator_bags)"] if "broadleaved_(gator_bags)" in data["items"][idx].keys() else ""
