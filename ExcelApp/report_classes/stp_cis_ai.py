@@ -58,7 +58,7 @@ def render(res, params):
 	worksheet.insert_image('G1', stp_config.CONST.ENV_LOGO,{'x_offset':35,'y_offset':18, 'x_scale':0.5,'y_scale':0.5, 'positioning':2})
 	
 	#COLUMN NAMES
-	item_fields = ['Contract Item No.',	'Location', 'RINs', 'Description', 'Item', 'Quantity', 'Program', 'Municipality', 'Area forester']
+	item_fields = ['Contract Item No.',	'Location', 'RINs', 'Status', 'Item', 'Quantity', 'Program', 'Municipality', 'Area Forester']
 	worksheet.write_row('A7', item_fields, item_header_format)
 
 

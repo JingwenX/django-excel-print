@@ -77,7 +77,7 @@ def render(res, params):
 
 	# writing main data
 	cr = 7 #current row, starting at offset where data begins
-	item_fields = ['Contract Item No.', 'Location', 'RINs', 'Description', 'Item', 'Quantity']
+	item_fields = ['Contract Item No.', 'Location', 'RINs', 'Status', 'Item', 'Quantity']
 	#loop over all programs
 	for afid, forester in enumerate(foresters.keys()):
 		worksheet.merge_range('A' + str(cr) + ':F' + str(cr), str('Program: ' + forester), subtitle_format) #was format_text
