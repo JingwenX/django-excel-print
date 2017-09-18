@@ -148,9 +148,9 @@ def render(res, params):
 						worksheets[idx].write('A' + str(cr), loc, format_text)
 
 					for item in tLoc:
-						worksheets[idx].write_row('B' + str(cr), item[1:5], format_text)
-						worksheets[idx].write('G{}'.format(cr), item[6], format_num)
-						worksheets[idx].write_row('H{}'.format(cr), item[7:], format_text)
+						worksheets[idx].write_row('B' + str(cr), item[0:5], format_text)
+						worksheets[idx].write('G{}'.format(cr), item[5], format_num)
+						worksheets[idx].write_row('H{}'.format(cr), item[6:], format_text)
 						cr += 1
 
 		cr += 1
