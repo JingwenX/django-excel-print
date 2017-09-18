@@ -23,13 +23,21 @@ def render(res, params):
 	workbook = xlsxwriter.Workbook(output, {'in_memory': True})
 	worksheet = workbook.add_worksheet()
 	data = res
-	title = 'Species Summary'
+	title = 'Contract Preparation - Species Summary'
 	
 	
 	#MAIN DATA FORMATING
 	format_text = workbook.add_format(stp_config.CONST.FORMAT_TEXT)
 	format_num = workbook.add_format(stp_config.CONST.FORMAT_NUM)
 	item_header_format = workbook.add_format(stp_config.CONST.ITEM_HEADER_FORMAT)	
+
+	title_format = workbook.add_format(stp_config.CONST.TITLE_FORMAT)
+	item_format_money = workbook.add_format(stp_config.CONST.ITEM_FORMAT_MONEY)
+	subtitle_format = workbook.add_format(stp_config.CONST.SUBTITLE_FORMAT)
+	subtitle_format2 = workbook.add_format(stp_config.CONST.SUBTITLE_FORMAT2)
+	subtotal_format = workbook.add_format(stp_config.CONST.SUBTOTAL_FORMAT)
+	subtotal_format_text = workbook.add_format(stp_config.CONST.SUBTOTAL_FORMAT_TEXT)
+	subtotal_format_money = workbook.add_format(stp_config.CONST.SUBTOTAL_FORMAT_MONEY)
 
 	#Set column and rows
 	worksheet.set_column('A:B', 60)
@@ -60,6 +68,7 @@ def render(res, params):
 	worksheet.write_row('A' + str(cr), item_fields, item_header_format)
 	cr += 1
 
+	start = cr
 	for sid, spec in enumerate(species):
 		#worksheet.write('A' + str(cr), [spec, species[spec]], format_text)
 		worksheet.write('A' + str(cr), spec, format_text)
@@ -67,6 +76,8 @@ def render(res, params):
 
 		cr += 1
 
+	worksheet.write('A{}'.format(cr), 'Total: ', subtotal_format_text)
+	worksheet.write_formula('B{}'.format(cr), '=sum(B{}:B{})'.format(start, cr - 1), subtotal_format)
 
 	workbook.close()
 	
