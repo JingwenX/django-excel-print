@@ -107,7 +107,7 @@ def render(res, params):
 					worksheet.write('E' + str(cr), a5 if a5 is not None else "", format_text)
 					
 					a6 = data["items"][idx]["quantity"] if "quantity" in data["items"][idx].keys() else ""
-					worksheet.write('F' + str(cr), a6 if a6 is not None else "", format_text)
+					worksheet.write('F' + str(cr), a6 if a6 is not None else "", format_num)
 					
 					cr += 1
 					merge_bottom_idx = cr - 1

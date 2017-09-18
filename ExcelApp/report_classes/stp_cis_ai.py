@@ -110,7 +110,7 @@ def render(res, params):
 				worksheet.write('E' + str(cr), a5 if a5 is not None else "", format_text)
 				
 				a6 = data["items"][idx]["quantity"] if "quantity" in data["items"][idx].keys() else ""
-				worksheet.write('F' + str(cr), a6 if a6 is not None else "", format_text)
+				worksheet.write('F' + str(cr), a6 if a6 is not None else "", format_num)
 
 				a7 = data["items"][idx]["program"] if "program" in data["items"][idx].keys() else ""
 				worksheet.write('G' + str(cr), a7 if a7 is not None else "", format_text)
