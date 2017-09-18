@@ -52,6 +52,7 @@ def render(res, params):
 		if str(data["items"][iid]["contractyear"]) == year:
 			if not data["items"][iid]["contractitem"] in cons:
 				cons.update({data["items"][iid]["contractitem"] : [[
+					data["items"][iid].get("code"),
 					data["items"][iid].get("item"),
 					data["items"][iid].get("qty"),
 					data["items"][iid].get("up"),
@@ -59,6 +60,7 @@ def render(res, params):
 					]]})
 			else:
 				cons[data["items"][iid]["contractitem"]].append([
+					data["items"][iid].get("code"),
 					data["items"][iid].get("item"),
 					data["items"][iid].get("qty"),
 					data["items"][iid].get("up"),
@@ -86,13 +88,15 @@ def render(res, params):
 			if not contract[0] in summary:
 				summary.update({contract[0] : [
 					contract[1],
-					contract[2]
+					contract[2],
+					contract[3]
 					]})
 			else:
-				summary[contract[0]][0] += contract[1]
+				summary[contract[0]][2] += contract[2]
 
-			worksheets[cid].write_row('A{}'.format(cr), [contract[0], contract[1]], format_text)
-			worksheets[cid].write_row('C{}'.format(cr), [contract[2], contract[3]], item_format_money)
+			worksheets[cid].write('A{}'.format(cr), contract[1], format_text)
+			worksheets[cid].write('B{}'.format(cr), contract[2], format_num)
+			worksheets[cid].write_row('C{}'.format(cr), [contract[3], contract[4]], item_format_money)
 			cr += 1
 		worksheets[cid].write('A{}'.format(cr), "Subtotal: ", subtotal_format_text)
 		worksheets[cid].write_formula('B{}'.format(cr), "=SUM(B{}:B{})".format(start, cr - 1), subtotal_format)
@@ -110,24 +114,24 @@ def render(res, params):
 	worksheets[-1].set_row(1,36)
 
 	cr = 7
-	worksheets[-1].merge_range('A{}:D{}'.format(cr,cr), 'Summary', item_header_format)
-	worksheets[-1].write_row('A{}'.format(cr+1), item_fields, item_header_format)
+	worksheets[-1].merge_range('A{}:E{}'.format(cr,cr), 'Summary', item_header_format)
+	worksheets[-1].write_row('A{}'.format(cr+1), ['Item Code'] + item_fields, item_header_format)
 	cr += 2
-
-	print(summary)
 
 	for sid, sitem in enumerate(sorted(summary)):
 		d = [sitem]
 		d.extend(summary[sitem])
 		worksheets[-1].write_row('A{}'.format(cr), [d[0], d[1]], format_text)
-		worksheets[-1].write('C{}'.format(cr), d[2], item_format_money)
-		worksheets[-1].write_formula('D{}'.format(cr), '=B{}*C{}'.format(cr, cr), item_format_money)
+		worksheets[-1].write('C{}'.format(cr), d[2], format_num)
+		worksheets[-1].write('D{}'.format(cr), d[3], item_format_money)
+		worksheets[-1].write_formula('E{}'.format(cr), '=C{}*D{}'.format(cr, cr), item_format_money)
 		cr += 1
 
 	worksheets[-1].write('A{}'.format(cr), 'Grand Total: ', subtotal_format_text)
-	worksheets[-1].write_formula('B{}'.format(cr), '=SUM(B9:B{})'.format(cr-1), subtotal_format)
-	worksheets[-1].write('C{}'.format(cr), ' ', subtotal_format)
-	worksheets[-1].write_formula('D{}'.format(cr), '=SUM(D9:D{})'.format(cr-1), subtotal_format_money)
+	worksheets[-1].write('B{}'.format(cr), ' ', subtotal_format)
+	worksheets[-1].write_formula('C{}'.format(cr), '=SUM(C9:C{})'.format(cr-1), subtotal_format)
+	worksheets[-1].write('D{}'.format(cr), ' ', subtotal_format)
+	worksheets[-1].write_formula('E{}'.format(cr), '=SUM(E9:E{})'.format(cr-1), subtotal_format_money)
 		
 	workbook.close()
 

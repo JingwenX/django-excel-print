@@ -88,7 +88,8 @@ def render(res, params):
 		for sid, spec in enumerate(muns[mun]):
 			d = [spec]
 			d.extend(muns[mun][spec])
-			worksheet.write_row('A{}'.format(cr), d, format_text)
+			worksheet.write('A{}'.format(cr), d[0], format_text)
+			worksheet.write_row('B{}'.format(cr), d[1:], format_num)
 			cr += 1
 
 		worksheet.write('A' + str(cr), 'Totals: ', subtotal_format_text)
