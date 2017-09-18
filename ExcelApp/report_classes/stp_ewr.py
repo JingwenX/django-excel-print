@@ -36,6 +36,7 @@ def render(res, params):
 	format_num = workbook.add_format(stp_config.CONST.FORMAT_NUM)
 	item_header_format = workbook.add_format(stp_config.CONST.ITEM_HEADER_FORMAT)
 	item_format_money = workbook.add_format(stp_config.CONST.ITEM_FORMAT_MONEY)
+	subtotal_format_text = workbook.add_format(stp_config.CONST.SUBTOTAL_FORMAT_TEXT)
 	subtotal_format = workbook.add_format(stp_config.CONST.SUBTOTAL_FORMAT)
 	subtotal_format_money = workbook.add_format(stp_config.CONST.SUBTOTAL_FORMAT_MONEY)
 	subtitle_format = workbook.add_format(stp_config.CONST.SUBTITLE_FORMAT)
@@ -125,7 +126,7 @@ def render(res, params):
 				total_payment += data["items"][idx]["payment"] if "payment" in data["items"][idx].keys() else 0
 
 		#cr += 1
-		worksheet.write('A' + str(cr), "Total:", subtotal_format) #write total
+		worksheet.write('A' + str(cr), "Total:", subtotal_format_text) #write total
 		worksheet.write_row('B' + str(cr)+':G' + str(cr), ["", "", "", "", ""], subtotal_format)
 		worksheet.write('E' + str(cr), mun_total_qty, subtotal_format) #write total
 		worksheet.write('G' + str(cr), mun_total_payment, subtotal_format_money) #write total
@@ -136,7 +137,7 @@ def render(res, params):
 
 	#write grand total
 	if total_to_pay != 0:
-		worksheet.write('A' + str(cr), 'Grand Total:', subtotal_format)
+		worksheet.write('A' + str(cr), 'Grand Total:', subtotal_format_text)
 		worksheet.write_row('B' + str(cr)+':D' + str(cr), ["", "", ""], subtotal_format)
 		worksheet.write('E' + str(cr), total_to_pay, subtotal_format) #write total
 		worksheet.write('F' + str(cr), "", subtotal_format) #write total
