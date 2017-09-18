@@ -85,7 +85,7 @@ def render(res, params):
 		#worksheet.write_row('A{}'.format(cr), [row['name'], row['qty']], format_text)
 		#worksheet.write_row('A{}'.format(cr), row, format_text)
 		worksheet.write('A' + str(cr), data_item_details[rid]['name'], format_text) 
-		worksheet.write('B' + str(cr), data_item_details[rid]['qty'], format_text) 
+		worksheet.write('B' + str(cr), data_item_details[rid]['qty'], format_num) 
 		cr += 1; 
 
 
