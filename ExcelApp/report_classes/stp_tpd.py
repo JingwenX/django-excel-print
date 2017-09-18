@@ -26,7 +26,7 @@ def render(res, params):
 	
 	data = res
 
-	item_fields = ["Description of Tree Planting Locations", "Mark Type", "Mark Location", "Offset From Mark", 
+	item_fields = ["Description of Tree Planting Locations", "Mark Type", "Mark Location", "Offset From Mark (m)", 
 						"Spacing", "Item", "Quantity", "Hydro", "Comments"]
 	item_fields2 = ["Species Summary, This Location", "Number of Trees"]
 

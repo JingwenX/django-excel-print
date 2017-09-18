@@ -22,7 +22,7 @@ def render(res, params):
 	output = BytesIO()
 	workbook = xlsxwriter.Workbook(output, {'in_memory': True})
 	worksheet = workbook.add_worksheet()
-	title = 'Top Performers'
+	title = 'Contract Preparation - Top Performers and Analysis'
 	
 
 	#MAIN DATA FORMATING
@@ -73,7 +73,7 @@ def render(res, params):
 		for i in range(0, 2*len(t), 1):
 			ex.insert(i, t[int(i/2)] if i % 2 == 0 else str('{0:.2f}'.format(100*t[int(i/2)]/(t[int(i/2)] + t[int(i/2) - 1]))) + '%' if t[int(i/2)] + t[int(i/2)-1] > 0 else '0%') 
 
-		worksheet.write_row('A' + str(cr), d + ex, format_text)
+		worksheet.write_row('A' + str(cr), d + ex, format_num)
 		cr += 1
 		
 		
