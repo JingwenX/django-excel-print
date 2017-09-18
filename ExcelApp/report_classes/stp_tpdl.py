@@ -102,7 +102,7 @@ def render(res, params):
 		cr += 2
 
 		for sid, side in enumerate(regions[reg]):
-			worksheets[reg_id].write('A{}'.format(cr), side, subtitle_format)
+			worksheets[reg_id].write('A{}'.format(cr), 'RoadSide: ' + side, subtitle_format)
 			cr += 1
 
 			start = cr

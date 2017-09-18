@@ -32,6 +32,8 @@ def render(res, params):
 
 	#MAIN DATA FORMATING
 	format_text = workbook.add_format(stp_config.CONST.FORMAT_TEXT)
+	format_text_right = workbook.add_format(stp_config.CONST.FORMAT_TEXT_RIGHT)
+	format_text_left = workbook.add_format(stp_config.CONST.FORMAT_TEXT_LEFT)
 	format_num = workbook.add_format(stp_config.CONST.FORMAT_NUM)
 	item_header_format = workbook.add_format(stp_config.CONST.ITEM_HEADER_FORMAT)
 	##Hunter's additional formatting
@@ -78,7 +80,8 @@ def render(res, params):
 
 		cr = 7
 		for idx2, val2 in enumerate(cons_main[val]):
-			worksheets[idx].write_row('A' + str(cr), [val2, cons_main[val][val2]], format_text)
+			worksheets[idx].write('A{}'.format(cr), val2, format_text_right)
+			worksheets[idx].write('B{}'.format(cr), cons_main[val][val2], format_text_left)
 			cr += 1
 
 		locs = {#location : [[]]}
@@ -138,7 +141,7 @@ def render(res, params):
 						print(tLoc)
 				if tLoc:
 					cr += 1
-					worksheets[idx].write('A' + str(cr), side, item_header_format)
+					worksheets[idx].write('A' + str(cr), 'RoadSide: ' + side, subtitle_format)
 					worksheets[idx].write_row('A' + str(cr+1), item_fields, item_header_format)
 					cr += 2
 
@@ -148,7 +151,10 @@ def render(res, params):
 						worksheets[idx].write('A' + str(cr), loc, format_text)
 
 					for item in tLoc:
-						worksheets[idx].write_row('B' + str(cr), item[0:5], format_text)
+						worksheets[idx].write_row('B' + str(cr), item[0:2], format_text)
+						worksheets[idx].write('D{}'.format(cr), item[2], format_num)
+						worksheets[idx].write('E{}'.format(cr), item[3], format_num)
+						worksheets[idx].write('F{}'.format(cr), item[4], format_text)
 						worksheets[idx].write('G{}'.format(cr), item[5], format_num)
 						worksheets[idx].write_row('H{}'.format(cr), item[6:], format_text)
 						cr += 1
@@ -163,7 +169,7 @@ def render(res, params):
 			worksheets[idx].write('B{}'.format(cr), summary[item], format_num)
 			cr += 1
 		worksheets[idx].write('A'+str(cr), "Total: ", subtotal_format_text)
-		worksheets[idx].write_formula('B' + str(cr), '=SUM(B' + str(tStart) + ':B' + str(cr-1) + ')', format_num)
+		worksheets[idx].write_formula('B' + str(cr), '=SUM(B' + str(tStart) + ':B' + str(cr-1) + ')', subtotal_format)
 
 
 	workbook.close()

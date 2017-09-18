@@ -62,6 +62,23 @@ class const(object):
 		'border_color':'gray',
 		'locked': 0}
 
+	FORMAT_TEXT_RIGHT = {'font_name':'Calibri',
+		'font_size':12,
+		'bold':True,
+		'align': 'right',
+		'valign': 'vcenter',
+		'text_wrap': True,
+		'border_color':'gray',
+		'locked': 0}
+
+	FORMAT_TEXT_LEFT = {'font_name':'Calibri',
+		'font_size':12,
+		'align': 'left',
+		'valign': 'vcenter',
+		'text_wrap': True,
+		'border_color':'gray',
+		'locked': 0}
+
 	FORMAT_NUM = {'font_name':'Calibri',
 		'font_size':12,
 		'align': 'center',
