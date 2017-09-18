@@ -35,6 +35,7 @@ def render(res, params):
 	title_format = workbook.add_format(stp_config.CONST.TITLE_FORMAT)
 	item_format_money = workbook.add_format(stp_config.CONST.ITEM_FORMAT_MONEY)
 	subtitle_format = workbook.add_format(stp_config.CONST.SUBTITLE_FORMAT)
+	subtitle_format2 = workbook.add_format(stp_config.CONST.SUBTITLE_FORMAT2)
 	subtotal_format = workbook.add_format(stp_config.CONST.SUBTOTAL_FORMAT)
 	subtotal_format_text = workbook.add_format(stp_config.CONST.SUBTOTAL_FORMAT_TEXT)
 	subtotal_format_money = workbook.add_format(stp_config.CONST.SUBTOTAL_FORMAT_MONEY)
@@ -99,7 +100,7 @@ def render(res, params):
 
 		for idx, val in enumerate(items):
 			if items[val]:
-				worksheet.merge_range('A' + str(cr) + ':G' + str(cr), miDict[val], subtitle_format)
+				worksheet.merge_range('A' + str(cr) + ':G' + str(cr), miDict[val], subtitle_format2)
 				cr += 1
 				start = cr
 				for idx2, val2 in enumerate(items[val]):
@@ -111,7 +112,7 @@ def render(res, params):
 						d[i] = '$0' if i >= 1 and (d[i] == 0 or d[i] =='0' or d[i] =='$.00') else str(d[i]).lstrip(' ')
 
 					worksheet.write('A{}'.format(cr), d[0], format_text)
-					worksheet.write('B{}'.format(cr), d[1], format_num)
+					worksheet.write('B{}'.format(cr), float(d[1]), format_num)
 					worksheet.write('C{}'.format(cr), d[2], item_format_money)
 					worksheet.write('D{}'.format(cr), d[3], item_format_money)
 					worksheet.write('E{}'.format(cr), d[4], item_format_money)

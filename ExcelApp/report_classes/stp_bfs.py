@@ -93,7 +93,7 @@ def render(res, params):
 						d[i] = '$0' if i >= 1 and (d[i] == 0 or d[i] =='0' or d[i] =='$.00') else str(d[i]).lstrip()
 
 				worksheet.write_row('A{}'.format(cr), [d[0], d[1], d[2]], format_text)
-				worksheet.write('D{}'.format(cr), d[3], format_num)
+				worksheet.write('D{}'.format(cr), float(d[3]), format_num)
 				worksheet.write('E{}'.format(cr), d[3], item_format_money)
 				worksheet.write_formula('F' + str(cr), '=D' + str(cr) + '*E' + str(cr), item_format_money)
 				cr += 1

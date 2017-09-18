@@ -27,7 +27,7 @@ def render(res, params):
 	workbook = xlsxwriter.Workbook(output, {'in_memory': True})
 	worksheets = []
 
-	title = 'Tree Planting Deficiency List' + (' Current' if snap == 0 else ' Snap - ' + str(snap))
+	title = 'Tree Planting Deficiency List' + (' Current' if snap == '0' else ' Snap - ' + str(snap))
 
 	#MAIN DATA FORMATING
 	format_text = workbook.add_format(stp_config.CONST.FORMAT_TEXT)
@@ -52,9 +52,9 @@ def render(res, params):
 
 	for iid, val in enumerate(data["items"]):
 		if str(data["items"][iid]["contractyear"]) == year:
-			rKey = data["items"][iid].get("mun") + '-' + data["items"][iid].get("con") + '-' + data["items"][iid].get("rd")
+			rKey = data["items"][iid].get("mun") + '-' + data["items"][iid].get("con") #+ '-' + data["items"][iid].get("rd")]
 			if not rKey in regions:
-				regions.update({rKey : [[
+				regions.update({rKey : {data["items"][iid].get("rd") : [[
 					data["items"][iid].get("tid"),
 					data["items"][iid].get("tno"),
 					data["items"][iid].get("item"),
@@ -62,17 +62,28 @@ def render(res, params):
 					data["items"][iid].get("def"),
 					data["items"][iid].get("rep"),
 					data["items"][iid].get("tpuc")
-					]]})
+					]]}})
 			else:
-				regions[rKey].append([
-					data["items"][iid].get("tid"),
-					data["items"][iid].get("tno"),
-					data["items"][iid].get("item"),
-					data["items"][iid].get("health"),
-					data["items"][iid].get("def"),
-					data["items"][iid].get("rep"),
-					data["items"][iid].get("tpuc")
-					])
+				if data["items"][iid].get("rd") in regions[rKey]:
+					regions[rKey][ data["items"][iid].get("rd")].append([
+						data["items"][iid].get("tid"),
+						data["items"][iid].get("tno"),
+						data["items"][iid].get("item"),
+						data["items"][iid].get("health"),
+						data["items"][iid].get("def"),
+						data["items"][iid].get("rep"),
+						data["items"][iid].get("tpuc")
+						])
+				else:
+					regions[rKey].update({data["items"][iid].get("rd") : [[
+						data["items"][iid].get("tid"),
+						data["items"][iid].get("tno"),
+						data["items"][iid].get("item"),
+						data["items"][iid].get("health"),
+						data["items"][iid].get("def"),
+						data["items"][iid].get("rep"),
+						data["items"][iid].get("tpuc")
+					]]})
 				
 	for reg_id, reg in enumerate(sorted(regions)):
 		worksheets.append(workbook.add_worksheet(reg[:31]))
@@ -89,18 +100,26 @@ def render(res, params):
 		worksheets[reg_id].merge_range('A{}:F{}'.format(cr,cr), reg, item_header_format)
 		worksheets[reg_id].write_row('A{}'.format(cr+1), item_fields, item_header_format)
 		cr += 2
-		for tree in regions[reg]:
-			worksheets[reg_id].write_row('A{}'.format(cr), tree[0:6], format_text)
-			cr += 1
-		cr += 1
 
-		worksheets[reg_id].merge_range('A{}:B{}'.format(cr,cr), 'Summary', item_header_format)
-		cr += 1
-		worksheets[reg_id].write('A{}'.format(cr), 'Number of Deficient Trees: ', subtotal_format)
-		worksheets[reg_id].write('B{}'.format(cr), (cr - 2 - 9), subtotal_format)
-		cr += 1
-		worksheets[reg_id].write('A{}'.format(cr), 'Total Trees Planted on Contract: ', subtotal_format)
-		worksheets[reg_id].write('B{}'.format(cr), regions[reg][0][6], subtotal_format)
+		for sid, side in enumerate(regions[reg]):
+			worksheets[reg_id].write('A{}'.format(cr), side, subtitle_format)
+			cr += 1
+
+			start = cr
+			for tree in regions[reg][side]:
+				worksheets[reg_id].write_row('A{}'.format(cr), tree[0:6], format_text)
+				cr += 1
+			cr += 1
+
+			worksheets[reg_id].merge_range('A{}:B{}'.format(cr,cr), 'Summary', item_header_format)
+			cr += 1
+			worksheets[reg_id].write('A{}'.format(cr), 'Number of Deficient Trees: ', subtotal_format)
+			worksheets[reg_id].write('B{}'.format(cr), (cr - start - 2), subtotal_format)
+			cr += 1
+			worksheets[reg_id].write('A{}'.format(cr), 'Total Trees Planted on Contract: ', subtotal_format)
+			worksheets[reg_id].write('B{}'.format(cr), regions[reg][side][0][6], subtotal_format)
+
+			cr += 2
 		
 	workbook.close()
 
