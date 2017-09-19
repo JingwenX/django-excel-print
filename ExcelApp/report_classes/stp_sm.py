@@ -110,8 +110,13 @@ def render(res, params):
 				mun_list[mun] += a4
 				total += a4
 
+		worksheet.write('A' + str(cr), "Total:", subtotal_format) #write total
+		worksheet.write_row('B' + str(cr)+':C' + str(cr), ["", ""], subtotal_format)
+		worksheet.write('D' + str(cr), mun_list[mun], subtotal_format) #write total
+		cr +=1
 		worksheet.set_row(cr-1,stp_config.CONST.BREAKDOWN_INBETWEEN_HEIGHT)
-		cr +=1 
+		cr += 1
+
 
 	#cr += 4
 	cr += 2
