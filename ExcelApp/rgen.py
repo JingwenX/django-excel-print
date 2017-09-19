@@ -34,6 +34,8 @@ r_dict = {
         "72" : [stp_ewr, 'Extra Work Payment Report'],
         "73" : [stp_wpr, 'Watering Payment Report'],
         "74" : [stp_ewr_cur, 'Extra Work Payment Report - Current'],
+        "75" : [stp_aw, 'Summary of Additional Item'],
+        "76" : [stp_sm, 'Summary of Supplemental Tree Maintenance'],
     	"101": [stp_cid, 'Contract Item Detail'],
         "102": [stp_cid_no_cursor, 'Contract Item Detail'],
 	}

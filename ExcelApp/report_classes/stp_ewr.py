@@ -46,7 +46,7 @@ def render(res, params):
 	stp_config.const.write_gen_title(title, workbook, worksheet, rightmost_idx, year, con_num)
 
 	#additional header image
-	worksheet.insert_image('D1', stp_config.CONST.ENV_LOGO,{'x_offset':-35,'y_offset':18, 'x_scale':0.5,'y_scale':0.5, 'positioning':2})
+	worksheet.insert_image('D1', stp_config.CONST.ENV_LOGO,{'x_offset':30,'y_offset':22, 'x_scale':0.5,'y_scale':0.5, 'positioning':2})
 	
 	item_fields = ["Contract Item No.", "Location", "Description", "Unit", "Quantity", "Unit Price", "Total Cost"]
 	#worksheet.write_row('A1', title, format_text)
