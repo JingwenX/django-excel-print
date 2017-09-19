@@ -34,13 +34,14 @@ def render(res, params):
 
 	#set column width
 	worksheet.set_column('A:A', 15.78)
-	worksheet.set_column('B:B', 31.44)
+	worksheet.set_column('B:B', 47)
 	worksheet.set_column('C:C', 12.22)
 	worksheet.set_column('D:D', 11.89)
-	worksheet.set_column('E:E', 9.78)
+	worksheet.set_column('E:E', 12.56)
 	worksheet.set_column('F:F', 11.33)
 	worksheet.set_column('G:G', 11.89)
 	worksheet.set_column('H:H', 11)
+	worksheet.set_column('I:I', 11.44)
 
 	#set row
 	worksheet.set_row(0,36)
@@ -58,7 +59,7 @@ def render(res, params):
 	item_header_format = workbook.add_format(stp_config.CONST.ITEM_HEADER_FORMAT)
 
 	#additional header image
-	worksheet.insert_image('F1', r'\\ykr-apexp1\staticenv\apps\199\env_internal_bw.png',{'x_offset':70,'y_offset':18, 'x_scale':0.5,'y_scale':0.5, 'positioning':2})
+	worksheet.insert_image('F1', stp_config.CONST.ENV_LOGO,{'x_offset':90,'y_offset':22, 'x_scale':0.5,'y_scale':0.5, 'positioning':2})
 
 
 	item_fields = ['Tree Planting Detail No.', 'Location', 'Assignment No.', 'Assignment Status', 'Planting Status', 'Planting Start Date', 'Planting End Date', 'Assigned Inspector', 'Status of Inspection']

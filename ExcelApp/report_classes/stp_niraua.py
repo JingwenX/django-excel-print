@@ -38,7 +38,7 @@ def render(res, params):
 	worksheet.set_column('C:C', 31.78)
 	worksheet.set_column('D:D', 23.56)
 	worksheet.set_column('E:E', 9.11)
-	worksheet.set_column('F:F', 8.89)
+	worksheet.set_column('F:F', 12.33)
 	worksheet.set_column('G:G', 10.33)
 	#worksheet.set_column('J:J', 9.65)
 
@@ -54,7 +54,7 @@ def render(res, params):
 	stp_config.const.write_gen_title(title, workbook, worksheet, rightmost_idx, year, con_num)
 
 	#additional header image
-	worksheet.insert_image('D1', stp_config.CONST.ENV_LOGO,{'x_offset':135,'y_offset':18, 'x_scale':0.5,'y_scale':0.5, 'positioning':2})
+	worksheet.insert_image('D1', stp_config.CONST.ENV_LOGO,{'x_offset':135,'y_offset':22, 'x_scale':0.5,'y_scale':0.5, 'positioning':2})
 	
 	#COLUMN NAMES
 	item_fields = ['Stock Type', 'Plant Type', 'Species', 'Qty Required', 'Qty Tagged', 'Qty Substituted', 'Qty Left to Tag']

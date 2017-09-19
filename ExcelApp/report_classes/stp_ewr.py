@@ -8,7 +8,7 @@ from .. import stp_config
 
 def form_url(params):
 	#base_url = 'http://ykr-apexp1/ords/bsmart_data/bsmart_data/stp_ws/stp_extra_work/{}/{}'.format(str(params["year"]), str(params["assign_num"]))
-	base_url = 'http://ykr-apexp1/ords/bsmart_data/bsmart_data/stp_ws/stp_extra_work/'
+	base_url = str(stp_config.CONST.API_URL_PREFIX) + 'bsmart_data/bsmart_data/stp_ws/stp_extra_work/'
 	base_url += str(params["year"]) + '/'
 	base_url += str(params["assign_num"])
 	#print(base_url)
@@ -57,7 +57,7 @@ def render(res, params):
 
 		worksheet.set_column(chr(i+65)+':'+chr(i+65), col_wid[i])
 	#worksheet.set_column('J:J', 9.65)
-	worksheet.set_column('G:G', 12)
+	worksheet.set_column('G:G', 14.89)
 	#set row
 	worksheet.set_row(0,36)
 	worksheet.set_row(1,36)

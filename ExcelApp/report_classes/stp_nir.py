@@ -1,5 +1,5 @@
 # -*- coding: utf-8 -*
-#rid 6 STP
+#rid 52 STP
 import xlsxwriter
 from io import BytesIO
 import datetime
@@ -53,7 +53,7 @@ def render(res, params):
 	item_header_format = workbook.add_format(stp_config.CONST.ITEM_HEADER_FORMAT)
 
 	#additional header image
-	worksheet.insert_image('F1', r'\\ykr-apexp1\staticenv\apps\199\env_internal_bw.png',{'x_offset':45,'y_offset':13, 'x_scale':0.5,'y_scale':0.5, 'positioning':2})
+	worksheet.insert_image('F1', stp_config.CONST.ENV_LOGO,{'x_offset':45,'y_offset':22, 'x_scale':0.5,'y_scale':0.5, 'positioning':2})
 	
 	#COLUMN NAMES
 	item_fields = ['Tree Tag Range', 'Tag Color', 'Species', 'Species Substituted For',	'Nursery', 'Stock Type', 'Farm/Lot', 'Status']

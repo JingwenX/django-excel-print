@@ -32,9 +32,9 @@ def render(res, params):
 	item_header_format = workbook.add_format(stp_config.CONST.ITEM_HEADER_FORMAT)
 
 	#set column width
-	worksheet.set_column('A:A', 19.67)
+	worksheet.set_column('A:A', 29.78)
 	worksheet.set_column('B:B', 24)
-	worksheet.set_column('C:C', 23.89)
+	worksheet.set_column('C:C', 28.22)
 	worksheet.set_column('D:D', 15.11)
 	worksheet.set_column('E:E', 12.33)
 	worksheet.set_column('F:F', 15.56)
@@ -52,7 +52,7 @@ def render(res, params):
 
 
 	#additional header image
-	worksheet.insert_image('D1', stp_config.CONST.ENV_LOGO, {'x_offset':75,'y_offset':18, 'x_scale':0.5,'y_scale':0.5, 'positioning':2})
+	worksheet.insert_image('D1', stp_config.CONST.ENV_LOGO, {'x_offset':70,'y_offset':22, 'x_scale':0.5,'y_scale':0.5, 'positioning':2})
 	
 	#COLUMN NAMES
 	item_fields = ['Stock Type', 'Plant Type', 'Species', 'Qty Required', 'Qty Tagged', 'Qty Left To Tag']

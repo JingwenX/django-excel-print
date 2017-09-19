@@ -61,7 +61,7 @@ def render(res, params):
 	item_header_format = workbook.add_format(stp_config.CONST.ITEM_HEADER_FORMAT)
 
 	#additional header image
-	worksheet.insert_image('B1', r'\\ykr-apexp1\staticenv\apps\199\env_internal_bw.png',{'x_offset':110,'y_offset':18, 'x_scale':0.5,'y_scale':0.5, 'positioning':2})
+	worksheet.insert_image('B1', stp_config.CONST.ENV_LOGO,{'x_offset':110,'y_offset':22, 'x_scale':0.5,'y_scale':0.5, 'positioning':2})
 
 	# Master data
 	worksheet.write_row('A7', ['Contract Number', con_num],format_text) 

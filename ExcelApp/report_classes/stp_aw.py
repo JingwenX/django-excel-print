@@ -11,7 +11,7 @@ def form_url(params):
 	return base_url
 
 
-#Contract Item Summary - All Items
+#Additional Watering Item
 def render(res, params):
 
 	rid = params["rid"]
@@ -117,8 +117,7 @@ def render(res, params):
 	cr += 2
 
 
-	##============TOP PERFORMAERS SUB TABLE=============
-	#TOP PERFORMERS COLUMN NAMES
+	##============MUNICIPALITY SUMMARY==========
 	item_fields = ['Municipality', 'Quantity']
 	worksheet.write_row('A' + str(cr), item_fields, item_header_format)
 	cr += 1
