@@ -9,7 +9,8 @@ from .. import stp_config
 
 def form_url(params):
 	#base_url = 'http://ykr-apexp1/ords/bsmart_data/bsmart_data/stp_ws/stp_extra_work/{}/{}'.format(str(params["year"]), str(params["assign_num"]))
-	base_url = 'http://ykr-apexp1/ords/bsmart_data/bsmart_data/stp_ws/stp_watering_payment_report/'
+	#base_url = 'http://ykr-apexp1/ords/bsmart_data/bsmart_data/stp_ws/stp_watering_payment_report/'
+	base_url = str(stp_config.CONST.API_URL_PREFIX) + 'bsmart_data/bsmart_data/stp_ws/stp_watering_payment_report/'
 	base_url += str(params["year"]) + '/'
 	base_url += str(params["assign_num"])
 	#print(base_url)
@@ -46,7 +47,7 @@ def render(res, params):
 	stp_config.const.write_gen_title(title, workbook, worksheet, rightmost_idx, year, con_num)
 
 	#additional header image
-	worksheet.insert_image('E1', stp_config.CONST.ENV_LOGO,{'x_offset':55,'y_offset':18, 'x_scale':0.5,'y_scale':0.5, 'positioning':2})
+	worksheet.insert_image('E1', stp_config.CONST.ENV_LOGO,{'x_offset':55,'y_offset':22, 'x_scale':0.5,'y_scale':0.5, 'positioning':2})
 	
 	item_fields = ["Watering Item No.", "RIN", "Location", "Roadside", "No. of Trees Assign", "No. of Trees Confirmed", "No. of Trees to Pay", "Total Cost"]
 	#worksheet.write_row('A1', title, format_text)
