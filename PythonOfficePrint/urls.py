@@ -18,5 +18,6 @@ from django.contrib import admin
 
 urlpatterns = [
     url(r'^ExcelApp/', include('ExcelApp.urls')),
+    url(r'^eRoadMapPrint/', include('eRoadMapPrint.urls')),
     url(r'^admin/', admin.site.urls),
 ]
