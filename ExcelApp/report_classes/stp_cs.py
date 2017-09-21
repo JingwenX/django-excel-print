@@ -22,7 +22,7 @@ def render(res, params):
 	output = BytesIO()
 	workbook = xlsxwriter.Workbook(output, {'in_memory': True})
 	worksheet = workbook.add_worksheet()
-	title = 'Costing Summary'
+	title = 'Costing Summary by Program'
 	
 
 	data = res
