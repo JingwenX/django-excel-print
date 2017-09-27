@@ -5,7 +5,8 @@ import json
 from .report_classes import *
 
 r_dict = {
-        "1":   [er_AllProjects, 'er_eRoadMap']
+        "1":   [er_AllProjects, 'er_eRoadMap'],
+        "2":   [er_individual_report, 'eRoadMap - Report Detail'],
 	}
 
 #calls the specific report function and returns the excel as a download
