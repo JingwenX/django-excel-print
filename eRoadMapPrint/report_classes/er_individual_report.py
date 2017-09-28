@@ -432,8 +432,9 @@ def render(res, params):
 			worksheet.merge_range(rp_leftmost_idx + str(cr_right) + ':' + rp_rightmost_idx + str(cr_right), detail,  blue_content_format)
 			cr_right += 1
 		cr_right += 1
-		
-	worksheet.set_margins(left=0.6, right=0.6, top=0.2, bottom=1.0)
+	max_cr = max(cr, cr_right)
+	worksheet.print_area('A1:L' + str(max_cr))
+	worksheet.set_margins(left=0.6, right=0.6, top=0.2, bottom=0.4)
 	worksheet.set_landscape()
 	worksheet.set_paper(1) # 11x17 inches
 	worksheet.fit_to_pages(1, 1)
