@@ -408,7 +408,7 @@ def render(res, params):
 	description_text = data4['description'] if 'description' in data4.keys() else 'N/A'
 	cr_bottom_line = merge_bottom_cr(cr_right, description_text)
 	worksheet.merge_range(rp_leftmost_idx + str(cr_right) + ':' + rp_rightmost_idx  + str(cr_bottom_line), description_text, blue_content_format)
-	cr_right = cr_bottom_line + 2
+	cr_right = cr_bottom_line + 1
 
 	#==========TABLE 6: report_details=========
 	data5 = res["report_details"]["items"]
@@ -431,7 +431,7 @@ def render(res, params):
 			detail = 'N/A'
 			worksheet.merge_range(rp_leftmost_idx + str(cr_right) + ':' + rp_rightmost_idx + str(cr_right), detail,  blue_content_format)
 			cr_right += 1
-		cr_right += 1
+		#cr_right += 1
 	max_cr = max(cr, cr_right)
 	worksheet.print_area('A1:L' + str(max_cr))
 	worksheet.set_margins(left=0.6, right=0.6, top=0.2, bottom=0.4)
