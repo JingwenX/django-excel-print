@@ -52,6 +52,8 @@ def render(res, params):
 	for iid, val in enumerate(data["items"]):
 		if str(data["items"][iid]["year"]) == year:
 			rKey = str(data["items"][iid].get("municipality")) + '-' + str(data["items"][iid].get("contract item")) + '-' + str(data["items"][iid].get("road side"))
+			if len(rKey) > 30 and data["items"][iid].get("municipality") == 'Whitchurch-Stouffville':
+				rKey = 'WS-' + str(data["items"][iid].get("contract item")) + '-' + str(data["items"][iid].get("road side"))
 			if not rKey in regions:
 				regions.update({rKey : [[
 					data["items"][iid].get("tno"),
