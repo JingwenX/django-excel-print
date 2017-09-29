@@ -157,6 +157,10 @@ def render(res, params):
 	    'select_unlocked_cells': True,
 		})
 
+	def getNameWithNum():
+
+		return num
+
 	#====ending=======
 
 	workbook.close()
