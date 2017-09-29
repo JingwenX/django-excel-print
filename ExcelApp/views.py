@@ -70,6 +70,7 @@ def getReport(request):
 		'wtype': -1,
 		'payno': -1,
 		'snap': 0, #default is 0 for snapshots (for now)
+		'issue_date': -1,
 	}
 
 	for p in params:
@@ -111,9 +112,12 @@ def getReport(request):
 				content[part]["items"].extend(it["items"])
 				pageNum += 1
 	# TODO: Convert config into json
+	print(params)
 	file = HttpResponse(rgen.ReportGenerator.formExcel(content, params), content_type='application/vnd.openxmlformats-officedocument.spreadsheetml.sheet')
-	file['Content-Disposition'] = 'attachment; filename=' + rgen.r_dict[params["rid"]][1] + '.xlsx'
-
+	if params["rid"] == '70':
+		file['Content-Disposition'] = 'attachment; filename=' + rgen.r_dict[params["rid"]][1] + ' No.' + params['issue_date'] + '.xlsx'
+	else:
+		file['Content-Disposition'] = 'attachment; filename=' + rgen.r_dict[params["rid"]][1]  + '.xlsx'
 	s.close()
 	return file 
 

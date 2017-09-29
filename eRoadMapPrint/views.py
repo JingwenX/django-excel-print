@@ -22,7 +22,14 @@ def getReport(request):
 
 	params = {
 		'rid':-1,
-		'asPDF': 0
+		'asPDF' : 0,
+		'year':-1,
+		'con_num':-1,
+		'assign_num':-1,
+		'item_num':-1,
+		'wtype': -1,
+		'payno': -1,
+		'snap': 0, #default is 0 for snapshots (for now)
 	}
 
 	for p in params:
