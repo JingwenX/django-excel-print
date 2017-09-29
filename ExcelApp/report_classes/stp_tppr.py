@@ -54,16 +54,14 @@ def render(res, params):
 				cons.update({data["items"][iid]["contractitem"] : {data["items"][iid].get("item"): [
 					data["items"][iid].get("code") ,
 					data["items"][iid].get("qty"),
-					data["items"][iid].get("up"),
-					data["items"][iid].get("total")
+					data["items"][iid].get("up")
 					]}})
 			else:
 				if not data["items"][iid].get("item") in cons[data["items"][iid]["contractitem"]]:
 					cons[data["items"][iid]["contractitem"]].update({data["items"][iid].get("item") : [
 						data["items"][iid].get("code"),
 						data["items"][iid].get("qty"),
-						data["items"][iid].get("up"),
-						data["items"][iid].get("total")
+						data["items"][iid].get("up")
 						]})
 				else:
 					cons[data["items"][iid]["contractitem"]][data["items"][iid].get("item")][1] += data["items"][iid].get("qty")
@@ -98,7 +96,8 @@ def render(res, params):
 
 			worksheets[cid].write('A{}'.format(cr), item, format_text)
 			worksheets[cid].write('B{}'.format(cr), cons[con][item][1], format_num)
-			worksheets[cid].write_row('C{}'.format(cr), [cons[con][item][2], cons[con][item][3]], item_format_money)
+			worksheets[cid].write('C{}'.format(cr), cons[con][item][2], item_format_money)
+			worksheets[cid].write_formula('D{}'.format(cr), "=B{}*C{}".format(cr,cr), item_format_money)
 			cr += 1
 		worksheets[cid].write('A{}'.format(cr), "Subtotal: ", subtotal_format_text)
 		worksheets[cid].write_formula('B{}'.format(cr), "=SUM(B{}:B{})".format(start, cr - 1), subtotal_format)
