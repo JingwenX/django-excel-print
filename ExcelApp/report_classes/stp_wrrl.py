@@ -6,7 +6,7 @@ import datetime
 from .. import stp_config
 
 def form_url(params):
-	base_url = str(stp_config.CONST.API_URL_PREFIX) + 'bsmart_data/bsmart_data/stp_ws/stp_warranty_lists/'
+	base_url = str(stp_config.CONST.API_URL_PREFIX) + 'bsmart_data/bsmart_data/stp_ws/stp_warranty_replacement/'
 	base_url += str(params["wtype"])
 	return base_url
 
@@ -50,20 +50,20 @@ def render(res, params):
 	regions = {}
 
 	for iid, val in enumerate(data["items"]):
-		if str(data["items"][iid]["contractyear"]) == year:
+		if str(data["items"][iid]["year"]) == year:
 			rKey = str(data["items"][iid].get("municipality")) + '-' + str(data["items"][iid].get("contract item")) + '-' + str(data["items"][iid].get("road side"))
 			if not rKey in regions:
 				regions.update({rKey : [[
-					data["items"][iid].get("tag number"),
-					data["items"][iid].get("species"),
-					data["items"][iid].get("health"),
+					data["items"][iid].get("tno"),
+					data["items"][iid].get("spec"),
+					data["items"][iid].get("hel"),
 					' '
 					]]})
 			else:
 				regions[rKey].append([
-					data["items"][iid].get("tag number"),
-					data["items"][iid].get("species"),
-					data["items"][iid].get("health"),
+					data["items"][iid].get("tno"),
+					data["items"][iid].get("spec"),
+					data["items"][iid].get("hel"),
 					' '
 					])
 				
