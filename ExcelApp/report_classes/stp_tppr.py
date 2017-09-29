@@ -23,7 +23,7 @@ def render(res, params):
 	workbook = xlsxwriter.Workbook(output, {'in_memory': True})
 	worksheets = []
 
-	title = 'Tree Planting Payment Report'
+	title = 'Tree Planting Payment Report - ' + ('current' if payno == '0' else payno)
 
 	#MAIN DATA FORMATING
 	format_text = workbook.add_format(stp_config.CONST.FORMAT_TEXT)
@@ -51,21 +51,23 @@ def render(res, params):
 	for iid, val in enumerate(data["items"]):
 		if str(data["items"][iid]["contractyear"]) == year:
 			if not data["items"][iid]["contractitem"] in cons:
-				cons.update({data["items"][iid]["contractitem"] : [[
-					data["items"][iid].get("code"),
-					data["items"][iid].get("item"),
+				cons.update({data["items"][iid]["contractitem"] : {data["items"][iid].get("item"): [
+					data["items"][iid].get("code") ,
 					data["items"][iid].get("qty"),
 					data["items"][iid].get("up"),
 					data["items"][iid].get("total")
-					]]})
+					]}})
 			else:
-				cons[data["items"][iid]["contractitem"]].append([
-					data["items"][iid].get("code"),
-					data["items"][iid].get("item"),
-					data["items"][iid].get("qty"),
-					data["items"][iid].get("up"),
-					data["items"][iid].get("total")
-					])
+				if not data["items"][iid].get("item") in cons[data["items"][iid]["contractitem"]]:
+					cons[data["items"][iid]["contractitem"]].update({data["items"][iid].get("item") : [
+						data["items"][iid].get("code"),
+						data["items"][iid].get("qty"),
+						data["items"][iid].get("up"),
+						data["items"][iid].get("total")
+						]})
+				else:
+					cons[data["items"][iid]["contractitem"]][data["items"][iid].get("item")][1] += data["items"][iid].get("qty")
+
 				
 	for cid, con in enumerate(sorted(cons)):
 		worksheets.append(workbook.add_worksheet(con[:31]))
@@ -84,19 +86,19 @@ def render(res, params):
 		cr += 2
 		start = cr
 
-		for contract in cons[con]:
-			if not contract[0] in summary:
-				summary.update({contract[0] : [
-					contract[1],
-					contract[2],
-					contract[3]
+		for item in cons[con]:
+			if not item in summary:
+				summary.update({item : [
+					cons[con][item][0],
+					cons[con][item][1],
+					cons[con][item][2]
 					]})
 			else:
-				summary[contract[0]][2] += contract[2]
+				summary[item][1] += cons[con][item][1]
 
-			worksheets[cid].write('A{}'.format(cr), contract[1], format_text)
-			worksheets[cid].write('B{}'.format(cr), contract[2], format_num)
-			worksheets[cid].write_row('C{}'.format(cr), [contract[3], contract[4]], item_format_money)
+			worksheets[cid].write('A{}'.format(cr), item, format_text)
+			worksheets[cid].write('B{}'.format(cr), cons[con][item][1], format_num)
+			worksheets[cid].write_row('C{}'.format(cr), [cons[con][item][2], cons[con][item][3]], item_format_money)
 			cr += 1
 		worksheets[cid].write('A{}'.format(cr), "Subtotal: ", subtotal_format_text)
 		worksheets[cid].write_formula('B{}'.format(cr), "=SUM(B{}:B{})".format(start, cr - 1), subtotal_format)
@@ -109,7 +111,7 @@ def render(res, params):
 	stp_config.const.write_gen_title(title, workbook, worksheets[-1], rightmost_idx, year, con_num)
 	worksheets[-1].insert_image('C1', stp_config.CONST.ENV_LOGO,{'x_offset':180,'y_offset':18, 'x_scale':0.5,'y_scale':0.5, 'positioning':2})
 
-	worksheets[-1].set_column('A:D', 45)
+	worksheets[-1].set_column('A:E', 45)
 	worksheets[-1].set_row(0,36)
 	worksheets[-1].set_row(1,36)
 
@@ -121,7 +123,7 @@ def render(res, params):
 	for sid, sitem in enumerate(sorted(summary)):
 		d = [sitem]
 		d.extend(summary[sitem])
-		worksheets[-1].write_row('A{}'.format(cr), [d[0], d[1]], format_text)
+		worksheets[-1].write_row('A{}'.format(cr), [d[1], d[0]], format_text)
 		worksheets[-1].write('C{}'.format(cr), d[2], format_num)
 		worksheets[-1].write('D{}'.format(cr), d[3], item_format_money)
 		worksheets[-1].write_formula('E{}'.format(cr), '=C{}*D{}'.format(cr, cr), item_format_money)
