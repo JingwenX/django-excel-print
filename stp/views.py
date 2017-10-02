@@ -112,7 +112,7 @@ def getReport(request):
 				content[part]["items"].extend(it["items"])
 				pageNum += 1
 	# TODO: Convert config into json
-	print(params)
+	
 	file = HttpResponse(rgen.ReportGenerator.formExcel(content, params), content_type='application/vnd.openxmlformats-officedocument.spreadsheetml.sheet')
 	if params["rid"] == '70':
 		file['Content-Disposition'] = 'attachment; filename=' + rgen.r_dict[params["rid"]][1] + ' No.' + params['issue_date'] + '.xlsx'
