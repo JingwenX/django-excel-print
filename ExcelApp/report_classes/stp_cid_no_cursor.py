@@ -6,11 +6,11 @@ import datetime
 from .. import stp_config
 
 def form_url(params):
-    main_data_url = str(stp_config.CONST.API_URL_PREFIX)+ 'bsmart_data/bsmart_data/stp_ws/stp_contract_item_detail_main/'
+    main_data_url = str(stp_config.CONST.API_URL_PREFIX)+ 'stp_contract_item_detail_main/'
     main_data_url += str(params["item_num"])
-    detail_item_url = str(stp_config.CONST.API_URL_PREFIX) + 'bsmart_data/bsmart_data/stp_ws/stp_contract_item_detail_detail_item/'
+    detail_item_url = str(stp_config.CONST.API_URL_PREFIX) + 'stp_contract_item_detail_detail_item/'
     detail_item_url += str(params["item_num"])
-    comment_url = str(stp_config.CONST.API_URL_PREFIX) + 'bsmart_data/bsmart_data/stp_ws/stp_contract_item_detail_comment/'
+    comment_url = str(stp_config.CONST.API_URL_PREFIX) + 'stp_contract_item_detail_comment/'
     comment_url += str(params["item_num"])
     url_dict = {}
     url_dict["main_data"] = main_data_url

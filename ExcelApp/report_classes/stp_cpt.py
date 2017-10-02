@@ -6,7 +6,7 @@ import datetime
 from .. import stp_config
 
 def form_url(params):
-	base_url = str(stp_config.CONST.API_URL_PREFIX) + 'bsmart_data/bsmart_data/stp_ws/stp_contractor_plant_tree/'
+	base_url = str(stp_config.CONST.API_URL_PREFIX) + 'stp_contractor_plant_tree/'
 	base_url += str(params["year"])
 	return base_url
 

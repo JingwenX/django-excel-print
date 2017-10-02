@@ -8,7 +8,7 @@ from .. import stp_config
 
 def form_url(params):
 	#base_url = 'http://ykr-apexp1/ords/bsmart_data/bsmart_data/stp_ws/stp_extra_work/{}/{}'.format(str(params["year"]), str(params["assign_num"]))
-	base_url = str(stp_config.CONST.API_URL_PREFIX) + 'bsmart_data/bsmart_data/stp_ws/stp_extra_work/'
+	base_url = str(stp_config.CONST.API_URL_PREFIX) + 'stp_extra_work/'
 	base_url += str(params["year"]) + '/'
 	base_url += str(params["assign_num"])
 	#print(base_url)
