@@ -73,7 +73,7 @@ def render(res, params):
 	for reg_id, reg in enumerate(sorted(regions)):
 		worksheets.append(workbook.add_worksheet(reg[:31]))
 
-		worksheets[reg_id].insert_image('C1', stp_config.CONST.ENV_LOGO,{'x_offset':180,'y_offset':18, 'x_scale':0.5,'y_scale':0.5, 'positioning':2})
+		worksheets[reg_id].insert_image('C1', stp_config.CONST.ENV_LOGO,{'x_offset':240,'y_offset':18, 'x_scale':0.5,'y_scale':0.5, 'positioning':2})
 
 		worksheets[reg_id].set_column('A:D', 35)
 		worksheets[reg_id].set_row(0,36)
