@@ -181,7 +181,7 @@ def render(res, params):
 
 	return_data = output.getvalue()
 
-	loadExcel = win32com.client.DispatchEx('Excel.Application')
+	loadExcel = win32com.client.gencache.EnsureDispatch('Excel.Application')
 
 	if(params['asPDF'] == '1'):
 		try:

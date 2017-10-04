@@ -449,7 +449,7 @@ def render(res, params):
 
 	xlsx_data = output.getvalue()
 
-	loadExcel = win32com.client.DispatchEx('Excel.Application')
+	loadExcel = win32com.client.gencache.EnsureDispatch('Excel.Application')
 
 	try:
 		with tempfile.NamedTemporaryFile(delete=False) as pd:
