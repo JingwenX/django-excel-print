@@ -287,7 +287,7 @@ def render(res, params):
 	##LEFT FOOTER
 
 	data2 = res["edocs"]["items"][0]
-	edocs_folder = data2['project_folder'] if 'project_folder' in title_data.keys() else 'TBD'
+	edocs_folder = data2['project_folder'] if 'project_folder' in data2.keys() else 'TBD'
 	edocs_footer = 'eDOCS Project Folder: #' + edocs_folder
 
 	##RIGHT FOOTER
