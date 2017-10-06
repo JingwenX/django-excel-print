@@ -5,7 +5,7 @@ import json
 from .report_classes import *
 
 r_dict = {
-        "1":   [er_AllProjects, 'er_eRoadMap'],
+        "1":   [er_AllProjects, 'eRoadMap'],
         "2":   [er_individual_report, 'eRoadMap - Report Detail'],
 	}
 

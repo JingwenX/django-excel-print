@@ -12,7 +12,7 @@ import string
 import datetime
 
 def form_url(params):
-	base_url = 'http://ykr-dev-apex.devyork.ca/apexenv/bsmart_data/tpe/roadmap_data/'
+	base_url = str(tpe_config.CONST.API_URL_PREFIX) + 'roadmap_data/'
 	return base_url
 
 #Tree Planting Details
