@@ -369,7 +369,7 @@ def render(res, params):
 		worksheet.write('C'+str(cr), milestone['percent'] + '%', format_percentage)
 		cr += 1
 	total_percent =  title_data['total_percent'] if 'total_percent' in title_data.keys() else 'TBD'
-	worksheet.merge_range('A' + str(cr) + ':' + 'B' + str(cr), 'Total Completeness',  format_text_normal_all_border_grey)
+	worksheet.merge_range('A' + str(cr) + ':' + 'B' + str(cr), 'Total Completeness (weighted)',  format_text_normal_all_border_grey)
 	worksheet.write('C'+str(cr), str(total_percent) + '%', format_percentage_grey)
 	cr += 1
 	worksheet.write_row('A' + str(cr) + ':' + 'C' +str(cr), ["", "", ""], format_text_top_border)
