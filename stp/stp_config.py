@@ -2,7 +2,7 @@ import datetime
 
 class const(object):
 	# API PREFIX
-	API_URL_PREFIX = 'http://ykr-apexp1/ords/bsmart_data/stp_ws/'
+	API_URL_PREFIX = 'http://ykr-apex/apexenv/bsmart_data/stp_ws/'
 	# breakdown header height
 	BREAKDOWN_SUBTITLE_HEIGHT = 23.4
 	BREAKDOWN_INBETWEEN_HEIGHT = 31.2

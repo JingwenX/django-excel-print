@@ -1,6 +1,6 @@
 class const(object):
 	# API PREFIX
-	API_URL_PREFIX = 'http://ykr-dev-apex.devyork.ca/apexenv/bsmart_data/tpe/'
+	API_URL_PREFIX = 'http://ykr-apex/apexenv/bsmart_data/tpe/'
 
 
 	item_header_format = {
