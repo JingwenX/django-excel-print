@@ -30,25 +30,25 @@ def nextCell(col_letter):
 def form_url(params):
 	#assign_num = project id pid
 	#item_num = report id rid
-    description_url = r'http://ykr-dev-apex.devyork.ca/apexenv/'+ 'bsmart_data/tpe/description/'
+    description_url = str(tpe_config.CONST.API_URL_PREFIX)+ 'description/'
     description_url += str(params["assign_num"])
 
-    edocs_url = r'http://ykr-dev-apex.devyork.ca/apexenv/' + 'bsmart_data/tpe/edocs/'
+    edocs_url = str(tpe_config.CONST.API_URL_PREFIX) + 'edocs/'
     edocs_url += str(params["assign_num"])
 
-    milestones_url = r'http://ykr-dev-apex.devyork.ca/apexenv/' + 'bsmart_data/tpe/milestones/'
+    milestones_url = str(tpe_config.CONST.API_URL_PREFIX) + 'milestones/'
     milestones_url += str(params["item_num"])
 
-    report_details_url = r'http://ykr-dev-apex.devyork.ca/apexenv/' + 'bsmart_data/tpe/report_details/'
+    report_details_url = str(tpe_config.CONST.API_URL_PREFIX) + 'report_details/'
     report_details_url += str(params["item_num"])
 
-    report_facts_url = r'http://ykr-dev-apex.devyork.ca/apexenv/' + 'bsmart_data/tpe/report_facts/'
+    report_facts_url = str(tpe_config.CONST.API_URL_PREFIX) + 'report_facts/'
     report_facts_url += str(params["assign_num"])
 
-    status_graph_url = r'http://ykr-dev-apex.devyork.ca/apexenv/' + 'bsmart_data/tpe/status_graph/'
+    status_graph_url = str(tpe_config.CONST.API_URL_PREFIX) + 'status_graph/'
     status_graph_url += str(params["item_num"])
 
-    report_info_url = r'http://ykr-dev-apex.devyork.ca/apexenv/' + 'bsmart_data/tpe/report_info/'
+    report_info_url = str(tpe_config.CONST.API_URL_PREFIX) + 'report_info/'
     report_info_url += str(params["item_num"])
 
     url_dict = {}
