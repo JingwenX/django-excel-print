@@ -30,25 +30,25 @@ def nextCell(col_letter):
 def form_url(params):
 	#assign_num = project id pid
 	#item_num = report id rid
-    description_url = r'http://ykr-dev-apex.devyork.ca/apexenv/'+ 'bsmart_data/tpe/description/'
+    description_url = str(tpe_config.CONST.API_URL_PREFIX)+ 'description/'
     description_url += str(params["assign_num"])
 
-    edocs_url = r'http://ykr-dev-apex.devyork.ca/apexenv/' + 'bsmart_data/tpe/edocs/'
+    edocs_url = str(tpe_config.CONST.API_URL_PREFIX) + 'edocs/'
     edocs_url += str(params["assign_num"])
 
-    milestones_url = r'http://ykr-dev-apex.devyork.ca/apexenv/' + 'bsmart_data/tpe/milestones/'
+    milestones_url = str(tpe_config.CONST.API_URL_PREFIX) + 'milestones/'
     milestones_url += str(params["item_num"])
 
-    report_details_url = r'http://ykr-dev-apex.devyork.ca/apexenv/' + 'bsmart_data/tpe/report_details/'
+    report_details_url = str(tpe_config.CONST.API_URL_PREFIX) + 'report_details/'
     report_details_url += str(params["item_num"])
 
-    report_facts_url = r'http://ykr-dev-apex.devyork.ca/apexenv/' + 'bsmart_data/tpe/report_facts/'
+    report_facts_url = str(tpe_config.CONST.API_URL_PREFIX) + 'report_facts/'
     report_facts_url += str(params["assign_num"])
 
-    status_graph_url = r'http://ykr-dev-apex.devyork.ca/apexenv/' + 'bsmart_data/tpe/status_graph/'
+    status_graph_url = str(tpe_config.CONST.API_URL_PREFIX) + 'status_graph/'
     status_graph_url += str(params["item_num"])
 
-    report_info_url = r'http://ykr-dev-apex.devyork.ca/apexenv/' + 'bsmart_data/tpe/report_info/'
+    report_info_url = str(tpe_config.CONST.API_URL_PREFIX) + 'report_info/'
     report_info_url += str(params["item_num"])
 
     url_dict = {}
@@ -287,7 +287,7 @@ def render(res, params):
 	##LEFT FOOTER
 
 	data2 = res["edocs"]["items"][0]
-	edocs_folder = data2['project_folder'] if 'project_folder' in title_data.keys() else 'TBD'
+	edocs_folder = data2['project_folder'] if 'project_folder' in data2.keys() else 'TBD'
 	edocs_footer = 'eDOCS Project Folder: #' + edocs_folder
 
 	##RIGHT FOOTER
@@ -369,7 +369,7 @@ def render(res, params):
 		worksheet.write('C'+str(cr), milestone['percent'] + '%', format_percentage)
 		cr += 1
 	total_percent =  title_data['total_percent'] if 'total_percent' in title_data.keys() else 'TBD'
-	worksheet.merge_range('A' + str(cr) + ':' + 'B' + str(cr), 'Total Completeness',  format_text_normal_all_border_grey)
+	worksheet.merge_range('A' + str(cr) + ':' + 'B' + str(cr), 'Total Completeness (weighted)',  format_text_normal_all_border_grey)
 	worksheet.write('C'+str(cr), str(total_percent) + '%', format_percentage_grey)
 	cr += 1
 	worksheet.write_row('A' + str(cr) + ':' + 'C' +str(cr), ["", "", ""], format_text_top_border)
@@ -449,7 +449,7 @@ def render(res, params):
 
 	xlsx_data = output.getvalue()
 
-	loadExcel = win32com.client.DispatchEx('Excel.Application')
+	loadExcel = win32com.client.gencache.EnsureDispatch('Excel.Application')
 
 	try:
 		with tempfile.NamedTemporaryFile(delete=False) as pd:
