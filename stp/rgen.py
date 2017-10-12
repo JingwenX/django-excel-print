@@ -55,14 +55,14 @@ class ReportGenerator(object):
         """
         Get the api url from the report
         """
-    	return r_dict[params["rid"]][0].form_url(params)
+        return r_dict[params["rid"]][0].form_url(params)
 
     def formExcel(res, params):
         """
         Form the excel file for a given repor
         """
-    	down = r_dict[params["rid"]][0].render(res, params)
-    	return down
+        down = r_dict[params["rid"]][0].render(res, params)
+        return down
 
 
     
