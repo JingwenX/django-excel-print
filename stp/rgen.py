@@ -1,9 +1,9 @@
 # -*- coding: utf-8 -*-
 import xlsxwriter
 import json
-#from . import report_classes
 from .report_classes import *
 
+#dictionary of all stp reports, fitrst parameter is the file, second is file name
 r_dict = {
 		"3":   [stp_ss, 'Species Summary'],
     	"4" :  [stp_tp, 'Top Performers'], 
@@ -42,19 +42,27 @@ r_dict = {
 
 #calls the specific report function and returns the excel as a download
 class ReportGenerator(object):
+    """
+    Class for generating reports, uses a dictionary of reports defined outside the scope of the class
+    """
 
     def __init__(self, response):
         self.rid = rid
         self.response = response
 
+    
     def get_url(params):
-    	return r_dict[params["rid"]][0].form_url(params)
-
+        """
+        Get the api url from the report
+        """
+        return r_dict[params["rid"]][0].form_url(params)
 
     def formExcel(res, params):
-    	#down = reports.reports.d[rid](res, rid, year, con_num, asgn_num)
-    	down = r_dict[params["rid"]][0].render(res, params)
-    	return down
+        """
+        Form the excel file for a given repor
+        """
+        down = r_dict[params["rid"]][0].render(res, params)
+        return down
 
 
     

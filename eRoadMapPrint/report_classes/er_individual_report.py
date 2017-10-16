@@ -369,7 +369,7 @@ def render(res, params):
 		worksheet.write('C'+str(cr), milestone['percent'] + '%', format_percentage)
 		cr += 1
 	total_percent =  title_data['total_percent'] if 'total_percent' in title_data.keys() else 'TBD'
-	worksheet.merge_range('A' + str(cr) + ':' + 'B' + str(cr), 'Total Completeness',  format_text_normal_all_border_grey)
+	worksheet.merge_range('A' + str(cr) + ':' + 'B' + str(cr), 'Total Completeness (weighted)',  format_text_normal_all_border_grey)
 	worksheet.write('C'+str(cr), str(total_percent) + '%', format_percentage_grey)
 	cr += 1
 	worksheet.write_row('A' + str(cr) + ':' + 'C' +str(cr), ["", "", ""], format_text_top_border)
@@ -424,6 +424,7 @@ def render(res, params):
 		for rid, request in enumerate(data5):
 			if data5[rid]['req_type'] == detail_name:
 				detail = data5[rid]['request']
+				detail.replace(r"\r\n", r"\n")
 				cr_bottom_line = merge_bottom_cr(cr_right, detail)
 				worksheet.merge_range(rp_leftmost_idx + str(cr_right) + ':' + rp_rightmost_idx + str(cr_bottom_line), detail,  blue_content_format)
 				cr_right = cr_bottom_line + 1

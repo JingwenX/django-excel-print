@@ -165,7 +165,8 @@ def render(res, params):
 		for pid, proj in enumerate(projects[branch]):
 			worksheet.write('A{}'.format(cr), projects[branch][pid][0], formats[str(branch) + '_text_high_left'] if projects[branch][pid][3] == 0 else formats['text_left'])
 			worksheet.write('B{}'.format(cr), u"\u25CB" if projects[branch][pid][2] == 'N' else u"\u25CF", (formats['ydot'] if projects[branch][pid][2] == 'Y' 
-				else formats['dot'] if projects[branch][pid][2] == 'N' else formats['gdot'])) #todo: format conditions
+				else formats['dot'] if projects[branch][pid][2] == 'N' else
+				 formats['gdot'])) #todo: format conditions
 			
 			worksheet.write('C{}'.format(cr), projects[branch][pid][4], formats[str(branch) + '_text_high'] if projects[branch][pid][3] == 0 else formats['text'])
 			worksheet.write('D{}'.format(cr), (cr - start + 1), formats[str(branch) + '_text_high'] if projects[branch][pid][3] == 0 else formats['text'])  

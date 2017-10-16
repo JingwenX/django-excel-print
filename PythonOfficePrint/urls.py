@@ -19,5 +19,6 @@ from django.contrib import admin
 urlpatterns = [
     url(r'^stp/', include('stp.urls')),
     url(r'^eRoadMapPrint/', include('eRoadMapPrint.urls')),
+    url(r'^MadeInMaximo/', include('MadeInMaximo.urls')),
     url(r'^admin/', admin.site.urls),
 ]
