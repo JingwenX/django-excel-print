@@ -424,6 +424,7 @@ def render(res, params):
 		for rid, request in enumerate(data5):
 			if data5[rid]['req_type'] == detail_name:
 				detail = data5[rid]['request']
+				detail.replace(r"\r\n", r"\n")
 				cr_bottom_line = merge_bottom_cr(cr_right, detail)
 				worksheet.merge_range(rp_leftmost_idx + str(cr_right) + ':' + rp_rightmost_idx + str(cr_bottom_line), detail,  blue_content_format)
 				cr_right = cr_bottom_line + 1
